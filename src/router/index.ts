@@ -48,7 +48,7 @@ const router = createRouter({
       // The transition duration is 0.2s, so we wait slightly longer
       setTimeout(() => {
         const savedScroll = sessionStorage.getItem(`scroll-pos-${to.fullPath}`)
-        if (savedScroll) {
+        if (savedScroll && !to.hash) {
           resolve({ top: parseInt(savedScroll, 10) })
         } else if (savedPosition) {
           resolve(savedPosition)

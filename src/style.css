@@ -53,7 +53,7 @@
     @apply max-w-narrow;
   }
 
-  .label-mono {
-    @apply font-sans text-sm uppercase tracking-wider text-text-secondary block mb-3;
+  .label-overline {
+    @apply font-sans text-sm font-semibold uppercase tracking-wider text-text-secondary block mb-3;
   }
 }

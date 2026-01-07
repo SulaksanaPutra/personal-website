@@ -1,9 +1,9 @@
 <template>
   <div class="min-h-screen flex flex-col">
-    <header class="sticky top-0 z-50 bg-bg-main py-3 border-b border-border-subtle transition-colors duration-300">
+    <header ref="headerRef" class="sticky top-0 z-50 bg-bg-main py-3 border-b border-border-subtle transition-colors duration-300">
       <div class="relative mx-auto px-6 md:px-8 flex items-center justify-between flex-wrap">
         <div class="flex items-center ">
-          <div class="flex items-center mr-4 md:mr-8 text-gray-600">
+          <div class="flex items-center mr-4 md:mr-8 text-text-primary">
             <button
               type="button"
               @click="toggleDrawer"
@@ -16,6 +16,7 @@
           <div
             class="mb-4 md:mb-0 text-accent-primary font-semibold text-[1.25rem] leading-[1.35] tracking-[-0.015em]"
             style="font-family: Charter, Georgia, 'Times New Roman', serif;"
+
           >
             BayuAksana
             <div class="text-base">
@@ -292,7 +293,7 @@ const handleScroll = useDebounceFn(() => {
 }, 100)
 
 // Watch for route changes to handle smooth scroll restoration
-watch(() => route.fullPath, (newPath, oldPath) => {
+watch(() => route.fullPath, (newPath) => {
   isRestoring.value = true
   const savedScroll = sessionStorage.getItem(`scroll-pos-${newPath}`)
   if (savedScroll) {
