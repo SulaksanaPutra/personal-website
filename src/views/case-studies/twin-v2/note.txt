@@ -1,0 +1,17 @@
+v1
+- front end optimized using vuex
+- optimizing query
+
+wms/fleet
+- design architecture problem
+- multi tenancy problem
+- integration problem
+wms
+- stock calculation problem
+
+fleet
+-uom problem
+
+laas
+- design architecture problem
+- background job problem

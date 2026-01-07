@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-main: #FCFBF9;
+    --bg-muted: #F3F1ED;
+    --text-primary: #1A1A1A;
+    --text-secondary: #5C5C5C;
+    --border-subtle: #E2DED8;
+    --accent-primary: #6F4E37;
+  }
+
+  .dark {
+    --bg-main: #12110F;
+    --bg-muted: #1A1916;
+    --text-primary: #EDEBE7;
+    --text-secondary: #A8A29E;
+    --border-subtle: #2A2824;
+    --accent-primary: #B08968;
+  }
+
+  body {
+    @apply bg-bg-main text-text-primary font-sans antialiased;
+    line-height: 1.65;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold mt-0 mb-6 leading-tight;
+  }
+
+  p, ul, ol, dl, pre, blockquote {
+    @apply mt-0 mb-6;
+  }
+
+  a {
+    @apply text-accent-primary no-underline transition-colors duration-200;
+  }
+
+  a:hover {
+    @apply text-text-primary underline;
+  }
+}
+
+@layer components {
+  .container {
+    @apply max-w-container mx-auto px-6 md:px-16;
+  }
+
+  .content-narrow {
+    @apply max-w-narrow;
+  }
+
+  .label-mono {
+    @apply font-mono text-sm uppercase tracking-wider text-text-secondary block mb-3;
+  }
+}
