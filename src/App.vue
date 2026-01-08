@@ -270,8 +270,9 @@
               <div>
                 <router-link
                   to="/"
-                  class="block  font-medium text-text-primary hover:text-accent-primary"
+                  class="block font-medium text-text-primary hover:text-accent-primary"
                   active-class="text-accent-primary"
+                  @click="handleDrawerLinkClick"
                 >
                   About
                 </router-link>
@@ -287,6 +288,7 @@
                   to="/writing"
                   class="block font-medium text-text-primary hover:text-accent-primary"
                   active-class="text-accent-primary"
+                  @click="handleDrawerLinkClick"
                 >
                   Writing
                 </router-link>
@@ -302,6 +304,7 @@
                   to="/projects"
                   class="block font-medium text-text-primary hover:text-accent-primary"
                   active-class="text-accent-primary"
+                  @click="handleDrawerLinkClick"
                 >
                   Projects
                 </router-link>
@@ -317,6 +320,7 @@
                   to="/uses"
                   class="block font-medium text-text-primary hover:text-accent-primary"
                   active-class="text-accent-primary"
+                  @click="handleDrawerLinkClick"
                 >
                   Uses
                 </router-link>
@@ -332,6 +336,7 @@
                   to="/contact"
                   class="block font-medium text-text-primary hover:text-accent-primary"
                   active-class="text-accent-primary"
+                  @click="handleDrawerLinkClick"
                 >
                   Contact
                 </router-link>
@@ -397,6 +402,13 @@ const syncDrawerState = () => {
 const toggleDrawer = () => {
   isDrawerOpen.value = !isDrawerOpen.value
   localStorage.setItem(getDrawerStateKey(), isDrawerOpen.value.toString())
+}
+
+const handleDrawerLinkClick = () => {
+  if (window.innerWidth < 768) {
+    isDrawerOpen.value = false
+    localStorage.setItem(getDrawerStateKey(), 'false')
+  }
 }
 
 // Watch for route changes to sync drawer state
@@ -514,6 +526,12 @@ const scrollToSection = (id: string) => {
 
   // Update active section immediately
   activeSection.value = id
+
+  // Close drawer on mobile
+  if (window.innerWidth < 768) {
+    isDrawerOpen.value = false
+    localStorage.setItem(getDrawerStateKey(), 'false')
+  }
 }
 
 watch(() => route.path, (newPath) => {

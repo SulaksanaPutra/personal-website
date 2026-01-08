@@ -1,5 +1,5 @@
 <template>
-  <div class="text-justify hyphens-auto leading-relaxed">
+  <div class="text-justify hyphens-auto leading-relaxed snap-y snap-mandatory overflow-y-auto">
     <section class="content-narrow pt-8 pb-4" id="context">
       <p>
         Hi, I’m Bayu. I work on systems behind everyday operations—orders, finance, payments,
@@ -16,7 +16,7 @@
       </p>
     </section>
 
-    <section class="content-narrow py-8" id="principles">
+    <section class="content-narrow py-8 snap-start" id="principles">
       <p class="label-overline mb-4">How I think about engineering</p>
       <ul class="list-none p-0 m-0">
         <li class="mb-8 pb-8 border-b border-border-subtle last:border-0 last:mb-0 last:pb-0">

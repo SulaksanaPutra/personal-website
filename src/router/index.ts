@@ -63,27 +63,39 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    // If navigating between section routes, let the component handle scrolling
-    const sectionRoutes = ['About', 'Writing', 'Projects', 'Uses', 'Contact']
+    const sectionRoutes = ['About', 'Writing', 'Projects', 'Uses', 'Contact'];
     if (to.name && from.name && sectionRoutes.includes(to.name as string) && sectionRoutes.includes(from.name as string)) {
-      return false
+      return false;
     }
 
     return new Promise((resolve) => {
-      // Wait for the page transition (fade out-in) to complete before scrolling
-      // The transition duration is 0.2s, so we wait slightly longer
       setTimeout(() => {
         if (to.hash) {
-          resolve({
-            el: to.hash,
-            behavior: 'smooth',
-          })
+          resolve({ el: to.hash, behavior: 'smooth' });
+        } else if (savedPosition) {
+          resolve(savedPosition);
         } else {
-          resolve({ top: 0, behavior: 'auto' })
+          const storedPosition = sessionStorage.getItem(to.fullPath);
+          if (storedPosition) {
+            const position = JSON.parse(storedPosition);
+            position.behavior = 'smooth';
+            resolve(position);
+          } else {
+            resolve({ top: 0, behavior: 'auto' });
+          }
         }
-      }, 300)
-    })
+      }, 300);
+    });
   },
 })
+
+router.beforeEach((to, from, next) => {
+  const scrollPosition = {
+    top: window.scrollY,
+    left: window.scrollX
+  };
+  sessionStorage.setItem(from.fullPath, JSON.stringify(scrollPosition));
+  next();
+});
 
 export default router
