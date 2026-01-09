@@ -5,7 +5,7 @@
         <div class="flex items-center mr-4 md:mr-8 text-text-primary">
           <button
             type="button"
-            @click="emit('toggleDrawer')"
+            @click="toggleDrawer"
             class="flex items-center justify-center w-8 h-8"
             aria-label="Toggle menu"
           >
@@ -79,7 +79,7 @@
           </li>
         </ul>
         <button
-          @click="emit('toggleTheme')"
+          @click="toggleTheme"
           type="button"
           class="hidden md:flex items-center justify-center w-10 h-10 rounded-full border border-border-subtle transition-all duration-300 ease-out hover:scale-105 active:scale-95 hover:bg-bg-muted ml-auto md:ml-6"
           aria-label="Toggle theme"
@@ -91,7 +91,7 @@
           <button
             v-for="lang in ['EN', 'ID', 'JP']"
             :key="lang"
-            @click="emit('setLanguage', lang)"
+            @click="setLanguage(lang)"
             class="px-2 py-0.5 rounded-full transition-colors"
             :class="language === lang
               ? 'bg-bg-muted text-text-primary'
@@ -108,16 +108,11 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { useRoute } from 'vue-router'
 import { Sun, Moon, Menu, Search } from 'lucide-vue-next'
+import { isDark, language, scrollProgress, isDrawerOpen, headerComponentRef } from '../store'
 
-defineProps<{
-  isDark: boolean,
-  language: string,
-  scrollProgress: number,
-}>()
-
-const emit = defineEmits(['toggleDrawer', 'toggleTheme', 'setLanguage'])
-
+const route = useRoute()
 const headerRef = ref<HTMLElement | null>(null)
 const searchInputRef = ref<HTMLInputElement | null>(null)
 const searchQuery = ref('')
@@ -136,6 +131,23 @@ const filteredLinks = computed(() =>
   )
 )
 
+const getDrawerStateKey = () => route.path === '/systems' ? 'systemsDrawerOpen' : 'drawerOpen'
+
+const toggleDrawer = () => {
+  isDrawerOpen.value = !isDrawerOpen.value
+  localStorage.setItem(getDrawerStateKey(), isDrawerOpen.value.toString())
+}
+
+const toggleTheme = () => {
+  isDark.value = !isDark.value
+  document.documentElement.classList.toggle('dark', isDark.value)
+  localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
+}
+
+const setLanguage = (lang: string) => {
+  language.value = lang
+}
+
 const handleKeydown = (e: KeyboardEvent) => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
     e.preventDefault()
@@ -145,11 +157,10 @@ const handleKeydown = (e: KeyboardEvent) => {
 
 onMounted(() => {
   window.addEventListener('keydown', handleKeydown)
+  headerComponentRef.value = { headerRef: headerRef.value }
 })
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown)
 })
-
-defineExpose({ headerRef })
 </script>

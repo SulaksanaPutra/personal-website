@@ -89,7 +89,7 @@ const router = createRouter({
   },
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((_to, from, next) => {
   const scrollPosition = {
     top: window.scrollY,
     left: window.scrollX
