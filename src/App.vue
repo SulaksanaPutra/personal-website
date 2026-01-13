@@ -14,7 +14,10 @@
         </router-view>
       </main>
     </div>
-    <Footer />
+    <Footer
+      class="transition-all duration-30"
+      :class="isDrawerOpen ? 'md:ml-32' : ''"
+    />
   </div>
 </template>
 

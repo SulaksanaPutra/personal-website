@@ -62,20 +62,18 @@
       </div>
       <nav class="flex items-center ml-auto w-full md:w-auto">
         <ul class="flex flex-wrap justify-center md:justify-start gap-x-4 md:gap-x-9 gap-y-3 list-none p-0 m-0 w-full md:w-auto">
-          <li>
-            <router-link to="/" class="text-base text-text-secondary hover:text-text-primary hover:no-underline" active-class="text-text-primary font-semibold">Home</router-link>
-          </li>
-          <li>
-            <router-link to="/systems" class="text-base text-text-secondary hover:text-text-primary hover:no-underline" active-class="text-text-primary font-semibold">Systems</router-link>
-          </li>
-          <li class="hidden md:block">
-            <router-link to="/case-studies" class="text-base text-text-secondary hover:text-text-primary hover:no-underline" active-class="text-text-primary font-semibold">Case Studies</router-link>
-          </li>
-          <li>
-            <router-link to="/skills" class="text-base text-text-secondary hover:text-text-primary hover:no-underline" active-class="text-text-primary font-semibold">Skills</router-link>
-          </li>
-          <li>
-            <router-link to="/now" class="text-base text-text-secondary hover:text-text-primary hover:no-underline" active-class="text-text-primary font-semibold">Now</router-link>
+          <li
+            v-for="nav in navLinks"
+            :key="nav.to"
+            :class="nav.hiddenOnMd ? 'hidden md:block' : ''"
+          >
+            <router-link
+              :to="nav.to"
+              class="text-base text-text-secondary hover:text-text-primary hover:no-underline"
+              active-class="text-text-primary font-semibold"
+            >
+              {{ nav.label }}
+            </router-link>
           </li>
         </ul>
         <button
@@ -123,6 +121,14 @@ const searchLinks = [
   { label: 'Case Studies', url: '/case-studies', description: 'Deep dives into real-world projects' },
   { label: 'Skills', url: '/skills', description: 'Technical stack and core competencies' },
   { label: 'Now', url: '/now', description: 'What I am currently focused on' },
+]
+
+const navLinks = [
+  { label: 'Home', to: '/', hiddenOnMd: false },
+  { label: 'Systems', to: '/systems', hiddenOnMd: false },
+  { label: 'Case Studies', to: '/case-studies', hiddenOnMd: true }, // only visible on md+
+  { label: 'Skills', to: '/skills', hiddenOnMd: false },
+  { label: 'Now', to: '/now', hiddenOnMd: false },
 ]
 
 const filteredLinks = computed(() =>
