@@ -33,26 +33,27 @@
 <script setup lang="ts">
 import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
-import { isDrawerOpen, activeSection, headerComponentRef, drawerTop } from '../store'
+import { isDrawerOpen, activeSection, headerComponentRef, drawerTop } from '@/store'
 import DrawerItem, { DrawerItemData } from './drawer-item.vue'
 
-import systemsItems from '../data/systems/systems-drawer.json'
-import caseStudiesItems from '../data/case-studies/case-studies-drawer.json'
-import skillsItems from '../data/skills/skills-drawer.json'
-import contactItems from '../data/contact/contact-drawer.json'
-import homeItems from '../data/home/home-drawer.json'
+import systemsItems from '@/data/systems/systems-drawer.json'
+import caseStudiesItems from '@/data/case-studies/case-studies-drawer.json'
+import skillsItems from '@/data/skills/skills-drawer.json'
+import contactItems from '@/data/contact/contact-drawer.json'
+import homeItems from '@/data/home/home-drawer.json'
+import type { SystemsDrawer, CaseStudiesDrawer, SkillsDrawer, ContactDrawer, HomeDrawer } from '@/data/types'
 
 const route = useRoute()
 
 const routeLists: Record<string, DrawerItemData[]> = {
-  '/systems': systemsItems as DrawerItemData[],
-  '/case-studies': caseStudiesItems as DrawerItemData[],
-  '/skills': skillsItems as DrawerItemData[],
-  '/contact': contactItems as DrawerItemData[],
-  '/': homeItems as DrawerItemData[],
-  '/writing': homeItems as DrawerItemData[],
-  '/projects': homeItems as DrawerItemData[],
-  '/uses': homeItems as DrawerItemData[],
+  '/systems': systemsItems as SystemsDrawer[],
+  '/case-studies': caseStudiesItems as CaseStudiesDrawer[],
+  '/skills': skillsItems as SkillsDrawer[],
+  '/contact': contactItems as ContactDrawer[],
+  '/': homeItems as HomeDrawer[],
+  '/writing': homeItems as HomeDrawer[],
+  '/projects': homeItems as HomeDrawer[],
+  '/uses': homeItems as HomeDrawer[],
 }
 
 const currentList = computed(() => routeLists[route.path] || [])

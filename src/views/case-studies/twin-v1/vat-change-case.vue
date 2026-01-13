@@ -40,6 +40,7 @@
 
 <script setup lang="ts">
 import caseStudyData from '@/data/case-studies/articles/twin-v1/vat-change-case.json'
+import type { VatChangeCase } from '@/data/types'
 
-const caseStudy = caseStudyData
+const caseStudy: VatChangeCase = caseStudyData
 </script>

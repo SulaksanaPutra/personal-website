@@ -24,11 +24,11 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, watch } from 'vue'
 import { RouteLocationNormalized, useRoute } from 'vue-router'
-import Header from './components/header.vue'
-import Drawer from './components/drawer.vue'
-import Footer from './components/footer.vue'
-import { isDark, isDrawerOpen, scrollProgress, activeSection, headerComponentRef, drawerTop } from './store'
-import systemsData from './data/systems/systems.json'
+import Header from '@/components/header.vue'
+import Drawer from '@/components/drawer.vue'
+import Footer from '@/components/footer.vue'
+import { isDark, isDrawerOpen, scrollProgress, activeSection, headerComponentRef, drawerTop } from '@/store'
+import systemsData from '@/data/systems/systems.json'
 
 const route = useRoute()
 

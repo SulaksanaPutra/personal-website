@@ -6,7 +6,8 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from '../composables/useI18n'
+import { useI18n } from '@/composables/useI18n'
+import type { Skills } from '@/data/types'
 
-const { data: skills } = useI18n('skills/skills')
+const { data: skills } = useI18n<Skills>('skills/skills')
 </script>

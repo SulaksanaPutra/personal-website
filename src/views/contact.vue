@@ -10,7 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from '../composables/useI18n'
+import { useI18n } from '@/composables/useI18n'
+import type { Contact } from '@/data/types'
 
-const { data: contact } = useI18n('contact/contact')
+const { data: contact } = useI18n<Contact>('contact/contact')
 </script>

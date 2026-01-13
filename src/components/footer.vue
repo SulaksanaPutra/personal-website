@@ -11,7 +11,8 @@
 </template>
 
 <script setup lang="ts">
-import footerData from '../data/common/footer.json'
+import footerData from '@/data/common/footer.json'
+import type { Footer } from '@/data/types'
 
-const footer = footerData
+const footer: Footer = footerData
 </script>

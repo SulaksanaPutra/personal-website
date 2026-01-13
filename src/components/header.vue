@@ -108,10 +108,11 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { Sun, Moon, Menu, Search } from 'lucide-vue-next'
-import { isDark, language, scrollProgress, isDrawerOpen, headerComponentRef } from '../store'
-import { useI18n } from '../composables/useI18n'
+import { isDark, language, scrollProgress, isDrawerOpen, headerComponentRef } from '@/store'
+import { useI18n } from '@/composables/useI18n'
+import type { Header } from '@/data/types'
 
-const { data: headerData } = useI18n('common/header')
+const { data: headerData } = useI18n<Header>('common/header')
 
 const route = useRoute()
 const headerRef = ref<HTMLElement | null>(null)

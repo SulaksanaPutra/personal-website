@@ -34,7 +34,8 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from '../composables/useI18n'
+import { useI18n } from '@/composables/useI18n'
+import type { CaseStudies } from '@/data/types'
 
-const { data: caseStudies } = useI18n('case-studies/case-studies')
+const { data: caseStudies } = useI18n<CaseStudies[]>('case-studies/case-studies')
 </script>

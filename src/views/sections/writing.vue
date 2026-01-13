@@ -10,7 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from '../../composables/useI18n'
+import { useI18n } from '@/composables/useI18n'
+import type { Writing } from '@/data/types'
 
-const { data: writing } = useI18n('home/sections/writing')
+const { data: writing } = useI18n<Writing>('home/sections/writing')
 </script>

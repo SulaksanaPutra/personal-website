@@ -11,10 +11,10 @@ import { ref, watch, onMounted, nextTick, defineAsyncComponent } from 'vue'
 import { useRoute } from 'vue-router'
 
 const components = {
-  about: defineAsyncComponent(() => import('../views/sections/about.vue')),
-  writing: defineAsyncComponent(() => import('../views/sections/writing.vue')),
-  projects: defineAsyncComponent(() => import('../views/sections/projects.vue')),
-  uses: defineAsyncComponent(() => import('../views/sections/uses.vue')),
+  about: defineAsyncComponent(() => import('@/views/sections/about.vue')),
+  writing: defineAsyncComponent(() => import('@/views/sections/writing.vue')),
+  projects: defineAsyncComponent(() => import('@/views/sections/projects.vue')),
+  uses: defineAsyncComponent(() => import('@/views/sections/uses.vue')),
 }
 
 const route = useRoute()

@@ -41,20 +41,9 @@
 </template>
 
 <script setup lang="ts">
-export interface DrawerItemDetail {
-  label: string
-  text: string
-}
+import type { SystemsDrawer, CaseStudiesDrawer, SkillsDrawer, ContactDrawer, HomeDrawer } from '@/data/types'
 
-export interface DrawerItemData {
-  type: 'anchor' | 'link'
-  label: string
-  description: string
-  id?: string
-  to?: string
-  details?: DrawerItemDetail[]
-  tags?: string[]
-}
+export type DrawerItemData = SystemsDrawer | CaseStudiesDrawer | SkillsDrawer | ContactDrawer | HomeDrawer
 
 defineProps<{
   item: DrawerItemData

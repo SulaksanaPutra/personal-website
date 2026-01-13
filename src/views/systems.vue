@@ -50,7 +50,8 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from '../composables/useI18n'
+import { useI18n } from '@/composables/useI18n'
+import type { Systems } from '@/data/types'
 
-const { data: systems } = useI18n('systems/systems')
+const { data: systems } = useI18n<Systems[]>('systems/systems')
 </script>

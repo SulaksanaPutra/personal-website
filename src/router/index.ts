@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Systems from '../views/systems.vue'
-import CaseStudies from '../views/case-studies.vue'
-import VatChangeCase from '../views/case-studies/twin-v1/vat-change-case.vue'
-import Skills from '../views/skills.vue'
-import Contact from '../views/contact.vue'
-import SectionContainer from '../components/section-container.vue'
+import Systems from '@/views/systems.vue'
+import CaseStudies from '@/views/case-studies.vue'
+import VatChangeCase from '@/views/case-studies/twin-v1/vat-change-case.vue'
+import Skills from '@/views/skills.vue'
+import Contact from '@/views/contact.vue'
+import SectionContainer from '@/components/section-container.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
