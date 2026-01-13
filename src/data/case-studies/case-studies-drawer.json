@@ -1,0 +1,13 @@
+[
+  {
+    "type": "anchor",
+    "id": "case-growth-platform",
+    "label": "Growth Platform Migration",
+    "description": "A case study on migrating a legacy growth platform to a modular architecture.",
+    "details": [
+      { "label": "Focus", "text": "Reducing coupling while maintaining business continuity." },
+      { "label": "Result", "text": "Improved deployment speed and team autonomy." }
+    ],
+    "tags": ["Case Study", "Architecture", "Migration"]
+  }
+]

@@ -1,15 +1,21 @@
 <template>
   <section class="content-narrow py-8 min-h-screen">
-    <h1 class="text-3xl font-bold mb-6">Uses</h1>
+    <h1 class="text-3xl font-bold mb-6">{{ uses.title }}</h1>
     <div class="text-justify hyphens-auto leading-relaxed space-y-4">
-      <p>
-        A list of tools, hardware, and software that I use on a daily basis.
+      <p v-for="(paragraph, index) in uses.paragraphs" :key="index">
+        {{ paragraph }}
       </p>
       <ul class="list-disc pl-5 space-y-2">
-        <li>Editor: VS Code / IntelliJ IDEA</li>
-        <li>Terminal: iTerm2 / Warp</li>
-        <li>Font: JetBrains Mono</li>
+        <li v-for="(item, index) in uses.items" :key="index">
+          {{ item }}
+        </li>
       </ul>
     </div>
   </section>
 </template>
+
+<script setup lang="ts">
+import usesData from '../../data/home/sections/uses.json'
+
+const uses = usesData
+</script>

@@ -28,6 +28,7 @@ import Header from './components/header.vue'
 import Drawer from './components/drawer.vue'
 import Footer from './components/footer.vue'
 import { isDark, isDrawerOpen, scrollProgress, activeSection, headerComponentRef, drawerTop } from './store'
+import systemsData from './data/systems/systems.json'
 
 const route = useRoute()
 
@@ -70,7 +71,7 @@ const observeSections = () => {
     rootMargin: '-20% 0px -50% 0px'
   })
 
-  const ids = ['system-laas', 'system-twin-v2-wms', 'system-twin-v2-fleet', 'system-twin-v1']
+  const ids = systemsData.map(s => s.id)
   ids.forEach(id => {
     const el = document.getElementById(id)
     if (el) observer.observe(el)
@@ -134,7 +135,7 @@ watch(() => route.path, (newPath) => {
 
 
 // --- Route Transition Logic ---
-const sectionRoutes = ['About', 'Writing', 'Projects', 'Uses', 'Contact']
+const sectionRoutes = ['About', 'Writing', 'Projects', 'Uses']
 
 const shouldTransition = (route: RouteLocationNormalized) => {
   return !sectionRoutes.includes(route.name as string)

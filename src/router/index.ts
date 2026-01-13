@@ -3,8 +3,8 @@ import Systems from '../views/systems.vue'
 import CaseStudies from '../views/case-studies.vue'
 import VatChangeCase from '../views/case-studies/twin-v1/vat-change-case.vue'
 import Skills from '../views/skills.vue'
-import Now from '../views/now.vue'
-import SectionContainer from '../views/section-container.vue'
+import Contact from '../views/contact.vue'
+import SectionContainer from '../components/section-container.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -33,9 +33,9 @@ const routes: Array<RouteRecordRaw> = [
     component: Skills
   },
   {
-    path: '/now',
-    name: 'Now',
-    component: Now
+    path: '/contact',
+    name: 'Contact',
+    component: Contact
   },
   {
     path: '/writing',
@@ -52,18 +52,13 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Uses',
     component: SectionContainer
   },
-  {
-    path: '/contact',
-    name: 'Contact',
-    component: SectionContainer
-  }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    const sectionRoutes = ['About', 'Writing', 'Projects', 'Uses', 'Contact'];
+    const sectionRoutes = ['About', 'Writing', 'Projects', 'Uses'];
     if (to.name && from.name && sectionRoutes.includes(to.name as string) && sectionRoutes.includes(from.name as string)) {
       return false;
     }

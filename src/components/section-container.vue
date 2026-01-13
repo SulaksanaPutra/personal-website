@@ -11,16 +11,15 @@ import { ref, watch, onMounted, nextTick, defineAsyncComponent } from 'vue'
 import { useRoute } from 'vue-router'
 
 const components = {
-  about: defineAsyncComponent(() => import('./sections/about.vue')),
-  writing: defineAsyncComponent(() => import('./sections/writing.vue')),
-  projects: defineAsyncComponent(() => import('./sections/projects.vue')),
-  uses: defineAsyncComponent(() => import('./sections/uses.vue')),
-  contact: defineAsyncComponent(() => import('./sections/contact.vue'))
+  about: defineAsyncComponent(() => import('../views/sections/about.vue')),
+  writing: defineAsyncComponent(() => import('../views/sections/writing.vue')),
+  projects: defineAsyncComponent(() => import('../views/sections/projects.vue')),
+  uses: defineAsyncComponent(() => import('../views/sections/uses.vue')),
 }
 
 const route = useRoute()
 
-const sectionOrder = ['about', 'writing', 'projects', 'uses', 'contact']
+const sectionOrder = ['about', 'writing', 'projects', 'uses']
 
 interface MountedSection {
   name: string
@@ -124,10 +123,10 @@ const updateSection = async (newSectionName: string) => {
 
     if (newIndex > currentIndex) {
       mountedSections.value.push(newSection)
-      scrollToSection(newSectionName, 'down')
+      await scrollToSection(newSectionName, 'down')
     } else {
       mountedSections.value.unshift(newSection)
-      scrollToSection(newSectionName, 'up')
+      await scrollToSection(newSectionName, 'up')
     }
   }
 }

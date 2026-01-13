@@ -109,27 +109,15 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { Sun, Moon, Menu, Search } from 'lucide-vue-next'
 import { isDark, language, scrollProgress, isDrawerOpen, headerComponentRef } from '../store'
+import headerData from '../data/common/header.json'
 
 const route = useRoute()
 const headerRef = ref<HTMLElement | null>(null)
 const searchInputRef = ref<HTMLInputElement | null>(null)
 const searchQuery = ref('')
 
-const searchLinks = [
-  { label: 'Home', url: '/', description: 'Overview and introduction' },
-  { label: 'Systems', url: '/systems', description: 'Architecture, patterns, and system design notes' },
-  { label: 'Case Studies', url: '/case-studies', description: 'Deep dives into real-world projects' },
-  { label: 'Skills', url: '/skills', description: 'Technical stack and core competencies' },
-  { label: 'Now', url: '/now', description: 'What I am currently focused on' },
-]
-
-const navLinks = [
-  { label: 'Home', to: '/', hiddenOnMd: false },
-  { label: 'Systems', to: '/systems', hiddenOnMd: false },
-  { label: 'Case Studies', to: '/case-studies', hiddenOnMd: true }, // only visible on md+
-  { label: 'Skills', to: '/skills', hiddenOnMd: false },
-  { label: 'Now', to: '/now', hiddenOnMd: false },
-]
+const searchLinks = headerData.searchLinks
+const navLinks = headerData.navLinks
 
 const filteredLinks = computed(() =>
   searchLinks.filter(item =>

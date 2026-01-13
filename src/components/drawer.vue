@@ -36,140 +36,23 @@ import { useRoute } from 'vue-router'
 import { isDrawerOpen, activeSection, headerComponentRef, drawerTop } from '../store'
 import DrawerItem, { DrawerItemData } from './drawer-item.vue'
 
+import systemsItems from '../data/systems/systems-drawer.json'
+import caseStudiesItems from '../data/case-studies/case-studies-drawer.json'
+import skillsItems from '../data/skills/skills-drawer.json'
+import contactItems from '../data/contact/contact-drawer.json'
+import homeItems from '../data/home/home-drawer.json'
+
 const route = useRoute()
 
-const systemsItems: DrawerItemData[] = [
-  {
-    type: 'anchor',
-    id: 'system-laas',
-    label: 'LAAS — Logistics as a Service',
-    description: 'A customer-facing platform exposing logistics capabilities to external clients.',
-    details: [
-      { label: 'Architecture', text: 'Asynchronous proxy using queues to decouple external traffic from internal operations.' },
-      { label: 'Outcome', text: 'Enabled new B2B/B2C business models while shielding internal systems.' }
-    ],
-    tags: ['Customer-facing', 'B2B', 'B2C']
-  },
-  {
-    type: 'anchor',
-    id: 'system-twin-v2-wms',
-    label: 'Twin V2 — WMS',
-    description: 'A standalone warehouse management system replacing legacy stock handling.',
-    details: [
-      { label: 'Architecture', text: 'Independent Go services with separate databases for correctness and scalability.' },
-      { label: 'Outcome', text: 'Delivered a reliable SaaS foundation with safer data migration and improved accuracy.' }
-    ],
-    tags: ['Warehouse Management', 'Distribution', 'Logistics']
-  },
-  {
-    type: 'anchor',
-    id: 'system-twin-v2-fleet',
-    label: 'Twin V2 — Fleet',
-    description: 'A dedicated delivery domain isolating fleet and settlement workflows.',
-    details: [
-      { label: 'Architecture', text: 'Saga-style coordination and strict consistency checks for transaction safety.' },
-      { label: 'Outcome', text: 'Reliable delivery execution with accurate settlement and safe upstream integration.' }
-    ],
-    tags: ['Logistics', 'Delivery Operations']
-  },
-  {
-    type: 'anchor',
-    id: 'system-twin-v1',
-    label: 'Twin V1 — Legacy',
-    description: 'The business-critical legacy monolith that unified fragmented distributor operations.',
-    details: [
-      { label: 'Context', text: 'Centralized operational backbone replacing paper-based workflows.' },
-      { label: 'Outcome', text: 'Improved data consistency and enabled real-time visibility across the network.' }
-    ],
-    tags: ['Distribution', 'Inventory', 'Sales Operations']
-  }
-]
-
-const caseStudiesItems: DrawerItemData[] = [
-  {
-    type: 'anchor',
-    id: 'case-growth-platform',
-    label: 'Growth Platform Migration',
-    description: 'A case study on migrating a legacy growth platform to a modular architecture.',
-    details: [
-      { label: 'Focus', text: 'Reducing coupling while maintaining business continuity.' },
-      { label: 'Result', text: 'Improved deployment speed and team autonomy.' }
-    ],
-    tags: ['Case Study', 'Architecture', 'Migration']
-  }
-]
-
-const skillsItems: DrawerItemData[] = [
-  {
-    type: 'anchor',
-    id: 'skill-backend-systems',
-    label: 'Backend Systems',
-    description: 'Core competencies in building scalable backend systems.',
-    details: [
-      { label: 'Stack', text: 'Go, Laravel, distributed systems.' },
-      { label: 'Strength', text: 'Consistency, reliability, and clear domain boundaries.' }
-    ],
-    tags: ['Backend', 'Scalability']
-  }
-]
-
-const nowItems: DrawerItemData[] = [
-  {
-    type: 'anchor',
-    id: 'now-current-focus',
-    label: 'Current Focus',
-    description: 'What I am actively working on right now.',
-    details: [
-      { label: 'Theme', text: 'System design refinement and writing.' },
-      { label: 'Goal', text: 'Sharpen architectural thinking and communication.' }
-    ],
-    tags: ['Now', 'Focus']
-  }
-]
-
-const navItems: DrawerItemData[] = [
-  {
-    type: 'link',
-    to: '/',
-    label: 'About',
-    description: 'Background, values, and professional summary'
-  },
-  {
-    type: 'link',
-    to: '/writing',
-    label: 'Writing',
-    description: 'Essays, notes, and long-form thoughts'
-  },
-  {
-    type: 'link',
-    to: '/projects',
-    label: 'Projects',
-    description: 'Short ideas, experiments, and drafts'
-  },
-  {
-    type: 'link',
-    to: '/uses',
-    label: 'Uses',
-    description: 'Tools, hardware, and software I use daily'
-  },
-  {
-    type: 'link',
-    to: '/contact',
-    label: 'Contact',
-    description: 'Ways to get in touch or collaborate'
-  }
-]
-
 const routeLists: Record<string, DrawerItemData[]> = {
-  '/systems': systemsItems, //drawer unique for this route state behavior
-  '/case-studies': caseStudiesItems,
-  '/skills': skillsItems,
-  '/now': nowItems,
-  '/': navItems, //drawer main state behavior
-  '/writing': navItems, //drawer main state behavior
-  '/projects': navItems, //drawer main state behavior
-  '/uses': navItems, //drawer main state behavior
-  '/contact': navItems //drawer main state behavior
+  '/systems': systemsItems as DrawerItemData[],
+  '/case-studies': caseStudiesItems as DrawerItemData[],
+  '/skills': skillsItems as DrawerItemData[],
+  '/contact': contactItems as DrawerItemData[],
+  '/': homeItems as DrawerItemData[],
+  '/writing': homeItems as DrawerItemData[],
+  '/projects': homeItems as DrawerItemData[],
+  '/uses': homeItems as DrawerItemData[],
 }
 
 const currentList = computed(() => routeLists[route.path] || [])
@@ -178,7 +61,7 @@ const drawerStateKeys: Record<string, string> = {
   '/systems': 'systemsDrawerOpen',
   '/case-studies': 'caseStudiesDrawerOpen',
   '/skills': 'skillsDrawerOpen',
-  '/now': 'nowDrawerOpen'
+  '/contact': 'contactDrawerOpen'
 }
 
 const getDrawerStateKey = () => drawerStateKeys[route.path] || 'drawerOpen'

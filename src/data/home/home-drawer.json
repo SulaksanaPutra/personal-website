@@ -1,0 +1,26 @@
+[
+  {
+    "type": "link",
+    "to": "/",
+    "label": "About",
+    "description": "Background, values, and professional summary"
+  },
+  {
+    "type": "link",
+    "to": "/writing",
+    "label": "Writing",
+    "description": "Essays, notes, and long-form thoughts"
+  },
+  {
+    "type": "link",
+    "to": "/projects",
+    "label": "Projects",
+    "description": "Short ideas, experiments, and drafts"
+  },
+  {
+    "type": "link",
+    "to": "/uses",
+    "label": "Uses",
+    "description": "Tools, hardware, and software I use daily"
+  }
+]
