@@ -1,5 +1,12 @@
 import { test, expect } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.clear();
+    sessionStorage.clear();
+  });
+});
+
 test.describe('Drawer Behavior', () => {
   test('should toggle drawer on desktop', async ({ page }) => {
     await page.goto('/');
@@ -44,7 +51,7 @@ test.describe('Mobile View', () => {
     await expect(drawer).toHaveClass(/translate-x-0/);
 
     // Click an item
-    await page.getByText('LAAS — Logistics as a Service').click();
+    await page.getByRole('link', { name: 'LAAS — Logistics as a Service' }).click();
 
     // Drawer should close on mobile after click
     await expect(drawer).toHaveClass(/-translate-x-full/);
@@ -60,9 +67,6 @@ test.describe('Section Scrolling', () => {
     
     // Click the link in drawer
     await page.getByRole('link', { name: 'Twin V2 — WMS' }).click();
-
-    // Wait for the smooth scroll to finish
-    await page.waitForTimeout(1000); // Adjust timeout as needed for scroll duration
 
     // Check if element is in viewport
     await expect(target).toBeInViewport();

@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, watch, computed } from 'vue'
+import { onMounted, onUnmounted, watch, computed, ref, type Component } from 'vue'
 import { RouteLocationNormalized, useRoute } from 'vue-router'
 import Header from '@/components/header.vue'
 import Footer from '@/components/footer.vue'
@@ -36,7 +36,7 @@ import systemsData from '@/data/systems/systems.json'
 
 const route = useRoute()
 
-const drawerMap = {
+const drawerMap: Record<string, Component> = {
   '/': HomeDrawer,
   '/writing': HomeDrawer,
   '/projects': HomeDrawer,
@@ -160,8 +160,28 @@ watch(() => route.path, (newPath) => {
 // --- Route Transition Logic ---
 const sectionRoutes = ['About', 'Writing', 'Projects', 'Uses']
 
+const previousRouteName = ref<string | null>(null)
+watch(
+  () => route.name,
+  (_to, from) => {
+    // Capture the "from" route name so our transition logic can differentiate
+    // section→section navigation vs. entering/leaving the section container.
+    previousRouteName.value = (from as string | undefined) ?? null
+  },
+  { immediate: true }
+)
+
 const shouldTransition = (route: RouteLocationNormalized) => {
-  return !sectionRoutes.includes(route.name as string)
+  const toName = route.name as string | undefined
+  const fromName = previousRouteName.value ?? undefined
+
+  // No fade when navigating between section routes (they share the same container).
+  if (toName && fromName && sectionRoutes.includes(toName) && sectionRoutes.includes(fromName)) {
+    return false
+  }
+
+  // Fade for everything else, including entering/leaving '/' (About).
+  return true
 }
 
 const getRouteKey = (route: RouteLocationNormalized) => {

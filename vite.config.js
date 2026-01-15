@@ -10,4 +10,12 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
+  test: {
+    environment: 'happy-dom',
+    globals: true,
+    pool: 'threads',
+    setupFiles: ['./tests/unit/setup.ts'],
+    include: ['tests/unit/**/*.test.ts'],
+    css: true,
+  },
 })

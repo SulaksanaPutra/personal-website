@@ -1,5 +1,12 @@
 import { test, expect } from '@playwright/test';
 
+test.beforeEach(async ({ page }) => {
+  await page.addInitScript(() => {
+    localStorage.clear();
+    sessionStorage.clear();
+  });
+});
+
 test('homepage has title and about section', async ({ page }) => {
   await page.goto('/');
 
@@ -13,7 +20,7 @@ test('should navigate to the systems page', async ({ page }) => {
   await page.goto('/');
 
   // Click the Systems link in the navigation
-  await page.click('nav a:has-text("Systems")');
+  await page.getByRole('link', { name: 'Systems' }).click();
 
   await expect(page).toHaveURL('/systems');
   
@@ -34,4 +41,16 @@ test('should toggle theme', async ({ page }) => {
   } else {
     await expect(html).toHaveClass(/dark/);
   }
+});
+
+test('Ctrl/Cmd+K focuses search input', async ({ page, browserName }) => {
+  await page.goto('/');
+
+  if (browserName === 'webkit') {
+    await page.keyboard.press('Meta+K');
+  } else {
+    await page.keyboard.press('Control+K');
+  }
+
+  await expect(page.locator('input[placeholder="Search…"]')).toBeFocused();
 });
