@@ -116,7 +116,9 @@ export interface Projects {
 
 export interface HomeDrawer extends DrawerBase {
   to: string;
+  isActive: boolean;
 }
+
 
 export interface About  {
   intro: string[];

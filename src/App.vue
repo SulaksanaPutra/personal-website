@@ -2,7 +2,7 @@
   <div class="min-h-screen flex flex-col">
     <Header />
     <div class="flex flex-grow transition-all duration-300">
-      <Drawer />
+      <component :is="currentDrawer" />
       <main
         class="container flex-grow pt-0 pb-16 transition-all duration-300"
         :class="isDrawerOpen ? 'md:ml-64' : ''"
@@ -22,24 +22,47 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted, watch } from 'vue'
+import { onMounted, onUnmounted, watch, computed } from 'vue'
 import { RouteLocationNormalized, useRoute } from 'vue-router'
 import Header from '@/components/header.vue'
-import Drawer from '@/components/drawer.vue'
 import Footer from '@/components/footer.vue'
+import HomeDrawer from '@/components/drawers/home-drawer.vue'
+import SystemsDrawer from '@/components/drawers/systems-drawer.vue'
+import CaseStudiesDrawer from '@/components/drawers/case-studies-drawer.vue'
+import SkillsDrawer from '@/components/drawers/skills-drawer.vue'
+import ContactDrawer from '@/components/drawers/contact-drawer.vue'
 import { isDark, isDrawerOpen, scrollProgress, activeSection, headerComponentRef, drawerTop } from '@/store'
 import systemsData from '@/data/systems/systems.json'
 
 const route = useRoute()
 
+const drawerMap = {
+  '/': HomeDrawer,
+  '/writing': HomeDrawer,
+  '/projects': HomeDrawer,
+  '/uses': HomeDrawer,
+  '/systems': SystemsDrawer,
+  '/case-studies': CaseStudiesDrawer,
+  '/skills': SkillsDrawer,
+  '/contact': ContactDrawer,
+}
+
+const currentDrawer = computed(() => drawerMap[route.path] || null)
+
 // --- Logic from store ---
-const getDrawerStateKey = () => route.path === '/systems' ? 'systemsDrawerOpen' : 'drawerOpen'
+const getDrawerStateKey = () => {
+  if (route.path === '/systems') return 'systemsDrawerOpen'
+  if (route.path === '/case-studies') return 'caseStudiesDrawerOpen'
+  if (route.path === '/skills') return 'skillsDrawerOpen'
+  if (route.path === '/contact') return 'contactDrawerOpen'
+  return 'drawerOpen'
+}
 
 const syncDrawerState = () => {
   const key = getDrawerStateKey()
   const stored = localStorage.getItem(key)
 
-  if (route.path === '/systems' && stored === null) {
+  if (['/systems', '/case-studies', '/skills', '/contact'].includes(route.path) && stored === null) {
     isDrawerOpen.value = true
     localStorage.setItem(key, 'true')
   } else {

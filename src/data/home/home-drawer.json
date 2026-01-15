@@ -4,27 +4,31 @@
     "type": "link",
     "to": "/",
     "label": "About",
-    "description": "Background, values, and professional summary"
+    "description": "Background, values, and professional summary",
+    "isActive": false
   },
   {
     "id" : "writing",
     "type": "link",
     "to": "/writing",
     "label": "Writing",
-    "description": "Essays, notes, and long-form thoughts"
+    "description": "Essays, notes, and long-form thoughts",
+    "isActive": false
   },
   {
     "id" : "projects",
     "type": "link",
     "to": "/projects",
     "label": "Projects",
-    "description": "Short ideas, experiments, and drafts"
+    "description": "Short ideas, experiments, and drafts",
+    "isActive": false
   },
   {
     "id" : "uses",
     "type": "link",
     "to": "/uses",
     "label": "Uses",
-    "description": "Tools, hardware, and software I use daily"
+    "description": "Tools, hardware, and software I use daily",
+    "isActive": false
   }
 ]
