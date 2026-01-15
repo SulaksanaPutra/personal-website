@@ -2,7 +2,6 @@
   <li class="flex gap-3">
     <div class="w-full">
       <a
-        v-if="item.type === 'anchor'"
         :href="`#${item.id}`"
         @click.prevent="$emit('click', item)"
         class="block font-medium text-base transition-colors duration-200"
@@ -10,15 +9,6 @@
       >
         {{ item.label }}
       </a>
-      <router-link
-        v-else-if="item.type === 'link'"
-        :to="item.to || '/'"
-        class="block font-medium text-text-primary hover:text-accent-primary"
-        active-class="text-accent-primary"
-        @click="$emit('click', item)"
-      >
-        {{ item.label }}
-      </router-link>
       <p class="text-sm text-text-secondary mt-1 leading-relaxed">
         {{ item.description }}
       </p>
@@ -41,16 +31,14 @@
 </template>
 
 <script setup lang="ts">
-import type { SystemsDrawer, CaseStudiesDrawer, SkillsDrawer, ContactDrawer, HomeDrawer } from '@/data/types'
-
-export type DrawerItemData = SystemsDrawer | CaseStudiesDrawer | SkillsDrawer | ContactDrawer | HomeDrawer
+import type { SystemsDrawer } from '@/data/types'
 
 defineProps<{
-  item: DrawerItemData
+  item: SystemsDrawer
   isActive?: boolean
 }>()
 
 defineEmits<{
-  (e: 'click', item: DrawerItemData): void
+  (e: 'click', item: SystemsDrawer): void
 }>()
 </script>

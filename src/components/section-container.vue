@@ -29,7 +29,7 @@ interface MountedSection {
 const mountedSections = ref<MountedSection[]>([])
 const isTransitioning = ref(false)
 let previousSectionName: string | null = null
-let scrollEndTimeout: number
+let scrollEndTimeout: ReturnType<typeof window.setTimeout> | undefined
 
 const scrollToSection = async (targetSectionName: string, direction: 'up' | 'down') => {
   await nextTick()
@@ -79,12 +79,12 @@ const scrollToSection = async (targetSectionName: string, direction: 'up' | 'dow
         previousSectionName = null
       }
       window.removeEventListener('scroll', onScroll)
-      clearTimeout(scrollEndTimeout)
+      if (scrollEndTimeout) clearTimeout(scrollEndTimeout)
     }
   }
 
   const onScroll = () => {
-    clearTimeout(scrollEndTimeout)
+    if (scrollEndTimeout) clearTimeout(scrollEndTimeout)
     scrollEndTimeout = setTimeout(scrollEndHandler, 100)
   }
 
@@ -94,7 +94,7 @@ const scrollToSection = async (targetSectionName: string, direction: 'up' | 'dow
 const updateSection = async (newSectionName: string) => {
   if (isTransitioning.value) {
     window.stop() // Stop any active smooth scroll
-    clearTimeout(scrollEndTimeout)
+    if (scrollEndTimeout) clearTimeout(scrollEndTimeout)
     isTransitioning.value = false
     document.body.style.overflow = ''
     // Immediately remove the old section to prepare for the new transition

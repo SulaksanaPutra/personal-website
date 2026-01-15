@@ -15,13 +15,14 @@
       </button>
 
       <ul v-if="currentList.length" class="space-y-6">
-        <DrawerItem
-          v-for="(item, index) in currentList"
-          :key="index"
-          :item="item"
-          :is-active="item.type === 'anchor' ? activeSection === item.id : undefined"
-          @click="handleItemClick"
-        />
+        <template v-for="(item) in currentList" :key="index">
+          <component
+            :is="getDrawerItemComponent(item)"
+            :item="item"
+            :is-active="item.type === 'anchor' ? activeSection === item.id : undefined"
+            @click="handleItemClick"
+          />
+        </template>
       </ul>
       <div v-else class="p-4 text-text-secondary text-sm">
         <!-- Empty state or dummy text -->
@@ -34,7 +35,11 @@
 import { computed, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { isDrawerOpen, activeSection, headerComponentRef, drawerTop } from '@/store'
-import DrawerItem, { DrawerItemData } from './drawer-item.vue'
+import SystemsDrawerItem from './drawer-items/systems-drawer-item.vue'
+import CaseStudiesDrawerItem from './drawer-items/case-studies-drawer-item.vue'
+import SkillsDrawerItem from './drawer-items/skills-drawer-item.vue'
+import ContactDrawerItem from './drawer-items/contact-drawer-item.vue'
+import HomeDrawerItem from './drawer-items/home-drawer-item.vue'
 
 import systemsItems from '@/data/systems/systems-drawer.json'
 import caseStudiesItems from '@/data/case-studies/case-studies-drawer.json'
@@ -42,6 +47,9 @@ import skillsItems from '@/data/skills/skills-drawer.json'
 import contactItems from '@/data/contact/contact-drawer.json'
 import homeItems from '@/data/home/home-drawer.json'
 import type { SystemsDrawer, CaseStudiesDrawer, SkillsDrawer, ContactDrawer, HomeDrawer } from '@/data/types'
+
+// Define a union type for all drawer items
+type DrawerItemData = SystemsDrawer | CaseStudiesDrawer | SkillsDrawer | ContactDrawer | HomeDrawer
 
 const route = useRoute()
 
@@ -79,7 +87,7 @@ watch(
     const key = getDrawerStateKey()
     const savedState = localStorage.getItem(key)
 
-    // On desktop, restore previous state or default to open.
+    // On desktop, restore the previous state or default to open.
     if (savedState !== null) {
       isDrawerOpen.value = savedState === 'true'
     } else {
@@ -129,5 +137,20 @@ const handleDrawerLinkClick = () => {
   if (window.innerWidth < 768) {
     isDrawerOpen.value = false
   }
+}
+
+const getDrawerItemComponent = (_item: DrawerItemData) => {
+  // Determine component based on route or item properties
+  // Since we know the list type based on the route, we can map it here.
+  // However, `item` itself doesn't carry the type info explicitly enough for a simple switch if they share a structure.
+  // But we know which list we are rendering based on `route.path`.
+
+  if (route.path === '/systems') return SystemsDrawerItem
+  if (route.path === '/case-studies') return CaseStudiesDrawerItem
+  if (route.path === '/skills') return SkillsDrawerItem
+  if (route.path === '/contact') return ContactDrawerItem
+
+  // Default for home and others
+  return HomeDrawerItem
 }
 </script>
