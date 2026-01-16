@@ -3,22 +3,13 @@
         v-if="about"
         class="text-justify hyphens-auto leading-relaxed snap-y snap-mandatory overflow-y-auto"
     >
-        <section
-            id="context"
-            class="content-narrow pt-8 pb-4"
-        >
-            <p
-                v-for="(paragraph, index) in about.intro"
-                :key="index"
-            >
+        <section id="context" class="content-narrow pt-8 pb-4">
+            <p v-for="(paragraph, index) in about.intro" :key="index">
                 {{ paragraph }}
             </p>
         </section>
 
-        <section
-            id="principles"
-            class="content-narrow py-8 snap-start"
-        >
+        <section id="principles" class="content-narrow py-8 snap-start">
             <p class="label-overline mb-4">
                 {{ about.principles.title }}
             </p>
@@ -28,24 +19,15 @@
                     :key="index"
                     class="mb-8 pb-8 border-b border-border-subtle last:border-0 last:mb-0 last:pb-0"
                 >
-                    <strong>{{ item.title }} </strong>
-                    <br>
+                    <strong>{{ item.label }} </strong>
+                    <br />
                     {{ item.description }}
                 </li>
             </ul>
         </section>
-
-        <section
-            id="orientation"
-            class="content-narrow mt-9 pt-9 border-t border-border-subtle"
-        >
-            <p
-                v-for="(link, index) in about.links"
-                :key="index"
-            >
-                <router-link :to="link.to">
-                    {{ link.label }}
-                </router-link>
+        <section id="orientation" class="content-narrow mt-9 pt-9 border-t border-border-subtle">
+            <p v-for="(link, index) in about.links" :key="index">
+                <router-link :to="link.href"> {{ link.label }} </router-link>
             </p>
         </section>
     </div>
@@ -53,7 +35,7 @@
 
 <script setup lang="ts">
 import { useI18n } from '@/composables/use-i18n';
-import type { About } from '@/data/types';
+import { About } from '@/types/about.ts';
 
 const { data: about } = useI18n<About>('home/about');
 </script>

@@ -27,12 +27,12 @@
     },
     "links": [
         {
-            "to": "/systems",
-            "text": "→ Systems I’ve worked on"
+            "href": "/systems",
+            "label": "→ Systems I’ve worked on"
         },
         {
-            "to": "/case-studies",
-            "text": "→ Selected case studies"
+            "href": "/case-studies",
+            "label": "→ Selected case studies"
         }
     ]
 }

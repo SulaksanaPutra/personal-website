@@ -50,7 +50,6 @@ const drawerMap: Record<string, Component> = {
 
 const currentDrawer = computed(() => drawerMap[route.path] || null);
 
-// --- Logic from store ---
 const getDrawerStateKey = () => {
     if (route.path === '/systems') return 'systemsDrawerOpen';
     if (route.path === '/case-studies') return 'caseStudiesDrawerOpen';
@@ -167,15 +166,12 @@ watch(
     { immediate: true },
 );
 
-// --- Route Transition Logic ---
 const sectionRoutes = ['About', 'Writing', 'Projects', 'Uses', 'Hobbies'];
 
 const previousRouteName = ref<string | null>(null);
 watch(
     () => route.name,
     (_to, from) => {
-        // Capture the "from" route name so our transition logic can differentiate
-        // section→section navigation vs. entering/leaving the section container.
         previousRouteName.value = (from as string | undefined) ?? null;
     },
     { immediate: true },
@@ -184,13 +180,9 @@ watch(
 const shouldTransition = (route: RouteLocationNormalized) => {
     const toName = route.name as string | undefined;
     const fromName = previousRouteName.value ?? undefined;
-
-    // No fade when navigating between section routes (they share the same container).
     if (toName && fromName && sectionRoutes.includes(toName) && sectionRoutes.includes(fromName)) {
         return false;
     }
-
-    // Fade for everything else, including entering/leaving '/' (About).
     return true;
 };
 

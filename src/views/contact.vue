@@ -6,7 +6,7 @@
             </h1>
             <div class="text-justify hyphens-auto leading-relaxed space-y-4">
                 <p
-                    v-for="(paragraph, index) in contact.paragraphs"
+                    v-for="(paragraph, index) in contact.descriptions"
                     :key="index"
                     v-html="paragraph"
                 />
@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { useI18n } from '@/composables/use-i18n';
-import type { Contact } from '@/data/types';
+import { Contact } from '@/types/contact.ts';
 
 const { data: contact } = useI18n<Contact>('contact/contact');
 </script>

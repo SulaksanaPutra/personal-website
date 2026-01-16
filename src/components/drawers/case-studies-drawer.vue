@@ -16,27 +16,24 @@
 
             <ul class="space-y-6">
                 <li
-                    v-for="system in caseStudiesItems"
-                    :key="system.systemId"
+                    v-for="system in caseStudiesDrawerItems"
+                    :key="system.id"
                     class="space-y-2"
-                    :class="openSystems.includes(system.systemId) && 'pb-6'"
+                    :class="openSystems.includes(system.id) && 'pb-6'"
                 >
                     <button
                         type="button"
                         class="flex items-center justify-between w-full text-left font-medium text-base text-text-primary hover:text-accent-primary transition-colors duration-200"
-                        @click="toggleSystem(system.systemId)"
+                        @click="toggleSystem(system.id)"
                     >
-                        <span>{{ system.systemTitle }}</span>
+                        <span>{{ system.label }}</span>
                         <ChevronDown
                             class="w-4 h-4 text-text-secondary transition-transform duration-200 flex-shrink-0"
-                            :class="openSystems.includes(system.systemId) ? 'rotate-180' : ''"
+                            :class="openSystems.includes(system.id) ? 'rotate-180' : ''"
                         />
                     </button>
 
-                    <ul
-                        v-show="openSystems.includes(system.systemId)"
-                        class="ml-0.5 space-y-2 relative"
-                    >
+                    <ul v-show="openSystems.includes(system.id)" class="ml-0.5 space-y-2 relative">
                         <li
                             v-for="(caseStudy, index) in system.cases"
                             :key="caseStudy.id"
@@ -45,8 +42,8 @@
                             <div
                                 class="absolute left-0 top-0 bottom-0 w-px bg-border-subtle"
                                 :class="index === system.cases.length - 1 ? 'h-3' : 'h-full'"
-                            ></div>
-                            <div class="absolute left-0 top-3 w-3 h-px bg-border-subtle"></div>
+                            />
+                            <div class="absolute left-0 top-3 w-3 h-px bg-border-subtle" />
                             <a
                                 :href="`#${caseStudy.id}`"
                                 class="block text-sm transition-colors duration-200 relative"
@@ -57,7 +54,7 @@
                                 "
                                 @click.prevent="scrollToSection(caseStudy.id)"
                             >
-                                {{ caseStudy.title }}
+                                {{ caseStudy.label }}
                             </a>
                         </li>
                     </ul>
@@ -68,24 +65,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, watch, type Ref } from 'vue';
+import { useRoute, type RouteLocationNormalizedLoaded } from 'vue-router';
 import { activeSection, drawerTop, headerComponentRef, isDrawerOpen } from '@/store';
-import { CaseStudiesDrawer } from '@/data/types.ts';
-import rawCaseStudiesItems from '@/data/case-studies/case-studies-drawer.json';
+import rawCaseStudiesDrawerItems from '@/data/case-studies/case-studies-drawer.json';
 import { ChevronDown, X } from 'lucide-vue-next';
+import { CaseStudiesDrawerItem } from '@/types/drawer.ts';
 
-const caseStudiesItems = rawCaseStudiesItems as CaseStudiesDrawer[];
-const route = useRoute();
-const openSystems = ref<string[]>([]);
+const caseStudiesDrawerItems: CaseStudiesDrawerItem[] = rawCaseStudiesDrawerItems;
+const route: RouteLocationNormalizedLoaded = useRoute();
+const openSystems: Ref<string[]> = ref<string[]>([]);
 
-// Initialize open systems (all open by default or based on logic)
-openSystems.value = caseStudiesItems.map((s) => s.systemId);
+openSystems.value = caseStudiesDrawerItems.map((s) => s.id);
 
-const toggleSystem = (systemId: string) => {
-    const index = openSystems.value.indexOf(systemId);
+const toggleSystem = (id: string) => {
+    const index = openSystems.value.indexOf(id);
     if (index === -1) {
-        openSystems.value.push(systemId);
+        openSystems.value.push(id);
     } else {
         openSystems.value.splice(index, 1);
     }

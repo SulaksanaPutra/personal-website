@@ -15,20 +15,10 @@
                 <X />
             </button>
 
-            <ul class="space-y-6">
-                <template
-                    v-for="(item, _index) in homeItems"
-                    :key="_index"
-                >
-                    <router-link
-                        v-slot="{ href, navigate }"
-                        :to="item.to || '/'"
-                        custom
-                    >
-                        <li
-                            v-show="!item.isActive"
-                            class="flex gap-3"
-                        >
+            <ul>
+                <template v-for="(item, _index) in homeDrawerItems" :key="_index">
+                    <router-link v-slot="{ href, navigate }" :to="item.href || '/'" custom>
+                        <li v-show="!item.isActive" class="flex gap-3 mb-6">
                             <div class="w-full">
                                 <a
                                     :href="href"
@@ -58,21 +48,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue';
-import { useRoute } from 'vue-router';
-import { isDrawerOpen, drawerTop } from '@/store';
-import rawHomeItems from '@/data/home/home-drawer.json';
+import { onMounted, ref, type Ref, watch } from 'vue';
+import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
+import { drawerTop, isDrawerOpen } from '@/store';
+import rawHomeDrawerItems from '@/data/home/home-drawer.json';
 import { X } from 'lucide-vue-next';
-import type { HomeDrawer } from '@/data/types';
+import { HomeDrawerItem } from '@/types/drawer.ts';
 
-const route = useRoute();
-const homeItems = ref<HomeDrawer[]>(rawHomeItems as HomeDrawer[]);
+const route: RouteLocationNormalizedLoaded = useRoute();
+const homeDrawerItems: Ref<HomeDrawerItem[]> = ref<HomeDrawerItem[]>(
+    rawHomeDrawerItems as HomeDrawerItem[],
+);
 
 onMounted(() => {
     const path = route.path;
-
-    homeItems.value.forEach((item) => {
-        item.isActive = item.to === path;
+    homeDrawerItems.value.forEach((item) => {
+        item.isActive = item.href === path;
     });
 });
 
@@ -108,17 +99,17 @@ const handleDrawerLinkClick = () => {
     }
 };
 
-const pendingActiveItem = ref<HomeDrawer | null>(null);
+const pendingActiveItem: Ref<HomeDrawerItem | null> = ref<HomeDrawerItem | null>(null);
 
-const onItemClicked = (item: HomeDrawer, _event: MouseEvent) => {
+const onItemClicked = (item: HomeDrawerItem, _event: MouseEvent) => {
     pendingActiveItem.value = item;
-    const activeIndex = homeItems.value.findIndex((i: HomeDrawer) => i.isActive);
-    const clickedIndex = homeItems.value.findIndex((i: HomeDrawer) => i === item);
+    const activeIndex = homeDrawerItems.value.findIndex((i: HomeDrawerItem) => i.isActive);
+    const clickedIndex = homeDrawerItems.value.findIndex((i: HomeDrawerItem) => i === item);
     if (activeIndex !== -1 && activeIndex !== clickedIndex) {
-        const [activeItem] = homeItems.value.splice(activeIndex, 1);
+        const [activeItem] = homeDrawerItems.value.splice(activeIndex, 1);
         activeItem.isActive = false;
         const insertIndex = activeIndex < clickedIndex ? clickedIndex : clickedIndex + 1;
-        homeItems.value.splice(insertIndex, 0, activeItem);
+        homeDrawerItems.value.splice(insertIndex, 0, activeItem);
     }
 };
 

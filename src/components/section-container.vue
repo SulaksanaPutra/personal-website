@@ -12,10 +12,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, nextTick, defineAsyncComponent, markRaw } from 'vue';
+import { ref, watch, onMounted, nextTick, defineAsyncComponent, markRaw, type Component } from 'vue';
 import { useRoute } from 'vue-router';
 
-const components = {
+const components: Record<string, Component> = {
     about: markRaw(defineAsyncComponent(() => import('@/views/sections/about.vue'))),
     writing: markRaw(defineAsyncComponent(() => import('@/views/sections/writing.vue'))),
     projects: markRaw(defineAsyncComponent(() => import('@/views/sections/projects.vue'))),
@@ -25,19 +25,19 @@ const components = {
 
 const route = useRoute();
 
-const sectionOrder = ['about', 'writing', 'projects', 'uses', 'hobbies'];
+const sectionOrder: string[] = ['about', 'writing', 'projects', 'uses', 'hobbies'];
 
 interface MountedSection {
     name: string;
-    component: any;
+    component: Component;
 }
 
 const mountedSections = ref<MountedSection[]>([]);
-const isTransitioning = ref(false);
+const isTransitioning = ref<boolean>(false);
 let previousSectionName: string | null = null;
 let scrollEndTimeout: ReturnType<typeof window.setTimeout> | undefined;
 
-const scrollToSection = async (targetSectionName: string, direction: 'up' | 'down') => {
+const scrollToSection = async (targetSectionName: string, direction: 'up' | 'down'): Promise<void> => {
     await nextTick();
 
     const targetElement = document.getElementById(`section-${targetSectionName}`);
@@ -101,7 +101,7 @@ const scrollToSection = async (targetSectionName: string, direction: 'up' | 'dow
     window.addEventListener('scroll', onScroll, { passive: true });
 };
 
-const updateSection = async (newSectionName: string) => {
+const updateSection = async (newSectionName: string): Promise<void> => {
     if (isTransitioning.value) {
         window.stop(); // Stop any active smooth scroll
         if (scrollEndTimeout) clearTimeout(scrollEndTimeout);

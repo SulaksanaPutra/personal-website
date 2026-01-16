@@ -8,10 +8,8 @@
                 class="mb-16 pb-8 border-b border-border-subtle last:border-b-0"
             >
                 <h2 class="text-xl text-left text-text-primary mb-2">
-                    <template v-if="system.titleHighlight">
-                        {{ system.title.split(system.titleHighlight)[0] }}
-                        <span class="text-base font-bold">{{ system.titleHighlight }}</span>
-                        {{ system.title.split(system.titleHighlight)[1] }}
+                    <template v-if="system.highlight">
+                        {{ system.highlight }}
                     </template>
                     <template v-else>
                         {{ system.title }}
@@ -33,19 +31,16 @@
                 </div>
 
                 <div class="space-y-6">
-                    <div
-                        v-for="(section, index) in system.sections"
-                        :key="index"
-                    >
+                    <div v-for="(section, index) in system.sections" :key="index">
                         <p class="label-overline">
                             {{ section.label }}
                         </p>
-                        <p>{{ section.content }}</p>
+                        <p>{{ section.description }}</p>
                     </div>
 
                     <p v-if="system.link">
-                        <router-link :to="system.link.to">
-                            {{ system.link.text }}
+                        <router-link :to="system.link.href">
+                            {{ system.link.label }}
                         </router-link>
                     </p>
                 </div>
@@ -55,8 +50,9 @@
 </template>
 
 <script setup lang="ts">
+import type { Ref } from 'vue';
 import { useI18n } from '@/composables/use-i18n';
-import type { Systems } from '@/data/types';
+import type { Systems } from '@/types/systems';
 
-const { data: systems } = useI18n<Systems[]>('systems/systems');
+const { data: systems }: { data: Ref<Systems[] | null> } = useI18n<Systems[]>('systems/systems');
 </script>

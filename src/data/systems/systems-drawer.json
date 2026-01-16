@@ -1,42 +1,38 @@
 [
     {
         "id": "system-laas",
-        "title": "LAAS",
-        "subtitle": "Logistics as a Service",
-        "oneLiner": "External access to logistics capabilities without exposing internal systems.",
+        "label": "LAAS",
+        "description": "External access to logistics capabilities without exposing internal systems.",
         "link": {
-            "to": "/case-studies#laas",
-            "text": "View system →"
+            "href": "/case-studies#laas",
+            "label": "View system →"
         }
     },
     {
         "id": "system-twin-v2-wms",
-        "title": "Twin V2 WMS",
-        "subtitle": "Warehouse Management System",
-        "oneLiner": "A clean-slate WMS built to replace a fragile legacy core.",
+        "label": "Twin V2 WMS",
+        "description": "A clean-slate WMS built to replace a fragile legacy core.",
         "link": {
-            "to": "/case-studies#twin-v2-wms",
-            "text": "View system →"
+            "href": "/case-studies#twin-v2-wms",
+            "label": "View system →"
         }
     },
     {
         "id": "system-twin-v2-fleet",
-        "title": "Twin V2 FMS",
-        "subtitle": "Fleet Management System",
-        "oneLiner": "Delivery and settlement isolated into a correctness-first domain.",
+        "label": "Twin V2 FMS",
+        "description": "Delivery and settlement isolated into a correctness-first domain.",
         "link": {
-            "to": "/case-studies#twin-v2-fms",
-            "text": "View system →"
+            "href": "/case-studies#twin-v2-fms",
+            "label": "View system →"
         }
     },
     {
         "id": "system-twin-v1",
-        "title": "Twin V1",
-        "subtitle": "In-house Distributor System",
-        "oneLiner": "A legacy monolith that powered daily distributor operations.",
+        "label": "Twin V1",
+        "description": "A legacy monolith that powered daily distributor operations.",
         "link": {
-            "to": "/case-studies#twin-v1",
-            "text": "View system →"
+            "href": "/case-studies#twin-v1",
+            "label": "View system →"
         }
     }
 ]

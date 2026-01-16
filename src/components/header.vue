@@ -18,8 +18,9 @@
                     </button>
                 </div>
                 <div class="flex items-center justify-between w-full">
-                    <div
-                        class="mb-4 md:mb-0 text-accent-primary font-semibold text-[1.125rem] leading-[1.35] tracking-[-0.015em]"
+                    <router-link
+                        :to="'/'"
+                        class="mb-4 hover:no-underline md:mb-0 cursor-pointer text-accent-primary font-semibold text-[1.125rem] leading-[1.35] tracking-[-0.015em]"
                         style="
                             font-family:
                                 Zalando Sans,
@@ -28,7 +29,7 @@
                     >
                         BayuAksana
                         <div class="text-base">dotcom</div>
-                    </div>
+                    </router-link>
                     <div
                         class="md:hidden items-center gap-1 rounded-full border border-border-subtle p-1 text-sm ml-4"
                     >
@@ -68,10 +69,10 @@
                 >
                     <li
                         v-for="item in filteredLinks"
-                        :key="item.url"
+                        :key="item.href"
                         class="px-4 py-3 hover:bg-bg-muted"
                     >
-                        <router-link :to="item.url" class="block" @click="searchQuery = ''">
+                        <router-link :to="item.href" class="block" @click="searchQuery = ''">
                             <div class="text-sm font-medium text-text-primary">
                                 {{ item.label }}
                             </div>
@@ -88,11 +89,11 @@
                 >
                     <li
                         v-for="nav in navLinks"
-                        :key="nav.to"
+                        :key="nav.href"
                         :class="nav.hiddenOnMd ? 'hidden md:block' : ''"
                     >
                         <router-link
-                            :to="nav.to"
+                            :to="nav.href"
                             class="text-base text-text-secondary hover:text-text-primary hover:no-underline"
                             active-class="text-text-primary font-semibold"
                         >
@@ -141,28 +142,32 @@ import { useRoute } from 'vue-router';
 import { Menu, Moon, Search, Sun } from 'lucide-vue-next';
 import { headerComponentRef, isDark, isDrawerOpen, language, scrollProgress } from '@/store';
 import { useI18n } from '@/composables/use-i18n';
-import type { Header } from '@/data/types';
 import systemsItems from '@/data/systems/systems-drawer.json';
 import caseStudiesItems from '@/data/case-studies/case-studies-drawer.json';
 import homeItems from '@/data/home/home-drawer.json';
+import { Header } from '@/types/header.ts';
 
 const { data: headerData } = useI18n<Header>('common/header');
 
 const route = useRoute();
 const headerRef = ref<HTMLElement | null>(null);
 const searchInputRef = ref<HTMLInputElement | null>(null);
-const searchQuery = ref('');
+const searchQuery = ref<string>('');
 
-const searchLinks = computed(() => headerData.value?.searchLinks || []);
-const navLinks = computed(() => headerData.value?.navLinks || []);
+const searchLinks = computed<NonNullable<Header['searchLinks']>>(
+    () => headerData.value?.searchLinks || [],
+);
+const navLinks = computed<NonNullable<Header['navigations']>>(
+    () => headerData.value?.navigations || [],
+);
 
-const filteredLinks = computed(() =>
+const filteredLinks = computed<NonNullable<Header['searchLinks']>>(() =>
     searchLinks.value.filter((item) =>
         item.label.toLowerCase().includes(searchQuery.value.toLowerCase()),
     ),
 );
 
-const routeLists: Record<string, any[]> = {
+const routeLists: Record<string, readonly unknown[]> = {
     '/systems': systemsItems,
     '/case-studies': caseStudiesItems,
     '/': homeItems,
@@ -171,33 +176,33 @@ const routeLists: Record<string, any[]> = {
     '/uses': homeItems,
 };
 
-const isDrawerEmpty = computed(() => {
+const isDrawerEmpty = computed<boolean>(() => {
     const list = routeLists[route.path] || [];
     return list.length === 0;
 });
 
-const getDrawerStateKey = () => {
+const getDrawerStateKey = (): string => {
     if (route.path === '/systems') return 'systemsDrawerOpen';
     if (route.path === '/case-studies') return 'caseStudiesDrawerOpen';
     return 'drawerOpen';
 };
 
-const toggleDrawer = () => {
+const toggleDrawer = (): void => {
     isDrawerOpen.value = !isDrawerOpen.value;
     localStorage.setItem(getDrawerStateKey(), isDrawerOpen.value.toString());
 };
 
-const toggleTheme = () => {
+const toggleTheme = (): void => {
     isDark.value = !isDark.value;
     document.documentElement.classList.toggle('dark', isDark.value);
     localStorage.setItem('theme', isDark.value ? 'dark' : 'light');
 };
 
-const setLanguage = (lang: string) => {
+const setLanguage = (lang: string): void => {
     language.value = lang;
 };
 
-const handleKeydown = (e: KeyboardEvent) => {
+const handleKeydown = (e: KeyboardEvent): void => {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
         e.preventDefault();
         searchInputRef.value?.focus();

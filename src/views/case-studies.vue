@@ -3,29 +3,29 @@
         <section class="content-narrow">
             <div class="grid gap-8">
                 <article
-                    v-for="study in caseStudies"
-                    :key="study.id"
+                    v-for="caseStudy in caseStudies"
+                    :key="caseStudy.id"
                     class="pb-8 border-b border-border-subtle last:border-0"
                 >
                     <h2 class="text-xl font-semibold text-left mb-2 leading-snug">
                         <router-link
-                            :to="study.link"
+                            :to="caseStudy.link.href"
                             class="text-text-primary hover:text-accent-primary no-underline"
                         >
-                            {{ study.title }}
+                            {{ caseStudy.title }}
                         </router-link>
                     </h2>
 
                     <p class="text-text-secondary max-w-2xl mb-4">
-                        {{ study.subtitle }}
+                        {{ caseStudy.highlight }}
                     </p>
 
                     <p class="mb-4 max-w-prose">
-                        {{ study.description }}
+                        {{ caseStudy.description }}
                     </p>
 
-                    <router-link :to="study.link">
-                        Read case study →
+                    <router-link :id="caseStudy.link.id" :to="caseStudy.link.href">
+                        {{ caseStudy.link.label }}}
                     </router-link>
                 </article>
             </div>
@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
 import { useI18n } from '@/composables/use-i18n';
-import type { CaseStudies } from '@/data/types';
+import { CaseStudies } from '@/types/case-studies.ts';
 
 const { data: caseStudies } = useI18n<CaseStudies[]>('case-studies/case-studies');
 </script>

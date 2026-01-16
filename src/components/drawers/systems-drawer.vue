@@ -27,23 +27,11 @@
                             "
                             @click.prevent="scrollToSection(item.id)"
                         >
-                            {{ item.title }}
+                            {{ item.label }}
                         </a>
                         <p class="text-sm text-text-secondary mt-1 leading-relaxed">
-                            {{ item.oneLiner }}
+                            {{ item.description }}
                         </p>
-                        <div
-                            v-if="item.signal && item.signal.length"
-                            class="flex flex-wrap gap-1.5 mt-2"
-                        >
-                            <span
-                                v-for="tag in item.signal"
-                                :key="tag"
-                                class="text-[10px] px-1.5 py-0.5 rounded border border-border-subtle text-text-secondary uppercase tracking-wider bg-bg-muted/50"
-                            >
-                                {{ tag }}
-                            </span>
-                        </div>
                     </div>
                 </li>
             </ul>
@@ -53,15 +41,14 @@
 
 <script setup lang="ts">
 import { watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 import { activeSection, drawerTop, headerComponentRef, isDrawerOpen } from '@/store';
 import rawSystemsItems from '@/data/systems/systems-drawer.json';
-import { SystemsDrawer } from '@/data/types.ts';
 import { X } from 'lucide-vue-next';
+import { SystemsDrawerItem } from '@/types/drawer.ts';
 
-const systemsItems = rawSystemsItems as SystemsDrawer[];
-
-const route = useRoute();
+const systemsItems: SystemsDrawerItem[] = rawSystemsItems;
+const route: RouteLocationNormalizedLoaded = useRoute();
 
 watch(
     () => route.path,

@@ -1,54 +1,36 @@
 <template>
     <div class="text-justify hyphens-auto leading-relaxed">
-        <section
-            id="case-twin-v1-vat"
-            class="content-narrow py-8"
-        >
+        <section id="case-twin-v1-vat" class="content-narrow py-8">
             <div class="mb-8">
                 <router-link
-                    :to="caseStudy.backLink.to"
+                    :to="vatChangeCase.backLink.href"
                     class="text-sm text-text-secondary hover:text-text-primary"
                 >
-                    {{ caseStudy.backLink.text }}
+                    {{ vatChangeCase.backLink.label }}
                 </router-link>
             </div>
 
             <header class="mb-8">
                 <h1 class="text-xl text-left text-text-primary leading-tight mb-2">
-                    {{ caseStudy.header.title }}
+                    {{ vatChangeCase.title }}
                 </h1>
                 <p class="text-text-secondary max-w-2xl">
-                    {{ caseStudy.header.subtitle }}
+                    {{ vatChangeCase.highlight }}
                 </p>
             </header>
 
             <article class="space-y-8">
-                <section
-                    v-for="(section, index) in caseStudy.sections"
-                    :key="index"
-                >
-                    <p class="label-mono mb-1">
-                        {{ section.title }}
+                <section v-for="(section, index) in vatChangeCase.sections" :key="index">
+                    <p class="label-overline">
+                        {{ section.label }}
                     </p>
-                    <div
-                        v-if="section.paragraphs"
-                        class="space-y-4"
-                    >
-                        <p
-                            v-for="(paragraph, pIndex) in section.paragraphs"
-                            :key="pIndex"
-                        >
+                    <div v-if="section.paragraphs" class="space-y-4">
+                        <p v-for="(paragraph, pIndex) in section.paragraphs" :key="pIndex">
                             {{ paragraph }}
                         </p>
                     </div>
-                    <ul
-                        v-if="section.items"
-                        class="pl-5 list-disc space-y-2"
-                    >
-                        <li
-                            v-for="(item, iIndex) in section.items"
-                            :key="iIndex"
-                        >
+                    <ul v-if="section.items" class="pl-5 list-disc space-y-2">
+                        <li v-for="(item, iIndex) in section.items" :key="iIndex">
                             {{ item }}
                         </li>
                     </ul>
@@ -59,8 +41,8 @@
 </template>
 
 <script setup lang="ts">
-import caseStudyData from '@/data/case-studies/articles/twin-v1/vat-change-case.json';
-import type { VatChangeCase } from '@/data/types';
+import rawVatChangeCase from '@/data/case-studies/articles/twin-v1/vat-change-case.json';
+import { VatChangeCase } from '@/types/case-studies.ts';
 
-const caseStudy: VatChangeCase = caseStudyData;
+const vatChangeCase: VatChangeCase = rawVatChangeCase;
 </script>
