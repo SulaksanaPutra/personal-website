@@ -1,10 +1,11 @@
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { language } from '@/store';
 
 const dataFiles = import.meta.glob('../data/**/*.ts');
 
 export function useI18n<T>(basePath: string) {
     const data = ref<T | null>(null);
+    const value = computed(() => data.value);
 
     const loadData = async () => {
         const lang = language.value.toLowerCase();
@@ -44,5 +45,5 @@ export function useI18n<T>(basePath: string) {
 
     watch(language, loadData, { immediate: true });
 
-    return { data };
+    return { data: value };
 }
