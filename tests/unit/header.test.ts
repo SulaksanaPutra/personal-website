@@ -19,13 +19,13 @@ vi.mock('@/composables/use-i18n', () => {
         useI18n: () => ({
             data: ref({
                 searchLinks: [
-                    { label: 'Home', url: '/', description: 'Overview and introduction' },
-                    { label: 'Systems', url: '/systems', description: 'Architecture notes' },
+                    { id: 'home', label: 'Home', href: '/', description: 'Overview and introduction' },
+                    { id: 'systems', label: 'Systems', href: '/systems', description: 'Architecture notes' },
                 ],
-                navLinks: [
-                    { label: 'Home', to: '/', hiddenOnMd: false },
-                    { label: 'Systems', to: '/systems', hiddenOnMd: false },
-                    { label: 'Contact', to: '/contactPage', hiddenOnMd: false },
+                navigations: [
+                    { id: 'home', label: 'Home', href: '/', hiddenOnMd: false },
+                    { id: 'systems', label: 'Systems', href: '/systems', hiddenOnMd: false },
+                    { id: 'contact', label: 'Contact', href: '/contactPage', hiddenOnMd: false },
                 ],
             }),
         }),

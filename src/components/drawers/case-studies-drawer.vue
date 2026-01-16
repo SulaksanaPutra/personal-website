@@ -73,7 +73,7 @@ import { ChevronDown, X } from 'lucide-vue-next';
 import { CaseStudiesDrawerItem } from '@/types/drawer.ts';
 import { useI18n } from '@/composables/use-i18n.ts';
 
-const { data } = useI18n<CaseStudiesDrawerItem[]>('/case-studies/case-studies-drawer');
+const { data } = useI18n<CaseStudiesDrawerItem[]>('case-studies/case-studies-drawer');
 
 const caseStudiesDrawerItems = computed<CaseStudiesDrawerItem[]>(
     () => data.value ?? defaultCaseStudiesDrawerItems,

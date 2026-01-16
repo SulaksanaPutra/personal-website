@@ -49,7 +49,7 @@ import { SystemsDrawerItem } from '@/types/drawer.ts';
 import { useI18n } from '@/composables/use-i18n.ts';
 
 const { data }: { data: Ref<SystemsDrawerItem[] | null> } =
-    useI18n<SystemsDrawerItem[]>('/systems/systems-drawer');
+    useI18n<SystemsDrawerItem[]>('systems/systems-drawer');
 
 const systemsItems = computed<SystemsDrawerItem[]>(
     () => data.value ?? (defaultSystemsItems as SystemsDrawerItem[]),

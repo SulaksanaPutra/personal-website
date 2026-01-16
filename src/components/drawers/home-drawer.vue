@@ -59,7 +59,7 @@ import { useI18n } from '@/composables/use-i18n.ts';
 const route: RouteLocationNormalizedLoaded = useRoute();
 
 const { data }: { data: Ref<HomeDrawerItem[] | null> } =
-    useI18n<HomeDrawerItem[]>('/home/home-drawer');
+    useI18n<HomeDrawerItem[]>('home/home-drawer');
 
 const homeDrawerItems = computed<HomeDrawerItem[]>(
     () => data.value ?? (defaultHomeDrawerItems as HomeDrawerItem[]),

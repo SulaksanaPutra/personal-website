@@ -1,18 +1,31 @@
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
+import { language } from '@/store';
 
 const dataFiles = import.meta.glob('../data/**/*.ts');
-const buildLocale = (import.meta.env.VITE_LOCALE || 'en').toLowerCase();
+
+const getActiveLocale = (): 'en' | 'id' => {
+    const current = language.value.toLowerCase();
+
+    if (current.startsWith('id')) {
+        return 'id';
+    }
+
+    return 'en';
+};
 
 export function useI18n<T>(basePath: string) {
     const data = ref<T | null>(null);
     const value = computed(() => data.value);
+    const activeLocale = computed(getActiveLocale);
+    let lastRequestedLocale: 'en' | 'id' | null = null;
 
-    const loadData = async () => {
-        const lang = buildLocale;
+    const loadData = async (lang: 'en' | 'id') => {
+        lastRequestedLocale = lang;
         let loadedData: T | null = null;
 
         if (lang !== 'en') {
             const localizedKey = `../data/${basePath}.${lang}.ts`;
+
             if (localizedKey in dataFiles) {
                 try {
                     const module = (await dataFiles[localizedKey]()) as any;
@@ -25,13 +38,12 @@ export function useI18n<T>(basePath: string) {
                         error,
                     );
                 }
-            } else {
-                console.error(
-                    `Localized data file not found for locale ${lang} and path ${basePath}`,
-                );
             }
-        } else {
+        }
+
+        if (!loadedData) {
             const defaultKey = `../data/${basePath}.ts`;
+
             if (defaultKey in dataFiles) {
                 try {
                     const module = (await dataFiles[defaultKey]()) as any;
@@ -44,10 +56,20 @@ export function useI18n<T>(basePath: string) {
             }
         }
 
+        if (lastRequestedLocale !== lang) {
+            return;
+        }
+
         data.value = loadedData;
     };
 
-    loadData();
+    watch(
+        activeLocale,
+        (lang) => {
+            void loadData(lang);
+        },
+        { immediate: true },
+    );
 
     return { data: value };
 }
