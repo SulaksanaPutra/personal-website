@@ -34,12 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type Ref } from 'vue';
-import { About } from '@/modules/home/types/about.types.ts';
-import { useI18n } from '@/core/composables/use-i18n.ts';
-import defaultAbout from '@/modules/home/data/about.data.ts';
+import { useAboutData } from '@/modules/home/data/about.data.ts';
 
-const { data }: { data: Ref<About | null> } = useI18n<About>('home/home-page');
-
-const page = computed<About>(() => data.value ?? (defaultAbout as About));
+const page = useAboutData();
 </script>

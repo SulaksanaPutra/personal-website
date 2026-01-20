@@ -16,7 +16,7 @@
 
             <ul class="space-y-6">
                 <li
-                    v-for="system in caseStudiesDrawerItems"
+                    v-for="system in caseStudiesDrawer"
                     :key="system.id"
                     class="space-y-2"
                     :class="openSystems.includes(system.id) && 'pb-6'"
@@ -69,19 +69,13 @@ import { computed, ref, watch } from 'vue';
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 import { activeSection, drawerTop, headerComponentRef, isDrawerOpen } from '@/store';
 import { ChevronDown, X } from 'lucide-vue-next';
-import { useI18n } from '@/core/composables/use-i18n.ts';
-import { CaseStudiesDrawer } from '@/modules/case-studies/case-studies.types.ts';
-import defaultCaseStudiesDrawer from '@/modules/case-studies/data/case-studies-drawer.data.ts';
+import { useCaseStudiesDrawerData } from '@/modules/case-studies/data/case-studies-drawer.data.ts';
 
-const { data } = useI18n<CaseStudiesDrawer>('case-studies/case-studies-drawer');
-
-const caseStudiesDrawerItems = computed<CaseStudiesDrawer>(
-    () => data.value ?? defaultCaseStudiesDrawer,
-);
+const caseStudiesDrawer = useCaseStudiesDrawerData();
 
 const route: RouteLocationNormalizedLoaded = useRoute();
 
-const allSystemIds = computed<string[]>(() => caseStudiesDrawerItems.value.map((s) => s.id));
+const allSystemIds = computed<string[]>(() => caseStudiesDrawer.value.map((s) => s.id));
 
 const openSystems = ref<string[]>(allSystemIds.value);
 

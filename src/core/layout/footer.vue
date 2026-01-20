@@ -1,6 +1,6 @@
 <template>
     <footer class="pt-12 pb-16 border-t border-border-subtle text-sm text-text-secondary mt-18">
-        <div class="container">
+        <div class="container" v-if="page">
             <p class="mb-1">
                 {{ page.copyright }}
             </p>
@@ -13,11 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type Ref } from 'vue';
-import defaultFooter from '@/core/data/footer.data.ts';
-import { useI18n } from '@/core/composables/use-i18n.ts';
-import { Footer } from '@/core/types/footer.types.ts';
+import { useFooterData } from '@/core/data/footer.data.ts';
 
-const { data }: { data: Ref<Footer | null> } = useI18n<Footer>('common/footer');
-const page = computed<Footer>(() => data.value ?? (defaultFooter as Footer));
+const page = useFooterData();
 </script>

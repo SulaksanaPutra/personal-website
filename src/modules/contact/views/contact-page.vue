@@ -16,12 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import defaultContact from '@/modules/contact/data/contact.data.ts';
-import { computed, type Ref } from 'vue';
-import { useI18n } from '@/core/composables/use-i18n.ts';
-import { Contact } from '@/modules/contact/contact.types.ts';
+import { useContactData } from '@/modules/contact/data/contact.data.ts';
 
-const { data }: { data: Ref<Contact | null> } = useI18n<Contact>('contact/contact-page');
-
-const page = computed<Contact>(() => data.value ?? (defaultContact as Contact));
+const page = useContactData();
 </script>

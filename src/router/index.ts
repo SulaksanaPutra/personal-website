@@ -1,11 +1,9 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import SystemsPage from '@/modules/systems/views/systems-page.vue';
 import CaseStudiesPage from '@/modules/case-studies/views/case-studies-page.vue';
-import CaseStudyArticlePage from '@/modules/case-studies/views/case-study-article-page.vue';
 import SkillsPage from '@/modules/skills/views/skills-page.vue';
 import ContactPage from '@/modules/contact/views/contact-page.vue';
 import HomePage from '@/modules/home/views/home-page.vue';
-import defaultVatChangeCase from '@/modules/case-studies/data/articles/vat-change-case.ts';
 
 const routes: RouteRecordRaw[] = [
     {
@@ -23,15 +21,14 @@ const routes: RouteRecordRaw[] = [
         name: 'case-studies',
         component: CaseStudiesPage,
     },
-    {
-        path: '/case-studies/twin-v1/handling-a-vat-increase-in-a-legacy-real-time-system',
-        name: 'TwinV1Vat',
-        component: CaseStudyArticlePage,
-        props: {
-            defaultContent: defaultVatChangeCase,
-            i18nKey: 'case-studies/articles/twin-v1/vat-change-case',
-        },
-    },
+    // {
+    //     path: '/case-studies/twin-v1/handling-a-vat-increase-in-a-legacy-real-time-system',
+    //     name: 'TwinV1Vat',
+    //     component: CaseStudyArticlePage,
+    //     props: {
+    //         defaultContent: defaultVatChangeCase,
+    //     },
+    // },
     {
         path: '/skillsPage',
         name: 'skills',

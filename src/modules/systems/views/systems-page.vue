@@ -45,15 +45,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onMounted, onUnmounted, type Ref, watch } from 'vue';
-import { useI18n } from '@/core/composables/use-i18n.ts';
-import { Systems } from '@/modules/systems/systems.types.ts';
+import { nextTick, onMounted, onUnmounted, watch } from 'vue';
 import { activeSection, isDrawerEmpty } from '@/store';
-import defaultSystems from '@/modules/systems/data/systems.data.ts';
+import { useSystemsData } from '@/modules/systems/data/systems.data.ts';
 
-const { data }: { data: Ref<Systems | null> } = useI18n<Systems>('systems/systems-page');
-
-const systems = computed<Systems>(() => data.value ?? (defaultSystems as Systems));
+const systems = useSystemsData();
 
 let sectionObserver: IntersectionObserver | null = null;
 

@@ -16,7 +16,7 @@
             </button>
 
             <ul>
-                <template v-for="(item, _index) in homeDrawerItems" :key="_index">
+                <template v-for="(item, _index) in homeDrawer" :key="_index">
                     <router-link v-slot="{ href, navigate }" :to="item.href || '/'" custom>
                         <li v-show="!item.isActive" class="flex gap-3 mb-6">
                             <div class="w-full">
@@ -48,23 +48,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, type Ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 import { drawerTop, isDrawerOpen } from '@/store';
 import { X } from 'lucide-vue-next';
-import { HomeDrawer, HomeDrawerItem } from '@/modules/home/types/home.types.ts';
-import { useI18n } from '@/core/composables/use-i18n.ts';
-import defaultHomeDrawer from '@/modules/home/data/home-drawer.data.ts';
+import { HomeDrawerItem } from '@/modules/home/types/home.types.ts';
+import { useHomeDrawerData } from '@/modules/home/data/home-drawer.data.ts';
 
 const route: RouteLocationNormalizedLoaded = useRoute();
 
-const { data }: { data: Ref<HomeDrawer | null> } = useI18n<HomeDrawer>('home/home-drawer');
-
-const homeDrawerItems = computed<HomeDrawer>(() => data.value ?? (defaultHomeDrawer as HomeDrawer));
+const homeDrawer = useHomeDrawerData();
 
 onMounted(() => {
     const path = route.path;
-    homeDrawerItems.value.forEach((item) => {
+    homeDrawer.value.forEach((item) => {
         item.isActive = item.href === path;
     });
 });
@@ -105,13 +102,13 @@ const pendingActiveItem = ref<HomeDrawerItem | null>(null);
 
 const onItemClicked = (item: HomeDrawerItem, _event: MouseEvent) => {
     pendingActiveItem.value = item;
-    const activeIndex = homeDrawerItems.value.findIndex((i: HomeDrawerItem) => i.isActive);
-    const clickedIndex = homeDrawerItems.value.findIndex((i: HomeDrawerItem) => i === item);
+    const activeIndex = homeDrawer.value.findIndex((i: HomeDrawerItem) => i.isActive);
+    const clickedIndex = homeDrawer.value.findIndex((i: HomeDrawerItem) => i === item);
     if (activeIndex !== -1 && activeIndex !== clickedIndex) {
-        const [activeItem] = homeDrawerItems.value.splice(activeIndex, 1);
+        const [activeItem] = homeDrawer.value.splice(activeIndex, 1);
         activeItem.isActive = false;
         const insertIndex = activeIndex < clickedIndex ? clickedIndex : clickedIndex + 1;
-        homeDrawerItems.value.splice(insertIndex, 0, activeItem);
+        homeDrawer.value.splice(insertIndex, 0, activeItem);
     }
 };
 

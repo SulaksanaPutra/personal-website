@@ -12,12 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import defaultWriting from '@/modules/home/data/writing.data';
-import { computed, type Ref } from 'vue';
-import { Writing } from '@/modules/home/types/writing.types.ts';
-import { useI18n } from '@/core/composables/use-i18n.ts';
+import { useWritingData } from '@/modules/home/data/writing.data';
 
-const { data }: { data: Ref<Writing | null> } = useI18n<Writing>('home/sections/writing-page');
-
-const page = computed<Writing>(() => data.value ?? (defaultWriting as Writing));
+const page = useWritingData();
 </script>

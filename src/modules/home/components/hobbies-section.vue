@@ -12,12 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import defaultHobbies from '@/modules/home/data/hobbies.data.ts';
-import { computed, type Ref } from 'vue';
-import { Hobbies } from '@/modules/home/types/hobbies.types.ts';
-import { useI18n } from '@/core/composables/use-i18n.ts';
+import { useHobbiesData } from '@/modules/home/data/hobbies.data.ts';
 
-const { data }: { data: Ref<Hobbies | null> } = useI18n<Hobbies>('home/sections/hobbies-page');
-
-const page = computed<Hobbies>(() => data.value ?? (defaultHobbies as Hobbies));
+const page = useHobbiesData();
 </script>

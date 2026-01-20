@@ -64,18 +64,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type Ref } from 'vue';
-import { useI18n } from '@/core/composables/use-i18n.ts';
 import { CaseStudyArticle } from '@/modules/case-studies/case-studies.types.ts';
 
 const props = defineProps<{
     defaultContent: CaseStudyArticle;
-    i18nKey: string;
 }>();
-
-const { data }: { data: Ref<CaseStudyArticle | null> } = useI18n<CaseStudyArticle>(props.i18nKey);
-
-const article = computed<CaseStudyArticle>(() => data.value ?? props.defaultContent);
 
 const scrollToSection = (id: string) => {
     const element = document.getElementById(id);

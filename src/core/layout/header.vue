@@ -137,7 +137,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, type Ref, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { Menu, Moon, Search, Sun } from 'lucide-vue-next';
 import {
@@ -149,12 +149,10 @@ import {
     scrollProgress,
 } from '@/store';
 
-import defaultHeader from '@/core/data/header.data.ts';
-import { useI18n } from '@/core/composables/use-i18n.ts';
+import { useHeaderData } from '@/core/data/header.data.ts';
 import { Header } from '@/core/types/header.types.ts';
 
-const { data }: { data: Ref<Header | null> } = useI18n<Header>('common/header');
-const page = computed<Header>(() => data.value ?? (defaultHeader as Header));
+const page = useHeaderData();
 
 const route = useRoute();
 const headerRef = ref<HTMLElement | null>(null);

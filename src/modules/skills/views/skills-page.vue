@@ -8,12 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type Ref } from 'vue';
-import { useI18n } from '@/core/composables/use-i18n.ts';
-import { Skills } from '@/modules/skills/skills.types.ts';
-import defaultSkills from '@/modules/skills/data/skills.data.ts';
+import { useSkillsData } from '@/modules/skills/data/skills.data.ts';
 
-const { data }: { data: Ref<Skills | null> } = useI18n<Skills>('skills/skills-page');
-
-const page = computed<Skills>(() => data.value ?? (defaultSkills as Skills));
+const page = useSkillsData();
 </script>

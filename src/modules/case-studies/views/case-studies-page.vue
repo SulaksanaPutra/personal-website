@@ -34,18 +34,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, type Ref } from 'vue';
-import { useI18n } from '@/core/composables/use-i18n.ts';
-import { CaseStudies } from '@/modules/case-studies/case-studies.types.ts';
-import defaultCaseStudies from '@/modules/case-studies/data/case-studies.data.ts';
+import { onMounted, onUnmounted } from 'vue';
+import { useCaseStudiesData } from '@/modules/case-studies/data/case-studies.data.ts';
 import { isDrawerEmpty } from '@/store';
 
-const { data }: { data: Ref<CaseStudies | null> } = useI18n<CaseStudies>(
-    'case-studies/case-studies-page',
-);
-
-const caseStudies = computed<CaseStudies>(() => data.value ?? (defaultCaseStudies as CaseStudies));
-
+const caseStudies = useCaseStudiesData();
 onMounted(() => {
     isDrawerEmpty.value = false;
 });

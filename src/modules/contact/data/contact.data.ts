@@ -1,12 +1,30 @@
+import { computed } from 'vue';
+import { useI18n } from '@/core/composables/use-i18n.ts';
 import { Contact } from '@/modules/contact/contact.types.ts';
 
-const contact: Contact = {
-    title: 'Contact',
-    descriptions: [
-        "I'm always open to discussing new opportunities, collaborations, or just chatting about technology.",
-        'You can reach me at <a href="mailto:info@bayuaksana.com" class="text-accent-primary hover:underline">info@bayuaksana.com</a>.',
-    ],
-    email: 'info@bayuaksana.com',
+const CONTACT_BY_LOCALE: Record<'en' | 'id', Contact> = {
+    en: {
+        title: 'Contact',
+        descriptions: [
+            "I'm always open to discussing new opportunities, collaborations, or just chatting about technology.",
+            'You can reach me at <a href="mailto:info@bayuaksana.com" class="text-accent-primary hover:underline">info@bayuaksana.com</a>.',
+        ],
+        email: 'info@bayuaksana.com',
+    },
+    id: {
+        title: 'Kontak',
+        descriptions: [
+            'Saya selalu terbuka untuk berdiskusi mengenai peluang baru, kolaborasi, atau sekadar berbincang tentang teknologi.',
+            'Anda dapat menghubungi saya melalui <a href="mailto:info@bayuaksana.com" class="text-accent-primary hover:underline">info@bayuaksana.com</a>.',
+        ],
+        email: 'info@bayuaksana.com',
+    },
 };
 
-export default contact;
+export function useContactData() {
+    const { locale } = useI18n();
+
+    return computed<Contact>(() => CONTACT_BY_LOCALE[locale.value] ?? CONTACT_BY_LOCALE.en);
+}
+
+export default CONTACT_BY_LOCALE.en;

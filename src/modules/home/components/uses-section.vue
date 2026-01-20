@@ -17,12 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import defaultUses from '@/modules/home/data/uses.data.ts';
-import { computed, type Ref } from 'vue';
-import { Uses } from '@/modules/home/types/uses.types.ts';
-import { useI18n } from '@/core/composables/use-i18n.ts';
+import { useUsesData } from '@/modules/home/data/uses.data.ts';
 
-const { data }: { data: Ref<Uses | null> } = useI18n<Uses>('home/sections/uses-page');
-
-const page = computed<Uses>(() => data.value ?? (defaultUses as Uses));
+const page = useUsesData();
 </script>

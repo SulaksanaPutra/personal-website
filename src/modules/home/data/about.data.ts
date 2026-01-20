@@ -1,48 +1,102 @@
+import { computed } from 'vue';
+import { useI18n } from '@/core/composables/use-i18n.ts';
 import { About } from '@/modules/home/types/about.types.ts';
 
-const about: About = {
-    intro: [
-        'Hi, I’m Bayu. I work on systemsPage behind everyday operations—orders, finance, payments, warehouse and fleet operations, internal platforms, and multi-tenant business tools.',
-        'Over six years, I’ve built and maintained production systemsPage under real daily usage. For the last four years, I’ve worked remotely, owning features from design through production, running systemsPage under real traffic, and serving as technical lead on specific projectsPage.',
-        'I design systemsPage that adapt as requirements evolve, where traffic grows unevenly and failures are subtle but costly, requiring deliberate trade-offs between speed, cost, and correctness.',
-    ],
-    principles: {
-        title: 'How I think about engineering',
-        items: [
+const ABOUT_BY_LOCALE: Record<'en' | 'id', About> = {
+    en: {
+        intro: [
+            'Hi, I’m Bayu. I work on systems behind everyday operations—orders, finance, payments, warehouse and fleet operations, internal platforms, and multi-tenant business tools.',
+            'Over six years, I’ve built and maintained production systems under real daily usage. For the last four years, I’ve worked remotely, owning features from design through production, running systems under real traffic, and serving as technical lead on specific projects.',
+            'I design systems that adapt as requirements evolve, where traffic grows unevenly and failures are subtle but costly, requiring deliberate trade-offs between speed, cost, and correctness.',
+        ],
+        principles: {
+            title: 'How I think about engineering',
+            items: [
+                {
+                    label: 'Reliability',
+                    description:
+                        'Reliable systems are built on strong patterns and clear principles. When the team follows them, failures are predictable, diagnosable, and easier to resolve.',
+                },
+                {
+                    label: 'Vision & Cost Awareness',
+                    description:
+                        'Every project has trade-offs. Early decisions about the app’s purpose, vision, and cost shape maintainability, scalability, and long-term success.',
+                },
+                {
+                    label: 'Simplicity',
+                    description:
+                        'Complexity incurs a cost. My system designs prioritize simplicity, ease of use, and the ability to scale to accommodate future needs and the overall vision.',
+                },
+                {
+                    label: 'Clean boundaries',
+                    description:
+                        'A clear assignment of responsibilities makes it easy to identify and fix problems quickly and ensures accountability across teams and tasks.',
+                },
+            ],
+        },
+        links: [
             {
-                label: 'Reliability',
-                description:
-                    'Reliable systemsPage are built on strong patterns and clear principles. When the team follows them, failures are predictable, diagnosable, and easier to resolve.',
+                id: 'systemsPage',
+                href: '/systems',
+                label: '→ Systems I’ve worked on',
             },
             {
-                label: 'Vision & Cost Awareness',
-                description:
-                    'Every project has trade-offs. Early decisions about the app’s purpose, vision, and cost shape maintainability, scalability, and long-term success.',
-            },
-            {
-                label: 'Simplicity',
-                description:
-                    'Complexity incurs a cost. My system designs prioritize simplicity, ease of use, and the ability to scale to accommodate future needs and the overall vision.',
-            },
-            {
-                label: 'Clean boundaries',
-                description:
-                    'A clear assignment of responsibilities makes it easy to identify and fix problems quickly and ensures accountability across teams and tasks.',
+                id: 'case-studies',
+                href: '/case-studies',
+                label: '→ Selected case studies',
             },
         ],
     },
-    links: [
-        {
-            id: 'systemsPage',
-            href: '/systems',
-            label: '→ Systems I’ve worked on',
+    id: {
+        intro: [
+            'Hai, saya Bayu. Saya mengerjakan sistem di balik operasional sehari-hari—pemesanan, keuangan, pembayaran, gudang dan armada, platform internal, serta alat bisnis multi-tenant.',
+            'Selama lebih dari enam tahun, saya membangun dan memelihara sistem produksi yang digunakan setiap hari. Dalam empat tahun terakhir, saya bekerja secara remote, memiliki fitur dari desain hingga produksi, menjalankan sistem dengan trafik nyata, serta berperan sebagai technical lead pada proyek tertentu.',
+            'Saya merancang sistem yang dapat beradaptasi seiring berkembangnya kebutuhan, ketika pertumbuhan trafik tidak merata dan kegagalan bersifat halus namun berdampak besar, sehingga memerlukan trade-off yang matang antara kecepatan, biaya, dan ketepatan.',
+        ],
+        principles: {
+            title: 'Cara saya memandang engineering',
+            items: [
+                {
+                    label: 'Keandalan',
+                    description:
+                        'Sistem yang andal dibangun di atas pola yang kuat dan prinsip yang jelas. Ketika tim mengikutinya, kegagalan menjadi lebih mudah diprediksi, didiagnosis, dan diselesaikan.',
+                },
+                {
+                    label: 'Visi & Kesadaran Biaya',
+                    description:
+                        'Setiap proyek memiliki trade-off. Keputusan awal tentang tujuan, visi, dan biaya aplikasi sangat memengaruhi maintainability, skalabilitas, dan keberhasilan jangka panjang.',
+                },
+                {
+                    label: 'Kesederhanaan',
+                    description:
+                        'Kompleksitas memiliki biaya. Desain sistem saya mengutamakan kesederhanaan, kemudahan penggunaan, serta kemampuan untuk berkembang mengikuti kebutuhan dan visi ke depan.',
+                },
+                {
+                    label: 'Batasan yang jelas',
+                    description:
+                        'Pembagian tanggung jawab yang jelas memudahkan identifikasi dan perbaikan masalah, serta memastikan akuntabilitas di seluruh tim dan tugas.',
+                },
+            ],
         },
-        {
-            id: 'case-studies',
-            href: '/case-studies',
-            label: '→ Selected case studies',
-        },
-    ],
+        links: [
+            {
+                id: 'systemsPage',
+                href: '/systems',
+                label: '→ Sistem yang pernah saya kerjakan',
+            },
+            {
+                id: 'case-studies',
+                href: '/case-studies',
+                label: '→ Studi kasus pilihan',
+            },
+        ],
+    },
 };
 
-export default about;
+export function useAboutData() {
+    const { locale } = useI18n();
+
+    return computed<About>(() => ABOUT_BY_LOCALE[locale.value] ?? ABOUT_BY_LOCALE.en);
+}
+
+export default ABOUT_BY_LOCALE.en;
