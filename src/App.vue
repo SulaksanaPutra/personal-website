@@ -28,14 +28,12 @@ import SystemsDrawer from '@/components/drawers/systems-drawer.vue';
 import CaseStudiesDrawer from '@/components/drawers/case-studies-drawer.vue';
 import VatChangeCaseDrawer from '@/components/drawers/case-studies/vat-change-case-drawer.vue';
 import {
-    activeSection,
     drawerTop,
     headerComponentRef,
     isDark,
     isDrawerOpen,
     scrollProgress,
 } from '@/store';
-import systemsData from '@/data/systems/systems-page.ts';
 
 const route = useRoute();
 
@@ -89,31 +87,6 @@ const updateScrollProgress = () => {
     }
 };
 
-let sectionObserver: IntersectionObserver | null = null;
-
-const observeSections = () => {
-    const observer = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                    activeSection.value = entry.target.id;
-                }
-            });
-        },
-        {
-            rootMargin: '-20% 0px -50% 0px',
-        },
-    );
-
-    const ids = systemsData.map((s) => s.id);
-    ids.forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) observer.observe(el);
-    });
-
-    sectionObserver = observer;
-};
-
 const updateDrawerTop = () => {
     if (headerComponentRef.value?.headerRef) {
         drawerTop.value = `${headerComponentRef.value.headerRef.offsetHeight}px`;
@@ -150,23 +123,13 @@ onMounted(() => {
 
 onUnmounted(() => {
     window.removeEventListener('scroll', updateScrollProgress);
-    if (sectionObserver) sectionObserver.disconnect();
     window.removeEventListener('resize', updateDrawerTop);
 });
 
 watch(
     () => route.path,
-    (newPath) => {
+    () => {
         syncDrawerState();
-        if (newPath === '/systems') {
-            setTimeout(() => {
-                if (sectionObserver) sectionObserver.disconnect();
-                observeSections();
-            }, 500);
-        } else {
-            if (sectionObserver) sectionObserver.disconnect();
-            activeSection.value = '';
-        }
     },
     { immediate: true },
 );
