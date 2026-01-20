@@ -66,6 +66,7 @@
 <script setup lang="ts">
 import { CaseStudyArticle } from '@/modules/case-studies/case-studies.types.ts';
 import { computed, ComputedRef } from 'vue';
+import { drawerTop } from '@/store.ts';
 
 const props = defineProps<{
     defaultContent?: CaseStudyArticle;
@@ -83,8 +84,16 @@ const article = computed(() => {
 
 const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
+    console.log(drawerTop.value);
     if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        const offset = parseInt(drawerTop.value.replace('px', '')) + 12;
+        const elementPosition = element.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = elementPosition - offset;
+
+        window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth',
+        });
     }
 };
 </script>
