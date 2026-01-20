@@ -1,8 +1,21 @@
 import { ref } from 'vue';
 
-// --- State ---
+const getInitialLanguage = (): string => {
+    if (typeof window === 'undefined') {
+        return 'EN';
+    }
+
+    const stored = window.localStorage.getItem('language');
+
+    if (stored === 'EN' || stored === 'ID') {
+        return stored;
+    }
+
+    return 'EN';
+};
+
 export const isDark = ref(false);
-export const language = ref('EN');
+export const language = ref(getInitialLanguage());
 export const isDrawerOpen = ref(false);
 export const scrollProgress = ref(0);
 export const activeSection = ref('');

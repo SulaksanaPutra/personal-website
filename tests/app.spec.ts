@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 test.beforeEach(async ({ page }) => {
     await page.addInitScript(() => {
@@ -7,16 +7,16 @@ test.beforeEach(async ({ page }) => {
     });
 });
 
-test('homepage has title and homePage section', async ({ page }) => {
+test('home page has title and home section', async ({ page }) => {
     await page.goto('/');
 
     await expect(page).toHaveTitle(/Bayu Aksana/);
 
-    // Check for homePage section which is the default on homepage
-    await expect(page.locator('div#section-homePage')).toBeVisible();
+    // Check for a home section which is the default on the home page
+    await expect(page.locator('div#section-home')).toBeVisible();
 });
 
-test('should navigate to the systemsPage page', async ({ page }) => {
+test('should navigate to the systems page', async ({ page }) => {
     await page.goto('/');
 
     // Click the Systems link in the navigation

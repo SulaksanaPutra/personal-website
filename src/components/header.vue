@@ -147,6 +147,7 @@ import caseStudiesItems from '@/data/case-studies/case-studies-drawer';
 import homeItems from '@/data/home/home-drawer';
 import { Header } from '@/types/header.ts';
 import defaultHeader from '@/data/common/header.ts';
+import vatChangeCaseDrawer from '@/data/case-studies/articles/twin-v1/vat-change-case-drawer.ts';
 
 const { data }: { data: Ref<Header | null> } = useI18n<Header>('common/header');
 const page = computed<Header>(() => data.value ?? (defaultHeader as Header));
@@ -170,6 +171,8 @@ const filteredLinks = computed<NonNullable<Header['searchLinks']>>(() =>
 const routeLists: Record<string, readonly unknown[]> = {
     '/systems': systemsItems,
     '/case-studies': caseStudiesItems,
+    '/case-studies/twin-v1/handling-a-vat-increase-in-a-legacy-real-time-system':
+        vatChangeCaseDrawer,
     '/': homeItems,
     '/writing': homeItems,
     '/projects': homeItems,
@@ -200,6 +203,9 @@ const toggleTheme = (): void => {
 
 const setLanguage = (lang: string): void => {
     language.value = lang;
+    if (typeof window !== 'undefined') {
+        window.localStorage.setItem('language', lang);
+    }
 };
 
 const handleKeydown = (e: KeyboardEvent): void => {

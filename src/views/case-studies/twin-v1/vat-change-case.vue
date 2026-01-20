@@ -20,7 +20,11 @@
             </header>
 
             <article class="space-y-8">
-                <section v-for="(section, index) in vatChangeCase.sections" :key="index">
+                <section
+                    v-for="section in vatChangeCase.sections"
+                    :id="section.id"
+                    :key="section.id"
+                >
                     <p class="label-overline">
                         {{ section.label }}
                     </p>

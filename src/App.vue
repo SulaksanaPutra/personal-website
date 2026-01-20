@@ -26,6 +26,7 @@ import Footer from '@/components/footer.vue';
 import HomeDrawer from '@/components/drawers/home-drawer.vue';
 import SystemsDrawer from '@/components/drawers/systems-drawer.vue';
 import CaseStudiesDrawer from '@/components/drawers/case-studies-drawer.vue';
+import VatChangeCaseDrawer from '@/components/drawers/case-studies/vat-change-case-drawer.vue';
 import {
     activeSection,
     drawerTop,
@@ -46,6 +47,8 @@ const drawerMap: Record<string, Component> = {
     '/hobbies': HomeDrawer,
     '/systems': SystemsDrawer,
     '/case-studies': CaseStudiesDrawer,
+    '/case-studies/twin-v1/handling-a-vat-increase-in-a-legacy-real-time-system':
+        VatChangeCaseDrawer,
 };
 
 const currentDrawer = computed(() => drawerMap[route.path] || null);
@@ -53,8 +56,10 @@ const currentDrawer = computed(() => drawerMap[route.path] || null);
 const getDrawerStateKey = () => {
     if (route.path === '/systems') return 'systemsDrawerOpen';
     if (route.path === '/case-studies') return 'caseStudiesDrawerOpen';
-    if (route.path === '/skillsPage') return 'skillsDrawerOpen';
-    if (route.path === '/contactPage') return 'contactDrawerOpen';
+    if (route.path === '/skills') return 'skillsDrawerOpen';
+    if (route.path === '/contact') return 'contactDrawerOpen';
+    if (route.path === '/case-studies/twin-v1/handling-a-vat-increase-in-a-legacy-real-time-system')
+        return 'articleCaseStudyDrawerOpen';
     return 'drawerOpen';
 };
 
@@ -63,7 +68,7 @@ const syncDrawerState = () => {
     const stored = localStorage.getItem(key);
 
     if (
-        ['/systems', '/case-studies', '/skillsPage', '/contactPage'].includes(route.path) &&
+        ['/systems', '/case-studies', '/skills', '/contact'].includes(route.path) &&
         stored === null
     ) {
         isDrawerOpen.value = true;

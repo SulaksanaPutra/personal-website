@@ -14,6 +14,7 @@ export interface VatChangeCase {
     highlight: string;
     description?: string;
     sections: {
+        id: string;
         label: string;
         paragraphs?: string[];
         items?: string[];

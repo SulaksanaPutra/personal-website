@@ -7,7 +7,7 @@ const homePage: About = {
         'I design systemsPage that adapt as requirements evolve, where traffic grows unevenly and failures are subtle but costly, requiring deliberate trade-offs between speed, cost, and correctness.',
     ],
     principles: {
-        title: 'How I think homePage engineering',
+        title: 'How I think about engineering',
         items: [
             {
                 label: 'Reliability',
@@ -17,7 +17,7 @@ const homePage: About = {
             {
                 label: 'Vision & Cost Awareness',
                 description:
-                    'Every project has trade-offs. Early decisions homePage the app’s purpose, vision, and cost shape maintainability, scalability, and long-term success.',
+                    'Every project has trade-offs. Early decisions about the app’s purpose, vision, and cost shape maintainability, scalability, and long-term success.',
             },
             {
                 label: 'Simplicity',

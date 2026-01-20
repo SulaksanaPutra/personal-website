@@ -2,31 +2,31 @@ import { HomeDrawerItem } from '@/types/drawer';
 
 const homeDrawer: HomeDrawerItem[] = [
     {
-        id: 'homePage',
+        id: 'home',
         href: '/',
         label: 'About',
         description: 'Background, values, and professional summary',
     },
     {
-        id: 'writingPage',
+        id: 'writing',
         href: '/writing',
         label: 'Writing',
         description: 'Essays, notes, and long-form thoughts',
     },
     {
-        id: 'projectsPage',
+        id: 'projects',
         href: '/projects',
         label: 'Projects',
         description: 'Short ideas, experiments, and drafts',
     },
     {
-        id: 'usesPage',
+        id: 'uses',
         href: '/uses',
         label: 'Uses',
         description: 'Tools, hardware, and software I use daily',
     },
     {
-        id: 'hobbiesPage',
+        id: 'hobbies',
         href: '/hobbies',
         label: 'Hobbies',
         description: 'Things I enjoy doing',

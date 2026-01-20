@@ -10,6 +10,7 @@ const vatChangeCase: VatChangeCase = {
     highlight: 'Twin v1 — Regulatory change under production and architectural constraints',
     sections: [
         {
+            id: 'context',
             label: 'Context',
             paragraphs: [
                 'Twin v1 is a business-critical distributor system used daily for sales, invoicing, and financial reporting across multiple branches. In 2022, the Indonesian government officially increased VAT (PPN) from 10% to 11%, directly impacting invoice totals, financial reports, and legal compliance.',
@@ -17,6 +18,7 @@ const vatChangeCase: VatChangeCase = {
             ],
         },
         {
+            id: 'the-problem',
             label: 'The Problem',
             paragraphs: [
                 'The system calculated VAT dynamically every time data was fetched. There were no persisted calculated values for totals, VAT, or grand totals. Instead, all values were recalculated in real time from master data.',
@@ -24,6 +26,7 @@ const vatChangeCase: VatChangeCase = {
             ],
         },
         {
+            id: 'constraints',
             label: 'Constraints',
             items: [
                 'Transactions could not be paused or stopped during the change.',
@@ -35,6 +38,7 @@ const vatChangeCase: VatChangeCase = {
             ],
         },
         {
+            id: 'decision-and-approach',
             label: 'Decision and Approach',
             paragraphs: [
                 'I implemented a versioned, configuration-based tax strategy. For new transactions, VAT was driven by configuration rather than hardcoded values. I introduced a new column in the existing transaction table to store the VAT percentage applied to each transaction.',
@@ -42,6 +46,7 @@ const vatChangeCase: VatChangeCase = {
             ],
         },
         {
+            id: 'risk-management-and-verification',
             label: 'Risk Management and Verification',
             paragraphs: [
                 'To reduce operational and legal risk, I added end-to-end tests for critical operational APIs and performed extensive manual validation. I collaborated closely with the finance team to verify calculations and edge cases.',
@@ -49,12 +54,14 @@ const vatChangeCase: VatChangeCase = {
             ],
         },
         {
+            id: 'outcome',
             label: 'Outcome',
             paragraphs: [
                 'The system handled the VAT increase without disrupting daily operations. Invoice totals and reports remained accurate, historical data was preserved, and a major legal and financial risk was removed without stopping the business.',
             ],
         },
         {
+            id: 'reflection',
             label: 'Reflection',
             paragraphs: [
                 'This change did not improve Twin v1’s overall architecture. Due to the lack of centralized logic, the solution required defensive additions across multiple APIs. In practice, this was a controlled patch rather than a structural refactor.',
