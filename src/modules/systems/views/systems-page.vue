@@ -45,10 +45,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onUnmounted, type Ref, watch } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, type Ref, watch } from 'vue';
 import { useI18n } from '@/core/composables/use-i18n.ts';
 import { Systems } from '@/modules/systems/systems.types.ts';
-import { activeSection } from '@/store';
+import { activeSection, isDrawerEmpty } from '@/store';
 import defaultSystems from '@/modules/systems/data/systems.data.ts';
 
 const { data }: { data: Ref<Systems | null> } = useI18n<Systems>('systems/systems-page');
@@ -92,8 +92,13 @@ watch(
     { immediate: true },
 );
 
+onMounted(() => {
+    isDrawerEmpty.value = false;
+});
+
 onUnmounted(() => {
     if (sectionObserver) sectionObserver.disconnect();
     activeSection.value = '';
+    isDrawerEmpty.value = true;
 });
 </script>

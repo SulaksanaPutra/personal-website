@@ -1,45 +1,190 @@
 <template>
-    <div
-        v-if="page"
-        class="text-justify hyphens-auto leading-relaxed snap-y snap-mandatory overflow-y-auto"
-    >
-        <section id="context" class="content-narrow pt-8 pb-4">
-            <p v-for="(paragraph, index) in page.intro" :key="index">
-                {{ paragraph }}
-            </p>
-        </section>
-
-        <section id="principles" class="content-narrow py-8 snap-start">
-            <p class="label-overline mb-4">
-                {{ page.principles.title }}
-            </p>
-            <ul class="list-none p-0 m-0">
-                <li
-                    v-for="(item, index) in page.principles.items"
-                    :key="index"
-                    class="mb-8 pb-8 border-b border-border-subtle last:border-0 last:mb-0 last:pb-0"
-                >
-                    <strong>{{ item.label }} </strong>
-                    <br />
-                    {{ item.description }}
-                </li>
-            </ul>
-        </section>
-        <section id="orientation" class="content-narrow mt-9 pt-9 border-t border-border-subtle">
-            <p v-for="(link, index) in page.links" :key="index">
-                <router-link :to="link.href"> {{ link.label }} </router-link>
-            </p>
-        </section>
+    <div class="section-container relative">
+        <div
+            v-for="section in mountedSections"
+            :id="`section-${section.name}`"
+            :key="section.name"
+            class="section-wrapper"
+        >
+            <component :is="section.component" />
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed, type Ref } from 'vue';
-import { About } from '@/modules/home/types/about.types.ts';
-import { useI18n } from '@/core/composables/use-i18n.ts';
-import defaultAbout from '@/modules/home/data/about.data.ts';
+import {
+    type Component,
+    defineAsyncComponent,
+    markRaw,
+    nextTick,
+    onMounted,
+    ref,
+    watch,
+} from 'vue';
+import { useRoute } from 'vue-router';
+import { isDrawerEmpty } from '@/store';
 
-const { data }: { data: Ref<About | null> } = useI18n<About>('home/home-page');
+const components: Record<string, Component> = {
+    about: markRaw(
+        defineAsyncComponent(() => import('@/modules/home/components/about-section.vue')),
+    ),
+    writing: markRaw(
+        defineAsyncComponent(() => import('@/modules/home/components/writing-section.vue')),
+    ),
+    projects: markRaw(
+        defineAsyncComponent(() => import('@/modules/home/components/projects-section.vue')),
+    ),
+    uses: markRaw(defineAsyncComponent(() => import('@/modules/home/components/uses-section.vue'))),
+    hobbies: markRaw(
+        defineAsyncComponent(() => import('@/modules/home/components/hobbies-section.vue')),
+    ),
+};
 
-const page = computed<About>(() => data.value ?? (defaultAbout as About));
+const route = useRoute();
+
+const sectionOrder: string[] = ['about', 'writing', 'projects', 'uses', 'hobbies'];
+
+interface MountedSection {
+    name: string;
+    component: Component;
+}
+
+const mountedSections = ref<MountedSection[]>([]);
+const isTransitioning = ref<boolean>(false);
+let previousSectionName: string | null = null;
+let scrollEndTimeout: ReturnType<typeof window.setTimeout> | undefined;
+
+const scrollToSection = async (
+    targetSectionName: string,
+    direction: 'up' | 'down',
+): Promise<void> => {
+    await nextTick();
+
+    const targetElement = document.getElementById(`section-${targetSectionName}`);
+    if (!targetElement) return;
+    if (direction === 'up' && previousSectionName) {
+        const previousElement = document.getElementById(`section-${previousSectionName}`);
+        if (previousElement) {
+            window.scrollTo({ top: previousElement.offsetTop, behavior: 'instant' });
+        }
+    }
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const scrollBehavior = prefersReducedMotion ? 'instant' : 'smooth';
+    const targetOffsetTop = targetElement.offsetTop;
+
+    if (Math.abs(window.scrollY - targetOffsetTop) < 1) {
+        if (previousSectionName) {
+            mountedSections.value = mountedSections.value.filter(
+                (s) => s.name !== previousSectionName,
+            );
+            previousSectionName = null;
+        }
+        return;
+    }
+
+    isTransitioning.value = true;
+    document.body.style.overflow = 'hidden';
+
+    requestAnimationFrame(() => {
+        window.scrollTo({
+            top: targetOffsetTop,
+            behavior: scrollBehavior,
+        });
+    });
+
+    const scrollEndHandler = () => {
+        if (Math.abs(window.scrollY - targetOffsetTop) < 5) {
+            isTransitioning.value = false;
+            document.body.style.overflow = '';
+            if (previousSectionName) {
+                mountedSections.value = mountedSections.value.filter(
+                    (s) => s.name !== previousSectionName,
+                );
+                previousSectionName = null;
+            }
+            window.removeEventListener('scroll', onScroll);
+            if (scrollEndTimeout) clearTimeout(scrollEndTimeout);
+        }
+    };
+
+    const onScroll = () => {
+        if (scrollEndTimeout) clearTimeout(scrollEndTimeout);
+        scrollEndTimeout = setTimeout(scrollEndHandler, 100);
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+};
+
+const updateSection = async (newSectionName: string): Promise<void> => {
+    if (isTransitioning.value) {
+        window.stop();
+        if (scrollEndTimeout) clearTimeout(scrollEndTimeout);
+        isTransitioning.value = false;
+        document.body.style.overflow = '';
+        if (previousSectionName) {
+            mountedSections.value = mountedSections.value.filter(
+                (s) => s.name !== previousSectionName,
+            );
+        }
+    }
+
+    const currentSection = mountedSections.value.find((s) => sectionOrder.includes(s.name));
+    const currentSectionName = currentSection ? currentSection.name : null;
+
+    if (currentSectionName === newSectionName) return;
+
+    previousSectionName = currentSectionName;
+
+    const newSection = {
+        name: newSectionName,
+        component: components[newSectionName as keyof typeof components],
+    };
+
+    if (!previousSectionName) {
+        mountedSections.value = [newSection];
+    } else {
+        const currentIndex = sectionOrder.indexOf(previousSectionName);
+        const newIndex = sectionOrder.indexOf(newSectionName);
+
+        if (newIndex > currentIndex) {
+            mountedSections.value.push(newSection);
+            await scrollToSection(newSectionName, 'down');
+        } else {
+            mountedSections.value.unshift(newSection);
+            await scrollToSection(newSectionName, 'up');
+        }
+    }
+};
+
+watch(
+    () => route.name,
+    (newName) => {
+        const sectionName = (newName as string)?.toLowerCase();
+        if (sectionName && sectionOrder.includes(sectionName)) {
+            updateSection(sectionName);
+        }
+    },
+);
+
+onMounted(() => {
+    isDrawerEmpty.value = false;
+    const sectionName = (route.name as string)?.toLowerCase();
+    if (sectionName && sectionOrder.includes(sectionName)) {
+        mountedSections.value = [
+            {
+                name: sectionName,
+                component: components[sectionName as keyof typeof components],
+            },
+        ];
+        nextTick(() => window.scrollTo(0, 0));
+    }
+});
 </script>
+
+<style scoped>
+.section-wrapper {
+    min-height: 100vh;
+    width: 100%;
+}
+</style>

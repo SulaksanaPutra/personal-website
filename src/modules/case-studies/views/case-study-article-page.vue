@@ -1,45 +1,64 @@
 <template>
-    <div class="text-justify hyphens-auto leading-relaxed">
-        <section id="case-twin-v1-vat" class="content-narrow py-8">
+    <div class="">
+        <section class="py-8">
             <div class="mb-8">
                 <router-link
-                    :to="vatChangeCase.backLink.href"
+                    :to="article.backLink.href"
                     class="text-sm text-text-secondary hover:text-text-primary"
                 >
-                    {{ vatChangeCase.backLink.label }}
+                    {{ article.backLink.label }}
                 </router-link>
             </div>
 
             <header class="mb-8">
                 <h1 class="text-xl text-left text-text-primary leading-tight mb-2">
-                    {{ vatChangeCase.title }}
+                    {{ article.title }}
                 </h1>
                 <p class="text-text-secondary max-w-2xl">
-                    {{ vatChangeCase.highlight }}
+                    {{ article.highlight }}
                 </p>
             </header>
 
-            <article class="space-y-8">
-                <section
-                    v-for="section in vatChangeCase.sections"
-                    :id="section.id"
-                    :key="section.id"
-                >
-                    <p class="label-overline">
-                        {{ section.label }}
-                    </p>
-                    <div v-if="section.paragraphs" class="space-y-4">
-                        <p v-for="(paragraph, pIndex) in section.paragraphs" :key="pIndex">
-                            {{ paragraph }}
+            <div class="flex flex-col md:flex-row md:gap-12 relative items-start">
+                <aside class="hidden md:block w-48 shrink-0 sticky top-24">
+                    <nav v-if="article.sections?.length">
+                        <h2
+                            class="text-sm font-bold uppercase tracking-wider mb-4 text-text-primary"
+                        >
+                            Contents
+                        </h2>
+                        <ul class="space-y-3 text-sm border-l pl-4">
+                            <li v-for="section in article.sections" :key="section.id">
+                                <a
+                                    :href="`#${section.id}`"
+                                    @click.prevent="scrollToSection(section.id)"
+                                    class="block text-text-secondary hover:text-text-primary transition-colors"
+                                >
+                                    {{ section.label }}
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </aside>
+
+                <article class="text-justify hyphens-auto leading-relaxed space-y-8 flex-1 min-w-0">
+                    <section v-for="section in article.sections" :id="section.id" :key="section.id">
+                        <p class="label-overline">
+                            {{ section.label }}
                         </p>
-                    </div>
-                    <ul v-if="section.items" class="pl-5 list-disc space-y-2">
-                        <li v-for="(item, iIndex) in section.items" :key="iIndex">
-                            {{ item }}
-                        </li>
-                    </ul>
-                </section>
-            </article>
+                        <div v-if="section.paragraphs" class="space-y-4">
+                            <p v-for="(paragraph, pIndex) in section.paragraphs" :key="pIndex">
+                                {{ paragraph }}
+                            </p>
+                        </div>
+                        <ul v-if="section.items" class="pl-5 list-disc space-y-2">
+                            <li v-for="(item, iIndex) in section.items" :key="iIndex">
+                                {{ item }}
+                            </li>
+                        </ul>
+                    </section>
+                </article>
+            </div>
         </section>
     </div>
 </template>
@@ -48,13 +67,20 @@
 import { computed, type Ref } from 'vue';
 import { useI18n } from '@/core/composables/use-i18n.ts';
 import { CaseStudyArticle } from '@/modules/case-studies/case-studies.types.ts';
-import defaultVatChangeCase from '@/modules/case-studies/data/articles/vat-change-case.ts';
 
-const { data }: { data: Ref<CaseStudyArticle | null> } = useI18n<CaseStudyArticle>(
-    'case-studies/articles/twin-v1/vat-change-case',
-);
+const props = defineProps<{
+    defaultContent: CaseStudyArticle;
+    i18nKey: string;
+}>();
 
-const vatChangeCase = computed<CaseStudyArticle>(
-    () => data.value ?? (defaultVatChangeCase as CaseStudyArticle),
-);
+const { data }: { data: Ref<CaseStudyArticle | null> } = useI18n<CaseStudyArticle>(props.i18nKey);
+
+const article = computed<CaseStudyArticle>(() => data.value ?? props.defaultContent);
+
+const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+    }
+};
 </script>

@@ -1,61 +1,66 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
-import Systems from '@/views/systems.vue';
-import CaseStudies from '@/views/case-studies.vue';
-import VatChangeCase from '@/views/case-studies/twin-v1/vat-change-case.vue';
-import Skills from '@/views/skills.vue';
-import Contact from '@/views/contact.vue';
-import SectionContainer from '@/components/section-container.vue';
+import SystemsPage from '@/modules/systems/views/systems-page.vue';
+import CaseStudiesPage from '@/modules/case-studies/views/case-studies-page.vue';
+import CaseStudyArticlePage from '@/modules/case-studies/views/case-study-article-page.vue';
+import SkillsPage from '@/modules/skills/views/skills-page.vue';
+import ContactPage from '@/modules/contact/views/contact-page.vue';
+import HomePage from '@/modules/home/views/home-page.vue';
+import defaultVatChangeCase from '@/modules/case-studies/data/articles/vat-change-case.ts';
 
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
-        name: 'About',
-        component: SectionContainer,
+        name: 'about',
+        component: HomePage,
     },
     {
         path: '/systems',
-        name: 'Systems',
-        component: Systems,
+        name: 'systems',
+        component: SystemsPage,
     },
     {
         path: '/case-studies',
-        name: 'CaseStudies',
-        component: CaseStudies,
+        name: 'case-studies',
+        component: CaseStudiesPage,
     },
     {
         path: '/case-studies/twin-v1/handling-a-vat-increase-in-a-legacy-real-time-system',
         name: 'TwinV1Vat',
-        component: VatChangeCase,
+        component: CaseStudyArticlePage,
+        props: {
+            defaultContent: defaultVatChangeCase,
+            i18nKey: 'case-studies/articles/twin-v1/vat-change-case',
+        },
     },
     {
         path: '/skillsPage',
-        name: 'Skills',
-        component: Skills,
+        name: 'skills',
+        component: SkillsPage,
     },
     {
         path: '/contactPage',
-        name: 'Contact',
-        component: Contact,
+        name: 'contact',
+        component: ContactPage,
     },
     {
         path: '/writing',
-        name: 'Writing',
-        component: SectionContainer,
+        name: 'writing',
+        component: HomePage,
     },
     {
         path: '/projects',
-        name: 'Projects',
-        component: SectionContainer,
+        name: 'projects',
+        component: HomePage,
     },
     {
         path: '/uses',
-        name: 'Uses',
-        component: SectionContainer,
+        name: 'uses',
+        component: HomePage,
     },
     {
         path: '/hobbies',
-        name: 'Hobbies',
-        component: SectionContainer,
+        name: 'hobbies',
+        component: HomePage,
     },
 ];
 
@@ -63,7 +68,7 @@ const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes,
     scrollBehavior(to, from, savedPosition) {
-        const sectionRoutes = ['About', 'Writing', 'Projects', 'Uses', 'Hobbies'];
+        const sectionRoutes = ['about', 'writing', 'projects', 'uses', 'hobbies'];
 
         if (
             to.name &&

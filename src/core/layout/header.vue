@@ -140,7 +140,14 @@
 import { computed, onMounted, onUnmounted, type Ref, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import { Menu, Moon, Search, Sun } from 'lucide-vue-next';
-import { headerComponentRef, isDark, isDrawerOpen, language, scrollProgress } from '@/store';
+import {
+    headerComponentRef,
+    isDark,
+    isDrawerEmpty,
+    isDrawerOpen,
+    language,
+    scrollProgress,
+} from '@/store';
 
 import defaultHeader from '@/core/data/header.data.ts';
 import { useI18n } from '@/core/composables/use-i18n.ts';
@@ -164,11 +171,6 @@ const filteredLinks = computed<NonNullable<Header['searchLinks']>>(() =>
         item.label.toLowerCase().includes(searchQuery.value.toLowerCase()),
     ),
 );
-
-const isDrawerEmpty = computed<boolean>(() => {
-    const list = routeLists[route.path] || [];
-    return list.length === 0;
-});
 
 const getDrawerStateKey = (): string => {
     if (route.path === '/systems') return 'systemsDrawerOpen';

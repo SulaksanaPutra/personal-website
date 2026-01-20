@@ -19,40 +19,35 @@
 </template>
 
 <script setup lang="ts">
-import { type Component, computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue';
 import { RouteLocationNormalized, useRoute } from 'vue-router';
-import Header from '@/core/components/header.vue';
-import Footer from '@/core/components/footer.vue';
-import HomeDrawer from '@/components/drawers/home-drawer.vue';
-import SystemsDrawer from '@/components/drawers/systems-drawer.vue';
-import CaseStudiesDrawer from '@/components/drawers/case-studies-drawer.vue';
-import VatChangeCaseDrawer from '@/components/drawers/case-studies/vat-change-case-drawer.vue';
+import Header from '@/core/layout/header.vue';
+import Footer from '@/core/layout/footer.vue';
 import { drawerTop, headerComponentRef, isDark, isDrawerOpen, scrollProgress } from '@/store';
 
 const route = useRoute();
 
-const drawerMap: Record<string, Component> = {
-    '/': HomeDrawer,
-    '/writing': HomeDrawer,
-    '/projects': HomeDrawer,
-    '/uses': HomeDrawer,
-    '/hobbies': HomeDrawer,
-    '/systems': SystemsDrawer,
-    '/case-studies': CaseStudiesDrawer,
-    '/case-studies/twin-v1/handling-a-vat-increase-in-a-legacy-real-time-system':
-        VatChangeCaseDrawer,
-};
+const drawerComponents = import.meta.glob('@/modules/**/components/*-drawer.vue');
 
-const currentDrawer = computed(() => drawerMap[route.path] || null);
+const currentDrawer = computed(() => {
+    if (!route.name) return null;
+    let routeName = typeof route.name === 'string' ? route.name : String(route.name);
+    if (sectionRoutes.includes(routeName)) {
+        routeName = 'home';
+    }
+    const targetPath = `/modules/${routeName}/components/${routeName}-drawer.vue`;
+    const componentKey = Object.keys(drawerComponents).find((key) => key.endsWith(targetPath));
+
+    return componentKey ? defineAsyncComponent(drawerComponents[componentKey] as any) : null;
+});
 
 const getDrawerStateKey = () => {
-    if (route.path === '/systems') return 'systemsDrawerOpen';
-    if (route.path === '/case-studies') return 'caseStudiesDrawerOpen';
-    if (route.path === '/skills') return 'skillsDrawerOpen';
-    if (route.path === '/contact') return 'contactDrawerOpen';
-    if (route.path === '/case-studies/twin-v1/handling-a-vat-increase-in-a-legacy-real-time-system')
-        return 'articleCaseStudyDrawerOpen';
-    return 'drawerOpen';
+    if (!route.name) return 'drawerOpen';
+    let routeName = typeof route.name === 'string' ? route.name : String(route.name);
+    if (sectionRoutes.includes(routeName)) {
+        routeName = 'home';
+    }
+    return routeName + 'DrawerOpen';
 };
 
 const syncDrawerState = () => {
@@ -128,7 +123,7 @@ watch(
     { immediate: true },
 );
 
-const sectionRoutes = ['About', 'Writing', 'Projects', 'Uses', 'Hobbies'];
+const sectionRoutes = ['about', 'writing', 'projects', 'uses', 'hobbies'];
 
 const previousRouteName = ref<string | null>(null);
 watch(
