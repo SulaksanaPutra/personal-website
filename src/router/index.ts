@@ -13,6 +13,8 @@ import {
     SCALING_STATE_IN_VUE_SPA_BY_LOCALE,
     useScalingStateInVueSpaData,
 } from '@/modules/case-studies/data/articles/scaling-state-in-vue-spa.ts';
+import NotFoundPage from '@/modules/error/views/NotFoundPage.vue';
+import ServerErrorPage from '@/modules/error/views/ServerErrorPage.vue';
 
 const routes: RouteRecordRaw[] = [
     {
@@ -79,6 +81,16 @@ const routes: RouteRecordRaw[] = [
         path: '/hobbies',
         name: 'hobbies',
         component: HomePage,
+    },
+    {
+        path: '/500',
+        name: 'server-error',
+        component: ServerErrorPage,
+    },
+    {
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: NotFoundPage,
     },
 ];
 
