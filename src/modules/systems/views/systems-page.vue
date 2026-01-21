@@ -12,7 +12,7 @@
                 </h2>
 
                 <p class="text-text-secondary mb-4">
-                    {{ system.highlight }}
+                    {{ system.subtitle }}
                 </p>
 
                 <div class="flex flex-wrap gap-2 mb-6">

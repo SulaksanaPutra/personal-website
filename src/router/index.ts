@@ -9,6 +9,10 @@ import {
     useVatChangeCaseData,
     VAT_CHANGE_CASE_BY_LOCALE,
 } from '@/modules/case-studies/data/articles/vat-change-case.ts';
+import {
+    SCALING_STATE_IN_VUE_SPA_BY_LOCALE,
+    useScalingStateInVueSpaData,
+} from '@/modules/case-studies/data/articles/scaling-state-in-vue-spa.ts';
 
 const routes: RouteRecordRaw[] = [
     {
@@ -27,12 +31,21 @@ const routes: RouteRecordRaw[] = [
         component: CaseStudiesPage,
     },
     {
-        path: '/case-studies/twin-v1/handling-a-vat-increase-in-a-legacy-real-time-system',
-        name: 'TwinV1Vat',
+        path: '/case-studies/system-twin-v1/handling-a-vat-increase-in-a-legacy-real-time-system',
+        name: 'handling-a-vat-increase-in-a-legacy-real-time-system',
         component: CaseStudyArticlePage,
         props: {
             useArticleData: useVatChangeCaseData,
             defaultContent: VAT_CHANGE_CASE_BY_LOCALE.en,
+        },
+    },
+    {
+        path: '/case-studies/system-twin-v1/front-end-state-management-at-scale',
+        name: 'front-end-state-management-at-scale',
+        component: CaseStudyArticlePage,
+        props: {
+            useArticleData: useScalingStateInVueSpaData,
+            defaultContent: SCALING_STATE_IN_VUE_SPA_BY_LOCALE.en,
         },
     },
     {

@@ -45,14 +45,13 @@
                             />
                             <div class="absolute left-0 top-3 w-3 h-px bg-border-subtle" />
                             <a
-                                :href="`#${caseStudy.id}`"
+                                :href="caseStudy.href"
                                 class="block text-sm transition-colors duration-200 relative"
                                 :class="
                                     activeSection === caseStudy.id
                                         ? 'text-accent-primary font-medium'
                                         : 'text-text-secondary hover:text-text-primary'
                                 "
-                                @click.prevent="scrollToSection(caseStudy.id)"
                             >
                                 {{ caseStudy.label }}
                             </a>
@@ -67,7 +66,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
-import { activeSection, drawerTop, headerComponentRef, isDrawerOpen } from '@/store';
+import { activeSection, drawerTop, isDrawerOpen } from '@/store';
 import { ChevronDown, X } from 'lucide-vue-next';
 import { useCaseStudiesDrawerData } from '@/modules/case-studies/data/case-studies-drawer.data.ts';
 
@@ -111,26 +110,6 @@ const toggleDrawer = () => {
     isDrawerOpen.value = !isDrawerOpen.value;
     if (window.innerWidth >= 768) {
         localStorage.setItem('caseStudiesDrawerOpen', isDrawerOpen.value.toString());
-    }
-};
-
-const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (!element) return;
-
-    const headerOffset = headerComponentRef.value?.headerRef?.offsetHeight || 0;
-    const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
-    const offsetPosition = elementPosition - headerOffset - 24;
-
-    window.scrollTo({
-        top: offsetPosition,
-        behavior: 'smooth',
-    });
-
-    activeSection.value = id;
-
-    if (window.innerWidth < 768) {
-        isDrawerOpen.value = false;
     }
 };
 </script>

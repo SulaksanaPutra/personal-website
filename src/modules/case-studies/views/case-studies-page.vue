@@ -1,6 +1,6 @@
 <template>
     <div class="space-y-8 my-8 text-justify hyphens-auto leading-relaxed">
-        <section class="content-narrow">
+        <section class="content-narrow" v-if="caseStudies.length">
             <div class="grid gap-8">
                 <article
                     v-for="caseStudy in caseStudies"
@@ -30,15 +30,35 @@
                 </article>
             </div>
         </section>
+        <section v-else>
+            <div class="py-16 text-center">
+                <h2 class="text-xl text-text-primary mb-2">No case studies found</h2>
+                <p class="text-text-secondary mb-6">
+                    There are no case studies available for the selected system.
+                </p>
+                <router-link to="/case-studies" class="text-sm text-primary hover:underline">
+                    View all case studies
+                </router-link>
+            </div>
+        </section>
     </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue';
+import { computed, onMounted, onUnmounted } from 'vue';
+import { useRoute } from 'vue-router';
 import { useCaseStudiesData } from '@/modules/case-studies/data/case-studies.data.ts';
 import { isDrawerEmpty } from '@/store';
 
-const caseStudies = useCaseStudiesData();
+const route = useRoute();
+
+const systemId = computed(() => {
+    const value = route.query.systemId;
+    return typeof value === 'string' ? value : undefined;
+});
+
+const caseStudies = useCaseStudiesData(systemId);
+
 onMounted(() => {
     isDrawerEmpty.value = false;
 });

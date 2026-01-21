@@ -9,9 +9,13 @@ export const VAT_CHANGE_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArticle | n
             href: '/case-studies',
             label: '← Back to Case Studies',
         },
-        systemsId: 'twin-v1',
+        id: 'handling-a-vat-increase-in-a-legacy-real-time-system',
+        systemId: 'system-twin-v1',
         title: 'Handling a VAT Increase in a Legacy, Real-Time System',
+        heading: 'VAT Increase Handling',
         highlight: 'Twin v1 — Regulatory change under production and architectural constraints',
+        subtitle:
+            'How I managed a critical regulatory update in a legacy system with hardcoded tax logic, ensuring zero downtime and data integrity.',
         sections: [
             {
                 id: 'context',

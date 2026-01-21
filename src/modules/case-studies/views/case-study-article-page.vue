@@ -60,6 +60,15 @@
                 </article>
             </div>
         </section>
+        <section v-else class="py-16 text-center">
+            <h1 class="text-xl text-text-primary mb-2">Case study not found</h1>
+            <p class="text-text-secondary mb-6">
+                The case study you are looking for does not exist or is no longer available.
+            </p>
+            <router-link to="/case-studies" class="text-sm text-primary hover:underline">
+                Back to case studies
+            </router-link>
+        </section>
     </div>
 </template>
 

@@ -2,12 +2,15 @@ import { Systems } from '@/modules/systems/systems.types.ts';
 import { useI18n } from '@/core/composables/use-i18n.ts';
 import { computed } from 'vue';
 
-const SYSTEMS_BY_LOCALE: Record<'en' | 'id', Systems> = {
+export const SYSTEMS_BY_LOCALE: Record<'en' | 'id', Systems> = {
     en: [
         {
             id: 'system-laas',
             title: 'LAAS — Logistics as a Service',
+            heading: 'LAAS',
             highlight:
+                'External access to logistics capabilities without exposing internal systemsPage.',
+            subtitle:
                 'A customer-facing platform exposing logistics capabilities to external clients while protecting internal operational systemsPage.',
             tags: ['Customer-facing', 'B2B', 'B2C'],
             sections: [
@@ -39,14 +42,16 @@ const SYSTEMS_BY_LOCALE: Record<'en' | 'id', Systems> = {
             ],
             link: {
                 id: 'view-laas',
-                href: '/case-studies#laas',
+                href: '/case-studies?systemId=system-laas',
                 label: '→ View case study',
             },
         },
         {
             id: 'system-twin-v2-wms',
             title: 'Twin V2 — Warehouse Management System',
-            highlight:
+            heading: 'Twin V2 WMS',
+            highlight: 'A clean-slate WMS built to replace a fragile legacy core.',
+            subtitle:
                 'A standalone warehouse management system designed to replace legacy stock handling while serving as a foundation for a future SaaS offering.',
             tags: ['Warehouse Management', 'Distribution', 'Logistics'],
             sections: [
@@ -73,14 +78,16 @@ const SYSTEMS_BY_LOCALE: Record<'en' | 'id', Systems> = {
             ],
             link: {
                 id: 'view-wms',
-                href: '/case-studies#twin-v2-wms',
+                href: '/case-studies?systemId=system-twin-v2-wms',
                 label: '→ View case study',
             },
         },
         {
             id: 'system-twin-v2-fleet',
             title: 'Twin V2 — Fleet Management System',
-            highlight:
+            heading: 'Twin V2 FMS',
+            highlight: 'Delivery and settlement isolated into a correctness-first domain.',
+            subtitle:
                 'A standalone delivery domain created to isolate fleet and settlement workflows after the organization split warehouse and delivery into separate business units.',
             tags: ['Logistics', 'Delivery Operations'],
             sections: [
@@ -112,14 +119,16 @@ const SYSTEMS_BY_LOCALE: Record<'en' | 'id', Systems> = {
             ],
             link: {
                 id: 'view-fms',
-                href: '/case-studies#twin-v2-fms',
+                href: '/case-studies?systemId=system-twin-v2-fleet',
                 label: '→ View case study',
             },
         },
         {
             id: 'system-twin-v1',
             title: 'Twin — In-house Distributor System',
-            highlight:
+            heading: 'Twin V1',
+            highlight: 'A legacy monolith that powered daily distributor operations.',
+            subtitle:
                 'A business-critical legacy platform that unified fragmented, paper-based distributor operations into a single operational backbone across multiple companies and branches.',
             tags: ['Distribution', 'Inventory', 'Sales Operations'],
             sections: [
@@ -141,7 +150,7 @@ const SYSTEMS_BY_LOCALE: Record<'en' | 'id', Systems> = {
             ],
             link: {
                 id: 'view-twin-v1',
-                href: '/case-studies#twin-v1',
+                href: '/case-studies?systemId=system-twin-v1',
                 label: '→ View case study',
             },
         },

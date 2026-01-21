@@ -4,18 +4,23 @@ import { DrawerItem } from '@/core/types/drawer.types.ts';
 export interface CaseStudy {
     id: string;
     title: string;
+    heading: string;
     highlight: string;
     description: string;
+    systemId: string;
     link: Link;
 }
 export type CaseStudies = CaseStudy[];
 
 export interface CaseStudyArticle {
+    id: string;
     backLink: Link;
     title: string;
+    heading: string;
+    subtitle?: string;
     highlight: string;
     description?: string;
-    systemsId: string;
+    systemId: string;
     sections: {
         id: string;
         label: string;

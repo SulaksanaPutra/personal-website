@@ -4,6 +4,8 @@ import { Link } from '@/core/types/link.types.ts';
 export interface System {
     id: string;
     title: string;
+    heading: string;
+    subtitle: string;
     highlight: string;
     tags: string[];
     sections: {
