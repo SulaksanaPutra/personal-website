@@ -4,7 +4,7 @@ import { Contact } from '@/modules/contact/contact.types.ts';
 
 const CONTACT_BY_LOCALE: Record<'en' | 'id', Contact> = {
     en: {
-        title: 'Contact',
+        title: "Let's Talk",
         descriptions: [
             "I'm always open to discussing new opportunities, collaborations, or just chatting about technology.",
             'You can reach me at <a href="mailto:info@bayuaksana.com" class="text-accent-primary hover:underline">info@bayuaksana.com</a>.',
