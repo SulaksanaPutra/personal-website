@@ -19,6 +19,10 @@ import {
     OPTIMIZING_QUERY_PERFORMANCE_BY_LOCALE,
     useOptimizingQueryPerformanceData,
 } from '@/modules/case-studies/data/articles/optimizing-query-performance.ts';
+import {
+    OVER_ENGINEERING_A_CLEAN_ARCHITECTURE,
+    useOverEngineeringACleanArchitectureData,
+} from '@/modules/case-studies/data/articles/over-engineering-a-clean-architecture.ts';
 
 const routes: RouteRecordRaw[] = [
     {
@@ -52,6 +56,15 @@ const routes: RouteRecordRaw[] = [
         props: {
             useArticleData: useScalingStateInVueSpaData,
             defaultContent: SCALING_STATE_IN_VUE_SPA_BY_LOCALE.en,
+        },
+    },
+    {
+        path: '/case-studies/system-twin-v2-wms/over-engineering-a-clean-architecture',
+        name: 'over-engineering-a-clean-architecture',
+        component: CaseStudyArticlePage,
+        props: {
+            useArticleData: useOverEngineeringACleanArchitectureData,
+            defaultContent: OVER_ENGINEERING_A_CLEAN_ARCHITECTURE.en,
         },
     },
     {

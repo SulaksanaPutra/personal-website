@@ -29,6 +29,8 @@ const route = useRoute();
 
 const drawerComponents = import.meta.glob('@/modules/**/components/*-drawer.vue');
 
+const asyncComponentCache: Record<string, any> = {};
+
 const currentDrawer = computed(() => {
     if (!route.name) return null;
     let routeName = typeof route.name === 'string' ? route.name : String(route.name);
@@ -38,7 +40,12 @@ const currentDrawer = computed(() => {
     const targetPath = `/modules/${routeName}/components/${routeName}-drawer.vue`;
     const componentKey = Object.keys(drawerComponents).find((key) => key.endsWith(targetPath));
 
-    return componentKey ? defineAsyncComponent(drawerComponents[componentKey] as any) : null;
+    if (!componentKey) return null;
+
+    if (!asyncComponentCache[componentKey]) {
+        asyncComponentCache[componentKey] = defineAsyncComponent(drawerComponents[componentKey] as any);
+    }
+    return asyncComponentCache[componentKey];
 });
 
 const getDrawerStateKey = () => {

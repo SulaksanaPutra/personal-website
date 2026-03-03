@@ -16,7 +16,7 @@
             </button>
 
             <ul>
-                <template v-for="(item, _index) in homeDrawer" :key="_index">
+                <template v-for="item in homeDrawer" :key="item.id">
                     <router-link v-slot="{ href, navigate }" :to="item.href || '/'" custom>
                         <li v-show="!item.isActive" class="flex gap-3 mb-6">
                             <div class="w-full">
@@ -25,9 +25,9 @@
                                     class="block font-medium text-base text-text-primary hover:text-accent-primary transition-opacity duration-300"
                                     @click="
                                         ($event) => {
+                                            onItemClicked(item, $event);
                                             navigate($event);
                                             handleDrawerLinkClick();
-                                            onItemClicked(item, $event);
                                         }
                                     "
                                 >
@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
 import { drawerTop, isDrawerOpen } from '@/store';
 import { X } from 'lucide-vue-next';
@@ -57,18 +57,30 @@ import { useHomeDrawerData } from '@/modules/home/data/home-drawer.data.ts';
 
 const route: RouteLocationNormalizedLoaded = useRoute();
 
-const homeDrawer = useHomeDrawerData();
+const drawerData = useHomeDrawerData();
+const homeDrawer = ref<HomeDrawerItem[]>([]);
+const pendingActiveItem = ref<HomeDrawerItem | null>(null);
 
-onMounted(() => {
-    const path = route.path;
-    homeDrawer.value.forEach((item) => {
-        item.isActive = item.href === path;
-    });
-});
+watch(
+    drawerData,
+    (newData) => {
+        homeDrawer.value = newData.map((item) => ({ ...item, isActive: false }));
+        const path = route.path;
+        homeDrawer.value.forEach((item) => {
+            item.isActive = item.href === path;
+        });
+    },
+    { immediate: true },
+);
 
 watch(
     () => route.path,
-    () => {
+    (newPath) => {
+        homeDrawer.value.forEach((item) => {
+            if (pendingActiveItem.value && item.id === pendingActiveItem.value.id) return;
+            item.isActive = item.href === newPath;
+        });
+
         if (window.innerWidth < 768) {
             isDrawerOpen.value = false;
             return;
@@ -94,21 +106,31 @@ const toggleDrawer = () => {
 
 const handleDrawerLinkClick = () => {
     if (window.innerWidth < 768) {
+        if (pendingActiveItem.value) {
+            pendingActiveItem.value.isActive = true;
+            pendingActiveItem.value = null;
+        }
         isDrawerOpen.value = false;
     }
 };
 
-const pendingActiveItem = ref<HomeDrawerItem | null>(null);
-
 const onItemClicked = (item: HomeDrawerItem, _event: MouseEvent) => {
+    let activeIndex = homeDrawer.value.findIndex((i: HomeDrawerItem) => i.isActive);
+
+    // If there's no active item but there's a pending one, 
+    // it means the user clicked another item without moving the mouse out.
+    if (activeIndex === -1 && pendingActiveItem.value) {
+        pendingActiveItem.value.isActive = true;
+        activeIndex = homeDrawer.value.findIndex((i: HomeDrawerItem) => i.id === pendingActiveItem.value!.id);
+    }
+
     pendingActiveItem.value = item;
-    const activeIndex = homeDrawer.value.findIndex((i: HomeDrawerItem) => i.isActive);
-    const clickedIndex = homeDrawer.value.findIndex((i: HomeDrawerItem) => i === item);
-    if (activeIndex !== -1 && activeIndex !== clickedIndex) {
+
+    if (activeIndex !== -1) {
         const [activeItem] = homeDrawer.value.splice(activeIndex, 1);
         activeItem.isActive = false;
-        const insertIndex = activeIndex < clickedIndex ? clickedIndex : clickedIndex + 1;
-        homeDrawer.value.splice(insertIndex, 0, activeItem);
+        // Move the previously active item to the end of the list
+        homeDrawer.value.push(activeItem);
     }
 };
 
