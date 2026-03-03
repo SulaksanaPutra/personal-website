@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
 import { nextTick, onMounted, onUnmounted, watch } from 'vue';
-import { activeSection, isDrawerEmpty } from '@/store';
+import { activeSection } from '@/store';
 import { useSystemsData } from '@/modules/systems/data/systems.data.ts';
 
 const systems = useSystemsData();
@@ -89,12 +89,11 @@ watch(
 );
 
 onMounted(() => {
-    isDrawerEmpty.value = false;
+    // isDrawerEmpty now handled by useDrawerManagement
 });
 
 onUnmounted(() => {
     if (sectionObserver) sectionObserver.disconnect();
     activeSection.value = '';
-    isDrawerEmpty.value = true;
 });
 </script>

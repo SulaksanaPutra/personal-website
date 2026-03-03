@@ -22,7 +22,6 @@ import {
     watch,
 } from 'vue';
 import { useRoute } from 'vue-router';
-import { isDrawerEmpty } from '@/store';
 
 const components: Record<string, Component> = {
     about: markRaw(
@@ -168,7 +167,6 @@ watch(
 );
 
 onMounted(() => {
-    isDrawerEmpty.value = false;
     const sectionName = (route.name as string)?.toLowerCase();
     if (sectionName && sectionOrder.includes(sectionName)) {
         mountedSections.value = [

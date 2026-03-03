@@ -1,6 +1,6 @@
 import { computed, defineAsyncComponent, h, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import { isDrawerOpen } from '@/store';
+import { isDrawerEmpty, isDrawerOpen } from '@/store';
 
 const sectionRoutes = ['about', 'writing', 'projects', 'uses', 'hobbies'];
 
@@ -57,9 +57,10 @@ export function useDrawerManagement() {
     };
 
     watch(
-        () => route.path,
+        route,
         () => {
             syncDrawerState();
+            isDrawerEmpty.value = !route.meta.drawer;
         },
         { immediate: true },
     );

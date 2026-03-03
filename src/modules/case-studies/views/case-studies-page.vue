@@ -45,10 +45,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted } from 'vue';
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 import { useCaseStudiesData } from '@/modules/case-studies/data/case-studies.data.ts';
-import { isDrawerEmpty } from '@/store';
 
 const route = useRoute();
 
@@ -58,12 +57,4 @@ const systemId = computed(() => {
 });
 
 const caseStudies = useCaseStudiesData(systemId);
-
-onMounted(() => {
-    isDrawerEmpty.value = false;
-});
-
-onUnmounted(() => {
-    isDrawerEmpty.value = true;
-});
 </script>
