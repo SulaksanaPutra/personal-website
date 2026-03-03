@@ -6,24 +6,22 @@ const sectionRoutes = ['about', 'writing', 'projects', 'uses', 'hobbies'];
 
 export function useDrawerManagement() {
     const route = useRoute();
-    const drawerComponents = import.meta.glob('@/modules/**/components/*-drawer.vue');
-    const asyncComponentCache: Record<string, any> = {};
+    const asyncComponentCache = new Map<any, any>();
 
     const currentDrawer = computed(() => {
-        if (!route.name) return null;
-        let routeName = typeof route.name === 'string' ? route.name : String(route.name);
-        if (sectionRoutes.includes(routeName)) {
-            routeName = 'home';
-        }
-        const targetPath = `/modules/${routeName}/components/${routeName}-drawer.vue`;
-        const componentKey = Object.keys(drawerComponents).find((key) => key.endsWith(targetPath));
+        const drawerLoader = route.meta.drawer;
 
-        if (!componentKey) return null;
-
-        if (!asyncComponentCache[componentKey]) {
-            asyncComponentCache[componentKey] = defineAsyncComponent(drawerComponents[componentKey] as any);
+        if (typeof drawerLoader === 'function') {
+            if (!asyncComponentCache.has(drawerLoader)) {
+                asyncComponentCache.set(
+                    drawerLoader,
+                    defineAsyncComponent(drawerLoader as () => Promise<any>),
+                );
+            }
+            return asyncComponentCache.get(drawerLoader);
         }
-        return asyncComponentCache[componentKey];
+
+        return null;
     });
 
     const getDrawerStateKey = () => {

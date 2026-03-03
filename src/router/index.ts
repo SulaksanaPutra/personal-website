@@ -24,21 +24,28 @@ import {
     useOverEngineeringACleanArchitectureData,
 } from '@/modules/case-studies/data/articles/over-engineering-a-clean-architecture.ts';
 
+const HomeDrawer = () => import('@/modules/home/components/home-drawer.vue');
+const SystemsDrawer = () => import('@/modules/systems/components/systems-drawer.vue');
+const CaseStudiesDrawer = () => import('@/modules/case-studies/components/case-studies-drawer.vue');
+
 const routes: RouteRecordRaw[] = [
     {
         path: '/',
         name: 'about',
         component: HomePage,
+        meta: { drawer: HomeDrawer },
     },
     {
         path: '/systems',
         name: 'systems',
         component: SystemsPage,
+        meta: { drawer: SystemsDrawer },
     },
     {
         path: '/case-studies',
         name: 'case-studies',
         component: CaseStudiesPage,
+        meta: { drawer: CaseStudiesDrawer },
     },
     {
         path: '/case-studies/system-twin-v1/handling-a-vat-increase-in-a-legacy-real-time-system',
@@ -92,21 +99,25 @@ const routes: RouteRecordRaw[] = [
         path: '/writing',
         name: 'writing',
         component: HomePage,
+        meta: { drawer: HomeDrawer },
     },
     {
         path: '/projects',
         name: 'projects',
         component: HomePage,
+        meta: { drawer: HomeDrawer },
     },
     {
         path: '/uses',
         name: 'uses',
         component: HomePage,
+        meta: { drawer: HomeDrawer },
     },
     {
         path: '/hobbies',
         name: 'hobbies',
         component: HomePage,
+        meta: { drawer: HomeDrawer },
     },
     {
         path: '/500',
