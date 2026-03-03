@@ -1,18 +1,18 @@
 <template>
-    <div class="text-justify hyphens-auto leading-relaxed">
+    <div class="prose-content">
         <section class="content-narrow pt-8 relative">
             <TransitionGroup name="list" tag="div">
                 <article
                     v-for="system in systems"
                     :id="system.id"
                     :key="system.id"
-                    class="mb-16 pb-8 border-b border-border-subtle last:border-b-0"
+                    class="article-item mb-16"
                 >
-                    <h2 class="text-xl text-left text-text-primary mb-2">
+                    <h2 class="article-title">
                         {{ system.title }}
                     </h2>
 
-                    <p class="text-text-secondary mb-4">
+                    <p class="article-meta">
                         {{ system.subtitle }}
                     </p>
 
@@ -20,7 +20,7 @@
                         <span
                             v-for="tag in system.tags"
                             :key="tag"
-                            class="text-sm px-2 py-1 rounded border border-border-subtle text-text-secondary"
+                            class="tag-pill"
                         >
                             {{ tag }}
                         </span>
@@ -28,7 +28,7 @@
 
                     <div class="space-y-6 text-text-primary">
                         <div v-for="(section, index) in system.sections" :key="index">
-                            <p class="label-overline">
+                            <p class="article-section-title">
                                 {{ section.label }}
                             </p>
                             <p>{{ section.description }}</p>

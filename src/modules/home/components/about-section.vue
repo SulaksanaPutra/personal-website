@@ -1,9 +1,9 @@
 <template>
     <div
         v-if="page"
-        class="text-justify hyphens-auto leading-relaxed snap-y snap-mandatory overflow-y-auto"
+        class="prose-content snap-y snap-mandatory overflow-y-auto"
     >
-        <section id="context" class="content-narrow pt-8 pb-4">
+        <section id="context" class="content-narrow">
             <p v-for="(paragraph, index) in page.intro" :key="index">
                 {{ paragraph }}
             </p>

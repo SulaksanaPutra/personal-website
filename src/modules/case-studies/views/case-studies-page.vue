@@ -1,22 +1,22 @@
 <template>
-    <div class="space-y-8 my-8 text-justify hyphens-auto leading-relaxed">
+    <div class="prose-content my-8">
         <section class="content-narrow" v-if="caseStudies.length">
             <div class="grid gap-8">
                 <article
                     v-for="caseStudy in caseStudies"
                     :key="caseStudy.id"
-                    class="pb-8 border-b border-border-subtle last:border-0"
+                    class="article-item"
                 >
-                    <h2 class="text-xl font-semibold text-left mb-2 leading-snug">
+                    <h2 class="article-title">
                         <router-link
                             :to="caseStudy.link.href"
-                            class="text-text-primary hover:text-accent-primary no-underline"
+                            class="article-link font-semibold"
                         >
                             {{ caseStudy.title }}
                         </router-link>
                     </h2>
 
-                    <p class="text-text-secondary max-w-2xl mb-4">
+                    <p class="article-meta text-text-secondary">
                         {{ caseStudy.highlight }}
                     </p>
 

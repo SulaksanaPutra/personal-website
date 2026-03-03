@@ -1,7 +1,7 @@
 <template>
-    <div v-if="page" class="content-narrow py-8">
+    <div v-if="page" class="prose-content pt-8">
         <section id="contact-info" class="content-narrow">
-            <h1 class="text-3xl font-bold mb-6">
+            <h1 class="heading-large">
                 {{ page.title }}
             </h1>
             <div class="space-y-4">

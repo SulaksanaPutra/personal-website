@@ -5,14 +5,14 @@
             <button
                 v-if="y > 400"
                 @click="scrollToTop"
-                class="fixed bottom-8 right-8 z-[80] w-12 h-12 rounded-full bg-bg-main text-accent-primary outline flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 group"
+                class="btn-floating group"
                 aria-label="Back to top"
             >
                 <ArrowUp class="w-6 h-6 group-hover:-translate-y-1 transition-transform" />
             </button>
         </transition>
 
-        <section class="py-8" v-if="article">
+        <section class="article-container" v-if="article">
             <div class="mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <router-link
                     :to="article.backLink.href"
@@ -23,7 +23,7 @@
                 </router-link>
 
                 <div
-                    class="flex items-center gap-3 text-xs font-medium uppercase tracking-widest text-text-secondary"
+                    class="article-meta-row"
                 >
                     <span class="flex items-center gap-1.5" title="Reading Time">
                         <Clock class="w-3.5 h-3.5" />
@@ -37,45 +37,36 @@
                 </div>
             </div>
 
-            <header class="mb-12">
+            <header class="article-header">
                 <h1
-                    class="text-3xl md:text-4xl text-left text-text-primary leading-tight mb-4 font-bold tracking-tight"
+                    class="article-title-large"
                 >
                     {{ article.title }}
                 </h1>
-                <p class="text-lg text-text-secondary max-w-3xl leading-relaxed">
+                <p class="article-summary">
                     {{ article.highlight }}
                 </p>
             </header>
 
-            <div class="flex flex-col md:flex-row md:gap-16 relative items-start">
-                <aside class="hidden md:block w-52 shrink-0 sticky top-28">
+            <div class="article-body">
+                <aside class="toc-aside">
                     <nav v-if="article.sections?.length">
                         <h2
-                            class="text-xs font-bold uppercase tracking-[0.2em] mb-6 text-text-secondary"
+                            class="toc-title"
                         >
                             On this page
                         </h2>
-                        <ul class="space-y-4 text-sm relative">
-                            <!-- Active Indicator Line -->
-                            <div
-                                class="absolute left-0 top-0 w-px bg-border-subtle h-full transition-all"
-                            />
-
-                            <li v-for="section in article.sections" :key="section.id" class="pl-4">
+                        <ul class="toc-list">
+                            <li v-for="section in article.sections" :key="section.id" class="toc-item">
                                 <a
                                     :href="`#${section.id}`"
                                     @click.prevent="scrollToSection(section.id)"
-                                    class="block transition-all duration-300 relative"
-                                    :class="
-                                        currentActiveSection === section.id
-                                            ? 'text-accent-primary translate-x-1 font-medium'
-                                            : 'text-text-secondary hover:text-text-primary'
-                                    "
+                                    class="toc-link"
+                                    :class="{ 'toc-link-active': currentActiveSection === section.id }"
                                 >
                                     <div
                                         v-if="currentActiveSection === section.id"
-                                        class="absolute -left-[17px] top-1/2 -translate-y-1/2 w-px h-full bg-accent-primary"
+                                        class="toc-indicator"
                                     />
                                     {{ section.label }}
                                 </a>
@@ -85,25 +76,25 @@
                 </aside>
 
                 <article
-                    class="text-justify hyphens-auto leading-relaxed space-y-12 flex-1 min-w-0"
+                    class="article-content"
                 >
                     <section
                         v-for="section in article.sections"
                         :id="section.id"
                         :key="section.id"
-                        class="scroll-mt-24"
+                        class="article-section"
                     >
-                        <h3 class="label-overline mb-4" v-if="section.label">
+                        <h3 class="article-section-title" v-if="section.label">
                             {{ section.label }}
                         </h3>
-                        <div v-if="section.paragraphs" class="space-y-6 text-lg text-text-primary">
-                            <p v-for="(paragraph, pIndex) in section.paragraphs" :key="pIndex">
+                        <div v-if="section.paragraphs" class="space-y-6">
+                            <p v-for="(paragraph, pIndex) in section.paragraphs" :key="pIndex" class="article-paragraph">
                                 {{ paragraph }}
                             </p>
                         </div>
                         <ul
                             v-if="section.items"
-                            class="pl-6 list-disc space-y-3 text-lg text-text-primary"
+                            class="pl-6 list-disc space-y-3 article-paragraph"
                         >
                             <li v-for="(item, iIndex) in section.items" :key="iIndex">
                                 {{ item }}
@@ -127,7 +118,7 @@
                 </p>
                 <router-link
                     to="/case-studies"
-                    class="inline-flex items-center gap-2 px-6 py-2.5 bg-accent-primary text-white rounded-full hover:scale-105 active:scale-95 transition-all"
+                    class="btn-primary"
                 >
                     Back to case studies
                 </router-link>

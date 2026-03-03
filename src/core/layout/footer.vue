@@ -1,5 +1,5 @@
 <template>
-    <footer class="pt-12 pb-16 border-t border-border-subtle text-sm text-text-secondary mt-18">
+    <footer class="footer-base">
         <div class="container" v-if="page">
             <p class="mb-1">
                 {{ page.copyright }}

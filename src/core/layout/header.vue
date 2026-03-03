@@ -1,9 +1,9 @@
 <template>
     <header
         ref="headerRef"
-        class="sticky top-0 z-[70] bg-bg-main py-3 border-b border-border-subtle transition-colors duration-300"
+        class="header-main"
     >
-        <div class="relative mx-auto px-6 md:px-8 flex items-center justify-between flex-wrap">
+        <div class="header-container">
             <div class="flex items-center w-full md:w-auto">
                 <div class="flex items-center mr-4 md:mr-8 text-text-primary">
                     <button
@@ -20,7 +20,7 @@
                 <div class="flex items-center justify-between w-full">
                     <router-link
                         :to="'/'"
-                        class="mb-4 hover:no-underline md:mb-0 cursor-pointer text-accent-primary font-semibold text-[1.125rem] leading-[1.35] tracking-[-0.015em]"
+                        class="header-logo"
                         style="
                             font-family:
                                 Zalando Sans,
@@ -31,16 +31,16 @@
                         <div class="text-base">dotcom</div>
                     </router-link>
                     <div
-                        class="md:hidden items-center gap-1 rounded-full border border-border-subtle p-1 text-sm ml-4"
+                        class="md:hidden lang-switcher-container ml-4"
                     >
                         <button
                             v-for="lang in ['EN', 'ID']"
                             :key="lang"
-                            class="px-2 py-0.5 rounded-full transition-colors"
+                            class="lang-btn"
                             :class="
                                 language === lang
-                                    ? 'bg-bg-muted text-text-primary'
-                                    : 'text-text-secondary hover:bg-bg-muted'
+                                    ? 'lang-btn-active'
+                                    : 'lang-btn-inactive'
                             "
                             @click="setLanguage(lang)"
                         >
@@ -49,29 +49,28 @@
                     </div>
                 </div>
             </div>
-            <div class="relative ml-8 hidden md:block">
+            <div class="search-wrapper">
                 <div class="relative">
-                    <Search
-                        class="absolute left-2 top-1/2 -translate-y-1/2 text-text-secondary"
-                        :size="16"
-                    />
+                    <div class="search-icon-wrapper">
+                        <Search :size="16" />
+                    </div>
                     <input
                         ref="searchInputRef"
                         v-model="searchQuery"
                         type="text"
                         placeholder="Search…"
-                        class="w-56 md:w-72 pl-8 bg-bg-muted border border-border-subtle rounded-md py-1.5 px-2 text-sm focus:outline-none"
+                        class="search-input"
                         @keydown="handleSearchKeydown"
                     />
                 </div>
                 <ul
                     v-if="searchQuery && filteredLinks.length"
-                    class="absolute left-0 mt-2 w-[28rem] max-w-[90vw] bg-bg-main border border-border-subtle rounded-md shadow-lg z-[100] max-h-[70vh] overflow-y-auto"
+                    class="search-result-container"
                 >
                     <li
                         v-for="(item, index) in filteredLinks"
                         :key="item.id"
-                        class="px-4 py-3 hover:bg-bg-muted cursor-pointer transition-colors"
+                        class="search-result-item"
                         :class="{ 'bg-bg-muted': selectedIndex === index }"
                         @mouseenter="selectedIndex = index"
                     >
@@ -82,21 +81,21 @@
                                 </span>
                                 <span
                                     v-if="item.category"
-                                    class="text-[10px] uppercase tracking-wider text-text-secondary px-1.5 py-0.5 rounded bg-bg-muted border border-border-subtle"
+                                    class="search-category-tag"
                                 >
                                     {{ item.category }}
                                 </span>
                             </div>
-                            <div class="text-xs text-text-secondary mt-0.5 line-clamp-1">
+                            <div class="search-result-desc">
                                 {{ item.description }}
                             </div>
                         </router-link>
                     </li>
                 </ul>
             </div>
-            <nav class="flex items-center ml-auto w-full md:w-auto">
+            <nav class="nav-wrapper">
                 <ul
-                    class="flex flex-wrap justify-center md:justify-start gap-x-4 md:gap-x-9 gap-y-3 list-none p-0 m-0 w-full md:w-auto"
+                    class="nav-list"
                 >
                     <li
                         v-for="nav in navLinks"
@@ -105,8 +104,8 @@
                     >
                         <router-link
                             :to="nav.href"
-                            class="text-base text-text-secondary hover:text-text-primary hover:no-underline magnetic-hover"
-                            active-class="text-text-primary font-semibold"
+                            class="nav-link"
+                            active-class="nav-link-active"
                         >
                             {{ nav.label }}
                         </router-link>
@@ -114,7 +113,7 @@
                 </ul>
                 <button
                     type="button"
-                    class="hidden md:flex items-center justify-center w-10 h-10 rounded-full border border-border-subtle transition-all duration-300 ease-out hover:scale-105 active:scale-95 hover:bg-bg-muted ml-auto md:ml-6"
+                    class="hidden md:flex btn-icon ml-auto md:ml-6"
                     aria-label="Toggle theme"
                     @click="toggleTheme"
                 >
@@ -122,16 +121,16 @@
                     <Sun v-else :size="20" class="text-text-primary" />
                 </button>
                 <div
-                    class="hidden md:flex items-center gap-1 rounded-full border border-border-subtle p-1 text-sm ml-4"
+                    class="hidden md:flex lang-switcher-container ml-4"
                 >
                     <button
                         v-for="lang in ['EN', 'ID']"
                         :key="lang"
-                        class="px-2 py-0.5 rounded-full transition-colors"
+                        class="lang-btn"
                         :class="
                             language === lang
-                                ? 'bg-bg-muted text-text-primary'
-                                : 'text-text-secondary hover:bg-bg-muted'
+                                ? 'lang-btn-active'
+                                : 'lang-btn-inactive'
                         "
                         @click="setLanguage(lang)"
                     >
@@ -141,7 +140,7 @@
             </nav>
         </div>
         <div
-            class="absolute bottom-0 left-0 h-[2px] bg-accent-primary transition-all duration-75 ease-out z-50"
+            class="scroll-progress-bar"
             :style="{ width: `${scrollProgress}%`, opacity: scrollProgress > 0 ? 1 : 0 }"
         />
     </header>

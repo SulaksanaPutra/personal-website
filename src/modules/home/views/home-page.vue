@@ -1,10 +1,10 @@
 <template>
-    <div class="section-container relative">
+    <div class="section-container">
         <div
             v-for="section in mountedSections"
             :id="`section-${section.name}`"
             :key="section.name"
-            class="section-wrapper"
+            class="section-wrapper py-8 px-6 md:px-0"
         >
             <component :is="section.component" />
         </div>
@@ -193,9 +193,4 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
-.section-wrapper {
-    min-height: 100vh;
-    width: 100%;
-}
-</style>
+

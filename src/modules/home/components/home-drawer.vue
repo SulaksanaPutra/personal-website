@@ -1,14 +1,14 @@
 <template>
     <aside
-        class="fixed z-[60] md:z-30 left-0 w-64 bg-bg-main border-r border-border-subtle transition-transform duration-300 overflow-y-auto"
+        class="drawer-aside"
         :class="isDrawerOpen ? 'translate-x-0' : '-translate-x-full'"
         style="top: var(--header-height); height: calc(100vh - var(--header-height))"
         @mouseleave="onDrawerMouseLeave"
     >
-        <nav class="p-6 pt-10 relative">
+        <nav class="drawer-nav">
             <button
                 type="button"
-                class="absolute top-4 right-4 md:hidden flex items-center justify-center w-8 h-8 rounded-full hover:bg-bg-muted"
+                class="drawer-close-btn"
                 aria-label="Close menu"
                 @click="toggleDrawer"
             >
@@ -18,11 +18,11 @@
             <ul>
                 <template v-for="item in homeDrawer" :key="item.id">
                     <router-link v-slot="{ href, navigate }" :to="item.href || '/'" custom>
-                        <li v-show="!item.isActive" class="flex gap-3 mb-6">
+                        <li v-show="!item.isActive" class="drawer-item">
                             <div class="w-full">
                                 <a
                                     :href="href"
-                                    class="block font-medium text-base text-text-primary hover:text-accent-primary transition-opacity duration-300"
+                                    class="drawer-item-label"
                                     @click="
                                         ($event) => {
                                             onItemClicked(item, $event);
@@ -34,7 +34,7 @@
                                     {{ item.label }}
                                 </a>
                                 <p
-                                    class="text-sm text-text-secondary mt-1 leading-relaxed hyphens-auto snap-y snap-mandatory"
+                                    class="drawer-item-description"
                                 >
                                     {{ item.description }}
                                 </p>

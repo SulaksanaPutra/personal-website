@@ -25,6 +25,8 @@ export default {
       },
       spacing: {
         'v-rhythm': '24px',
+        '9': '2.25rem',
+        '18': '4.5rem',
       }
     },
   },
