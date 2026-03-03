@@ -1,8 +1,10 @@
 import { Header } from '@/core/types/header.types.ts';
 import { useI18n } from '@/core/composables/use-i18n.ts';
 import { computed } from 'vue';
+import { SYSTEMS_BY_LOCALE } from '@/modules/systems/data/systems.data.ts';
+import { CASE_STUDIES_BY_LOCALE } from '@/modules/case-studies/data/case-studies.data.ts';
 
-const HEADER_BY_LOCALE: Record<'en' | 'id', Header | null> = {
+const HEADER_BY_LOCALE: Record<'en' | 'id', Header> = {
     en: {
         searchLinks: [
             {
@@ -21,61 +23,107 @@ const HEADER_BY_LOCALE: Record<'en' | 'id', Header | null> = {
                 id: 'case-studies',
                 label: 'Case Studies',
                 href: '/case-studies',
-                description: 'Deep dives into real-world projectsPage',
+                description: 'Deep dives into real-world projects',
             },
             {
                 id: 'skillsPage',
                 label: 'Skills',
-                href: '/skillsPage',
+                href: '/skills',
                 description: 'Technical stack and core competencies',
             },
             {
                 id: 'contactPage',
                 label: 'Contact',
-                href: '/contactPage',
+                href: '/contact',
                 description: 'What I am currently focused on',
             },
         ],
         navigations: [
+            { id: 'home', label: 'Home', href: '/', hiddenOnMd: false },
+            { id: 'systemsPage', label: 'Systems', href: '/systems', hiddenOnMd: false },
+            { id: 'case-studies', label: 'Case Studies', href: '/case-studies', hiddenOnMd: true },
+            { id: 'skillsPage', label: 'Skills', href: '/skills', hiddenOnMd: false },
+            { id: 'contactPage', label: 'Contact', href: '/contact', hiddenOnMd: false },
+        ],
+    },
+    id: {
+        searchLinks: [
             {
                 id: 'home',
-                label: 'Home',
+                label: 'Beranda',
                 href: '/',
-                hiddenOnMd: false,
+                description: 'Ringkasan dan pendahuluan',
             },
             {
                 id: 'systemsPage',
-                label: 'Systems',
+                label: 'Sistem',
                 href: '/systems',
-                hiddenOnMd: false,
+                description: 'Arsitektur, pola, dan catatan desain sistem',
             },
             {
                 id: 'case-studies',
-                label: 'Case Studies',
+                label: 'Studi Kasus',
                 href: '/case-studies',
-                hiddenOnMd: true,
+                description: 'Eksplorasi mendalam proyek dunia nyata',
             },
             {
                 id: 'skillsPage',
-                label: 'Skills',
-                href: '/skillsPage',
-                hiddenOnMd: false,
+                label: 'Keahlian',
+                href: '/skills',
+                description: 'Teknologi dan kompetensi inti',
             },
             {
                 id: 'contactPage',
-                label: 'Contact',
-                href: '/contactPage',
-                hiddenOnMd: false,
+                label: 'Kontak',
+                href: '/contact',
+                description: 'Fokus saya saat ini',
             },
         ],
+        navigations: [
+            { id: 'home', label: 'Beranda', href: '/', hiddenOnMd: false },
+            { id: 'systemsPage', label: 'Sistem', href: '/systems', hiddenOnMd: false },
+            { id: 'case-studies', label: 'Studi Kasus', href: '/case-studies', hiddenOnMd: true },
+            { id: 'skillsPage', label: 'Keahlian', href: '/skills', hiddenOnMd: false },
+            { id: 'contactPage', label: 'Kontak', href: '/contact', hiddenOnMd: false },
+        ],
     },
-    id: null,
 };
 
 export function useHeaderData() {
     const { locale } = useI18n();
 
-    return computed<Header | null>(() => HEADER_BY_LOCALE[locale.value] ?? HEADER_BY_LOCALE.en);
+    return computed<Header | null>(() => {
+        // Step 1: Get the current locale or fallback to English
+        const data = HEADER_BY_LOCALE[locale.value] || HEADER_BY_LOCALE.en;
+
+        // Step 2: Content Availability Filtering
+        // This removes menu items if the target page has no content for the current language
+        const filteredNavigations = data.navigations.filter((nav) => {
+            if (nav.id === 'systemsPage') {
+                return SYSTEMS_BY_LOCALE[locale.value]?.length > 0;
+            }
+            if (nav.id === 'case-studies') {
+                return CASE_STUDIES_BY_LOCALE[locale.value]?.length > 0;
+            }
+            return true;
+        });
+
+        const filteredSearchLinks = data.searchLinks.filter((link) => {
+            if (link.id === 'systemsPage') {
+                return SYSTEMS_BY_LOCALE[locale.value]?.length > 0;
+            }
+            if (link.id === 'case-studies') {
+                return CASE_STUDIES_BY_LOCALE[locale.value]?.length > 0;
+            }
+            return true;
+        });
+
+        return {
+            ...data,
+            navigations: filteredNavigations,
+            searchLinks: filteredSearchLinks,
+        };
+    });
 }
 
 export default HEADER_BY_LOCALE.en;

@@ -45,7 +45,7 @@ export function useCaseStudiesData(systemId?: string | import('vue').Ref<string 
     const { locale } = useI18n();
 
     return computed<CaseStudies>(() => {
-        const currentLocale = CASE_STUDIES_BY_LOCALE[locale.value] ?? CASE_STUDIES_BY_LOCALE.en;
+        const currentLocale = CASE_STUDIES_BY_LOCALE[locale.value] ?? [];
 
         const resolvedSystemId = unref(systemId);
         if (resolvedSystemId) {

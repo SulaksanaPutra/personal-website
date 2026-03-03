@@ -161,7 +161,7 @@ export const SYSTEMS_BY_LOCALE: Record<'en' | 'id', Systems> = {
 export function useSystemsData() {
     const { locale } = useI18n();
 
-    return computed<Systems>(() => SYSTEMS_BY_LOCALE[locale.value] ?? SYSTEMS_BY_LOCALE.en);
+    return computed<Systems>(() => SYSTEMS_BY_LOCALE[locale.value] ?? []);
 }
 
 export default SYSTEMS_BY_LOCALE.en;

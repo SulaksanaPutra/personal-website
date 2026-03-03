@@ -11,10 +11,7 @@ const CASE_STUDIES_DRAWER_BY_LOCALE: Record<'en' | 'id', CaseStudiesDrawer> = {
 
 (['en', 'id'] as const).forEach((locale) => {
     const caseStudies = CASE_STUDIES_BY_LOCALE[locale];
-    let systems = SYSTEMS_BY_LOCALE[locale];
-    if (!systems || systems.length === 0) {
-        systems = SYSTEMS_BY_LOCALE.en;
-    }
+    const systems = SYSTEMS_BY_LOCALE[locale];
 
     const grouped = caseStudies.reduce(
         (acc, study) => {
@@ -33,7 +30,7 @@ const CASE_STUDIES_DRAWER_BY_LOCALE: Record<'en' | 'id', CaseStudiesDrawer> = {
 
         return {
             id: systemId,
-            label: system?.heading ?? 'unknow system ' + systemId,
+            label: system?.heading ?? 'System ' + systemId,
             cases: studies.map((study) => ({
                 id: study.link.id,
                 href: study.link.href,
