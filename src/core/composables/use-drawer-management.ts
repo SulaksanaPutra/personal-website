@@ -43,6 +43,14 @@ export function useDrawerManagement() {
 
     const syncDrawerState = () => {
         const key = getDrawerStateKey();
+
+        // 1. Force hidden on case study articles (don't read from storage)
+        if (route.name === 'case-study-article') {
+            isDrawerOpen.value = false;
+            return;
+        }
+
+        // 2. Otherwise use the standard persistence logic
         const stored = localStorage.getItem(key);
 
         if (
@@ -56,11 +64,26 @@ export function useDrawerManagement() {
         }
     };
 
+    const toggleDrawer = () => {
+        isDrawerOpen.value = !isDrawerOpen.value;
+
+        // Only persist state on desktop screens
+        if (window.innerWidth >= 768) {
+            const key = getDrawerStateKey();
+            localStorage.setItem(key, isDrawerOpen.value.toString());
+        }
+    };
+
     watch(
         route,
         () => {
             syncDrawerState();
             isDrawerEmpty.value = !route.meta.drawer;
+
+            // Auto-close drawer on navigation for mobile screens
+            if (window.innerWidth < 768) {
+                isDrawerOpen.value = false;
+            }
         },
         { immediate: true },
     );
@@ -68,6 +91,8 @@ export function useDrawerManagement() {
     return {
         currentDrawer,
         isDrawerOpen,
+        isDrawerEmpty,
+        toggleDrawer,
         sectionRoutes,
     };
 }

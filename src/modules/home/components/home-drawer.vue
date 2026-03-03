@@ -49,13 +49,14 @@
 
 <script setup lang="ts">
 import { ref, watch } from 'vue';
-import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
-import { isDrawerOpen } from '@/store';
+import { useRoute } from 'vue-router';
 import { X } from 'lucide-vue-next';
 import { HomeDrawerItem } from '@/modules/home/types/home.types.ts';
 import { useHomeDrawerData } from '@/modules/home/data/home-drawer.data.ts';
+import { useDrawerManagement } from '@/core/composables/use-drawer-management';
 
-const route: RouteLocationNormalizedLoaded = useRoute();
+const route = useRoute();
+const { toggleDrawer, isDrawerOpen } = useDrawerManagement();
 
 const drawerData = useHomeDrawerData();
 const homeDrawer = ref<HomeDrawerItem[]>([]);
@@ -80,29 +81,9 @@ watch(
             if (pendingActiveItem.value && item.id === pendingActiveItem.value.id) return;
             item.isActive = item.href === newPath;
         });
-
-        if (window.innerWidth < 768) {
-            isDrawerOpen.value = false;
-            return;
-        }
-
-        const savedState = localStorage.getItem('drawerOpen');
-        if (savedState !== null) {
-            isDrawerOpen.value = savedState === 'true';
-        } else {
-            isDrawerOpen.value = true;
-            localStorage.setItem('drawerOpen', 'true');
-        }
     },
     { immediate: true },
 );
-
-const toggleDrawer = () => {
-    isDrawerOpen.value = !isDrawerOpen.value;
-    if (window.innerWidth >= 768) {
-        localStorage.setItem('drawerOpen', isDrawerOpen.value.toString());
-    }
-};
 
 const handleDrawerLinkClick = () => {
     if (window.innerWidth < 768) {

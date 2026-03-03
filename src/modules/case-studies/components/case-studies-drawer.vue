@@ -64,15 +64,16 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue';
-import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
-import { activeSection, isDrawerOpen } from '@/store';
+import { computed, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { activeSection } from '@/store';
 import { ChevronDown, X } from 'lucide-vue-next';
 import { useCaseStudiesDrawerData } from '@/modules/case-studies/data/case-studies-drawer.data.ts';
+import { useDrawerManagement } from '@/core/composables/use-drawer-management';
 
 const caseStudiesDrawer = useCaseStudiesDrawerData();
-
-const route: RouteLocationNormalizedLoaded = useRoute();
+const route = useRoute();
+const { toggleDrawer, isDrawerOpen } = useDrawerManagement();
 
 const allSystemIds = computed<string[]>(() => caseStudiesDrawer.value.map((s) => s.id));
 
@@ -86,30 +87,5 @@ const toggleSystem = (id: string) => {
         openSystems.value.splice(index, 1);
     }
 };
-
-watch(
-    () => route.path,
-    () => {
-        if (window.innerWidth < 768) {
-            isDrawerOpen.value = false;
-            return;
-        }
-
-        const savedState = localStorage.getItem('caseStudiesDrawerOpen');
-        if (savedState !== null) {
-            isDrawerOpen.value = savedState === 'true';
-        } else {
-            isDrawerOpen.value = true;
-            localStorage.setItem('caseStudiesDrawerOpen', 'true');
-        }
-    },
-    { immediate: true },
-);
-
-const toggleDrawer = () => {
-    isDrawerOpen.value = !isDrawerOpen.value;
-    if (window.innerWidth >= 768) {
-        localStorage.setItem('caseStudiesDrawerOpen', isDrawerOpen.value.toString());
-    }
-};
 </script>
+

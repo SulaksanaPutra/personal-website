@@ -170,16 +170,9 @@ const filteredLinks = computed<NonNullable<Header['searchLinks']>>(() =>
     ),
 );
 
-const getDrawerStateKey = (): string => {
-    if (route.path === '/systems') return 'systemsDrawerOpen';
-    if (route.path === '/case-studies') return 'caseStudiesDrawerOpen';
-    return 'drawerOpen';
-};
+import { useDrawerManagement } from '@/core/composables/use-drawer-management';
 
-const toggleDrawer = (): void => {
-    isDrawerOpen.value = !isDrawerOpen.value;
-    localStorage.setItem(getDrawerStateKey(), isDrawerOpen.value.toString());
-};
+const { toggleDrawer } = useDrawerManagement();
 
 const toggleTheme = (): void => {
     isDark.value = !isDark.value;

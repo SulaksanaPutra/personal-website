@@ -40,42 +40,13 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue';
-import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
-import { activeSection, headerComponentRef, isDrawerOpen } from '@/store';
-
 import { X } from 'lucide-vue-next';
+import { activeSection, headerComponentRef } from '@/store';
+import { useDrawerManagement } from '@/core/composables/use-drawer-management';
 import { useSystemsDrawerData } from '@/modules/systems/data/systems-drawer.data.ts';
 
 const systemsDrawer = useSystemsDrawerData();
-
-const route: RouteLocationNormalizedLoaded = useRoute();
-
-watch(
-    () => route.path,
-    () => {
-        if (window.innerWidth < 768) {
-            isDrawerOpen.value = false;
-            return;
-        }
-
-        const savedState = localStorage.getItem('systemsDrawerOpen');
-        if (savedState !== null) {
-            isDrawerOpen.value = savedState === 'true';
-        } else {
-            isDrawerOpen.value = true;
-            localStorage.setItem('systemsDrawerOpen', 'true');
-        }
-    },
-    { immediate: true },
-);
-
-const toggleDrawer = () => {
-    isDrawerOpen.value = !isDrawerOpen.value;
-    if (window.innerWidth >= 768) {
-        localStorage.setItem('systemsDrawerOpen', isDrawerOpen.value.toString());
-    }
-};
+const { toggleDrawer, isDrawerOpen } = useDrawerManagement();
 
 const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
@@ -97,3 +68,4 @@ const scrollToSection = (id: string) => {
     }
 };
 </script>
+
