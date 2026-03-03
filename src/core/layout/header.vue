@@ -201,12 +201,27 @@ const handleKeydown = (e: KeyboardEvent): void => {
     }
 };
 
+let resizeObserver: ResizeObserver | null = null;
+
 onMounted(() => {
     window.addEventListener('keydown', handleKeydown);
     headerComponentRef.value = { headerRef: headerRef.value };
+
+    if (headerRef.value) {
+        resizeObserver = new ResizeObserver((entries) => {
+            for (const entry of entries) {
+                const height = entry.target.getBoundingClientRect().height;
+                document.documentElement.style.setProperty('--header-height', `${height}px`);
+            }
+        });
+        resizeObserver.observe(headerRef.value);
+    }
 });
 
 onUnmounted(() => {
     window.removeEventListener('keydown', handleKeydown);
+    if (resizeObserver) {
+        resizeObserver.disconnect();
+    }
 });
 </script>

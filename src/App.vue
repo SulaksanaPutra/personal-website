@@ -19,143 +19,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineAsyncComponent, onMounted, onUnmounted, ref, watch } from 'vue';
-import { RouteLocationNormalized, useRoute } from 'vue-router';
 import Header from '@/core/layout/header.vue';
 import Footer from '@/core/layout/footer.vue';
-import { drawerTop, headerComponentRef, isDark, isDrawerOpen, scrollProgress } from '@/store';
+import { useTheme } from '@/core/composables/use-theme';
+import { useScrollProgress } from '@/core/composables/use-scroll-progress';
+import { useDrawerManagement } from '@/core/composables/use-drawer-management';
+import { useAppLayout } from '@/core/composables/use-app-layout';
 
-const route = useRoute();
-
-const drawerComponents = import.meta.glob('@/modules/**/components/*-drawer.vue');
-
-const asyncComponentCache: Record<string, any> = {};
-
-const currentDrawer = computed(() => {
-    if (!route.name) return null;
-    let routeName = typeof route.name === 'string' ? route.name : String(route.name);
-    if (sectionRoutes.includes(routeName)) {
-        routeName = 'home';
-    }
-    const targetPath = `/modules/${routeName}/components/${routeName}-drawer.vue`;
-    const componentKey = Object.keys(drawerComponents).find((key) => key.endsWith(targetPath));
-
-    if (!componentKey) return null;
-
-    if (!asyncComponentCache[componentKey]) {
-        asyncComponentCache[componentKey] = defineAsyncComponent(drawerComponents[componentKey] as any);
-    }
-    return asyncComponentCache[componentKey];
-});
-
-const getDrawerStateKey = () => {
-    if (!route.name) return 'drawerOpen';
-    let routeName = typeof route.name === 'string' ? route.name : String(route.name);
-    if (sectionRoutes.includes(routeName)) {
-        routeName = 'home';
-    }
-    return routeName + 'DrawerOpen';
-};
-
-const syncDrawerState = () => {
-    const key = getDrawerStateKey();
-    const stored = localStorage.getItem(key);
-
-    if (
-        ['/systems', '/case-studies', '/skills', '/contact'].includes(route.path) &&
-        stored === null
-    ) {
-        isDrawerOpen.value = true;
-        localStorage.setItem(key, 'true');
-    } else {
-        isDrawerOpen.value = stored === 'true';
-    }
-};
-
-const updateScrollProgress = () => {
-    const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-    const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-
-    if (height > 0) {
-        scrollProgress.value = (winScroll / height) * 100;
-    } else {
-        scrollProgress.value = 0;
-    }
-};
-
-const updateDrawerTop = () => {
-    if (headerComponentRef.value?.headerRef) {
-        drawerTop.value = `${headerComponentRef.value.headerRef.offsetHeight}px`;
-        return;
-    }
-
-    const w = window.innerWidth;
-    if (w < 768) {
-        drawerTop.value = '0px';
-    } else if (w < 1185) {
-        drawerTop.value = '116px';
-    } else {
-        drawerTop.value = '76px';
-    }
-};
-
-// --- Lifecycle ---
-onMounted(() => {
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) {
-        isDark.value = savedTheme === 'dark';
-        document.documentElement.classList.toggle('dark', isDark.value);
-    } else {
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        isDark.value = prefersDark;
-        document.documentElement.classList.toggle('dark', prefersDark);
-    }
-
-    window.addEventListener('scroll', updateScrollProgress, { passive: true });
-    syncDrawerState();
-    updateDrawerTop();
-    window.addEventListener('resize', updateDrawerTop);
-});
-
-onUnmounted(() => {
-    window.removeEventListener('scroll', updateScrollProgress);
-    window.removeEventListener('resize', updateDrawerTop);
-});
-
-watch(
-    () => route.path,
-    () => {
-        syncDrawerState();
-    },
-    { immediate: true },
-);
-
-const sectionRoutes = ['about', 'writing', 'projects', 'uses', 'hobbies'];
-
-const previousRouteName = ref<string | null>(null);
-watch(
-    () => route.name,
-    (_to, from) => {
-        previousRouteName.value = (from as string | undefined) ?? null;
-    },
-    { immediate: true },
-);
-
-const shouldTransition = (route: RouteLocationNormalized) => {
-    const toName = route.name as string | undefined;
-    const fromName = previousRouteName.value ?? undefined;
-    return !(
-        toName &&
-        fromName &&
-        sectionRoutes.includes(toName) &&
-        sectionRoutes.includes(fromName)
-    );
-};
-
-const getRouteKey = (route: RouteLocationNormalized) => {
-    if (sectionRoutes.includes(route.name as string)) {
-        return 'section-container';
-    }
-    return route.path;
-};
+// --- Composables ---
+useTheme();
+useScrollProgress();
+const { currentDrawer, isDrawerOpen, sectionRoutes } = useDrawerManagement();
+const { shouldTransition, getRouteKey } = useAppLayout(sectionRoutes);
 </script>
+

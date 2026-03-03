@@ -1,8 +1,8 @@
 <template>
     <aside
-        class="fixed z-[60] md:z-30 left-0 h-screen w-64 bg-bg-main border-r border-border-subtle transition-transform duration-300 overflow-y-auto"
+        class="fixed z-[60] md:z-30 left-0 w-64 bg-bg-main border-r border-border-subtle transition-transform duration-300 overflow-y-auto"
         :class="isDrawerOpen ? 'translate-x-0' : '-translate-x-full'"
-        :style="{ top: drawerTop, height: `calc(100vh - ${drawerTop})` }"
+        style="top: var(--header-height); height: calc(100vh - var(--header-height))"
     >
         <nav class="p-6 pt-10 relative">
             <button
@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { watch } from 'vue';
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
-import { activeSection, drawerTop, headerComponentRef, isDrawerOpen } from '@/store';
+import { activeSection, headerComponentRef, isDrawerOpen } from '@/store';
 
 import { X } from 'lucide-vue-next';
 import { useSystemsDrawerData } from '@/modules/systems/data/systems-drawer.data.ts';

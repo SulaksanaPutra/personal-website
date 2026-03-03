@@ -1,8 +1,8 @@
 <template>
     <aside
-        class="fixed z-[60] md:z-30 left-0 h-screen w-64 bg-bg-main border-r border-border-subtle transition-transform duration-300 overflow-y-auto"
+        class="fixed z-[60] md:z-30 left-0 w-64 bg-bg-main border-r border-border-subtle transition-transform duration-300 overflow-y-auto"
         :class="isDrawerOpen ? 'translate-x-0' : '-translate-x-full'"
-        :style="{ top: drawerTop, height: `calc(100vh - ${drawerTop})` }"
+        style="top: var(--header-height); height: calc(100vh - var(--header-height))"
         @mouseleave="onDrawerMouseLeave"
     >
         <nav class="p-6 pt-10 relative">
@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue';
 import { type RouteLocationNormalizedLoaded, useRoute } from 'vue-router';
-import { drawerTop, isDrawerOpen } from '@/store';
+import { isDrawerOpen } from '@/store';
 import { X } from 'lucide-vue-next';
 import { HomeDrawerItem } from '@/modules/home/types/home.types.ts';
 import { useHomeDrawerData } from '@/modules/home/data/home-drawer.data.ts';
