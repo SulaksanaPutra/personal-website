@@ -33,7 +33,7 @@
                 <!-- Header -->
                 <div class="chat-box-header">
                     <div class="flex items-center">
-                        <h3 class="m-0">Let's talk</h3>
+                        <h3 class="m-0">Chatbox</h3>
                     </div>
                     <button
                         @click="toggleChat"
@@ -95,7 +95,9 @@
                             <div
                                 :class="[
                                     'chat-box-bubble',
-                                    msg.direction === 'outgoing' ? 'chat-box-bubble-user' : 'chat-box-bubble-bot',
+                                    msg.direction === 'outgoing'
+                                        ? 'chat-box-bubble-user'
+                                        : 'chat-box-bubble-bot',
                                 ]"
                             >
                                 {{ msg.message }}
@@ -150,7 +152,7 @@
 
 <script setup lang="ts">
 import { nextTick, ref, watch } from 'vue';
-import { MessageCircle, Send, X, Sparkles } from 'lucide-vue-next';
+import { MessageCircle, Send, Sparkles, X } from 'lucide-vue-next';
 import { useChat } from '../composables/use-chat';
 
 const { messages, isOpen, isLoading, newMessage, toggleChat, send } = useChat();
@@ -177,11 +179,11 @@ const handleTouchMove = (e: TouchEvent) => {
 const handleTouchEnd = () => {
     if (!isDragging.value) return;
     isDragging.value = false;
-    
+
     // If dragged down enough, close
     if (dragY.value > 150) {
         toggleChat();
-    } 
+    }
     // If dragged up enough, fullscreen
     else if (dragY.value < -100) {
         isFullscreen.value = true;
@@ -190,7 +192,7 @@ const handleTouchEnd = () => {
     else if (isFullscreen.value && dragY.value > 100) {
         isFullscreen.value = false;
     }
-    
+
     dragY.value = 0;
 };
 
@@ -231,8 +233,15 @@ const formatTime = (timestamp: number) => {
 }
 
 @keyframes typing {
-    0%, 100% { transform: translateY(0); opacity: 0.3; }
-    50% { transform: translateY(-3px); opacity: 1; }
+    0%,
+    100% {
+        transform: translateY(0);
+        opacity: 0.3;
+    }
+    50% {
+        transform: translateY(-3px);
+        opacity: 1;
+    }
 }
 
 .typing-dot {

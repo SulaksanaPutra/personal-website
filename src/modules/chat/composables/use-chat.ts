@@ -39,10 +39,15 @@ export function useChat() {
             try {
                 const payload = JSON.parse(event.data);
 
-                if (payload.message) {
+                if (payload.type === 'clear') {
+                    console.log('SSE clear event received');
+                    messages.value = [];
+                } else if (payload.message) {
                     console.log('SSE message received');
-
-                    messages.value.push(payload.message);
+                    const exists = messages.value.some(m => m.id === payload.message.id);
+                    if (!exists) {
+                        messages.value.push(payload.message);
+                    }
                 }
             } catch {
                 // Ignore keep-alive comments or malformed payloads

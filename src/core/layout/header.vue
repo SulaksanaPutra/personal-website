@@ -1,8 +1,5 @@
 <template>
-    <header
-        ref="headerRef"
-        class="header-main"
-    >
+    <header ref="headerRef" class="header-main">
         <div class="header-container">
             <div class="flex items-center w-full md:w-auto">
                 <div class="flex items-center mr-4 md:mr-8 text-text-primary">
@@ -41,18 +38,12 @@
                             <MessageCircle v-if="!isOpen" :size="18" />
                             <X v-else :size="18" />
                         </button>
-                        <div
-                            class="md:hidden lang-switcher-container"
-                        >
+                        <div class="md:hidden lang-switcher-container">
                             <button
                                 v-for="lang in ['EN', 'ID']"
                                 :key="lang"
                                 class="lang-btn"
-                                :class="
-                                    language === lang
-                                        ? 'lang-btn-active'
-                                        : 'lang-btn-inactive'
-                                "
+                                :class="language === lang ? 'lang-btn-active' : 'lang-btn-inactive'"
                                 @click="setLanguage(lang)"
                             >
                                 {{ lang }}
@@ -75,10 +66,7 @@
                         @keydown="handleSearchKeydown"
                     />
                 </div>
-                <ul
-                    v-if="searchQuery && filteredLinks.length"
-                    class="search-result-container"
-                >
+                <ul v-if="searchQuery && filteredLinks.length" class="search-result-container">
                     <li
                         v-for="(item, index) in filteredLinks"
                         :key="item.id"
@@ -88,13 +76,12 @@
                     >
                         <router-link :to="item.href" class="block" @click="searchQuery = ''">
                             <div class="flex items-center justify-between">
-                                <span class="text-sm font-medium text-text-primary">
+                                <span
+                                    class="text-sm font-medium text-text-primary line-clamp-1 max-w-72 md:max-w-80"
+                                >
                                     {{ item.label }}
                                 </span>
-                                <span
-                                    v-if="item.category"
-                                    class="search-category-tag"
-                                >
+                                <span v-if="item.category" class="search-category-tag">
                                     {{ item.category }}
                                 </span>
                             </div>
@@ -106,19 +93,13 @@
                 </ul>
             </div>
             <nav class="nav-wrapper">
-                <ul
-                    class="nav-list"
-                >
+                <ul class="nav-list">
                     <li
                         v-for="nav in navLinks"
                         :key="nav.href"
                         :class="nav.hiddenOnMd ? 'hidden md:block' : ''"
                     >
-                        <router-link
-                            :to="nav.href"
-                            class="nav-link"
-                            active-class="nav-link-active"
-                        >
+                        <router-link :to="nav.href" class="nav-link" active-class="nav-link-active">
                             {{ nav.label }}
                         </router-link>
                     </li>
@@ -132,18 +113,12 @@
                     <Moon v-if="!isDark" :size="20" class="text-text-primary" />
                     <Sun v-else :size="20" class="text-text-primary" />
                 </button>
-                <div
-                    class="hidden md:flex lang-switcher-container ml-4"
-                >
+                <div class="hidden md:flex lang-switcher-container ml-4">
                     <button
                         v-for="lang in ['EN', 'ID']"
                         :key="lang"
                         class="lang-btn"
-                        :class="
-                            language === lang
-                                ? 'lang-btn-active'
-                                : 'lang-btn-inactive'
-                        "
+                        :class="language === lang ? 'lang-btn-active' : 'lang-btn-inactive'"
                         @click="setLanguage(lang)"
                     >
                         {{ lang }}

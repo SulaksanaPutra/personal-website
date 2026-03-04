@@ -2,11 +2,35 @@
     <span v-if="!hasMatches">{{ text }}</span>
     <template v-else>
         <template v-for="(part, index) in parts" :key="index">
-            <span v-if="part.isGlossary" class="glossary-term">
+            <span 
+                v-if="part.isGlossary" 
+                class="glossary-term"
+                @click="toggleMobileTooltip(index)"
+            >
                 {{ part.text }}
-                <span v-if="part.definition" class="glossary-tooltip">
+                <span 
+                    v-if="part.definition" 
+                    class="glossary-tooltip"
+                    :class="{ 'is-active': activeTooltipIndex === index }"
+                >
+                    <div class="flex justify-between items-center md:hidden mb-4">
+                        <span class="font-bold text-accent-primary uppercase tracking-widest text-[10px]">
+                            {{ part.text }}
+                        </span>
+                        <button @click.stop="activeTooltipIndex = null" class="p-1 -mr-2 text-text-secondary hover:text-text-primary">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                        </button>
+                    </div>
                     {{ part.definition }}
                 </span>
+                <!-- Mobile Backdrop -->
+                <teleport to="body">
+                    <div 
+                        v-if="activeTooltipIndex === index" 
+                        class="glossary-backdrop md:hidden" 
+                        @click="activeTooltipIndex = null"
+                    ></div>
+                </teleport>
             </span>
             <template v-else>{{ part.text }}</template>
         </template>
@@ -14,7 +38,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, inject } from 'vue';
+import { computed, inject, ref } from 'vue';
 import { language } from '@/store';
 import { GLOSSARY_BY_LOCALE } from '@/core/data/common-glossary.data';
 import { GlossaryItem } from '@/core/types/glossary.types';
@@ -23,6 +47,14 @@ const props = defineProps<{
     text: string;
     items?: GlossaryItem[];
 }>();
+
+const activeTooltipIndex = ref<number | null>(null);
+
+const toggleMobileTooltip = (index: number) => {
+    if (window.innerWidth < 768) {
+        activeTooltipIndex.value = activeTooltipIndex.value === index ? null : index;
+    }
+};
 
 // Inject a shared registry (Set) from parent if available to track matches across components
 const glossaryRegistry = inject<Set<string> | null>('glossaryRegistry', null);
