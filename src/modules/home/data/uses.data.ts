@@ -11,6 +11,16 @@ const USES_BY_LOCALE: Record<'en' | 'id', Uses> = {
             'Terminal: iTerm2 / Warp',
             'Font: JetBrains Mono',
         ],
+        glossary: [
+            {
+                term: 'VS Code',
+                definition: 'A highly extensible code editor developed by Microsoft.',
+            },
+            {
+                term: 'iTerm2',
+                definition: 'A power-user terminal replacement for the default macOS Terminal.',
+            },
+        ],
     },
     id: {
         title: 'Peralatan',
@@ -21,6 +31,16 @@ const USES_BY_LOCALE: Record<'en' | 'id', Uses> = {
             'Editor: VS Code / IntelliJ IDEA',
             'Terminal: iTerm2 / Warp',
             'Font: JetBrains Mono',
+        ],
+        glossary: [
+            {
+                term: 'VS Code',
+                definition: 'Editor kode yang sangat ekstensibel yang dikembangkan oleh Microsoft.',
+            },
+            {
+                term: 'iTerm2',
+                definition: 'Pengganti terminal bawaan macOS yang kaya fitur.',
+            },
         ],
     },
 };

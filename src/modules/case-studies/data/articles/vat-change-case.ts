@@ -77,6 +77,16 @@ export const VAT_CHANGE_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArticle | n
                 ],
             },
         ],
+        glossary: [
+            {
+                term: 'legacy system',
+                definition: 'An outdated computer system, programming language, or software application that is still in use by an organization.',
+            },
+            {
+                term: 'master data',
+                definition: 'The core data within an enterprise that describes objects like products, customers, and suppliers around which business is conducted.',
+            },
+        ],
     },
     id: null,
 };

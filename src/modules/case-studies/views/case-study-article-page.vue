@@ -22,9 +22,7 @@
                     {{ article.backLink.label }}
                 </router-link>
 
-                <div
-                    class="article-meta-row"
-                >
+                <div class="article-meta-row">
                     <span class="flex items-center gap-1.5" title="Reading Time">
                         <Clock class="w-3.5 h-3.5" />
                         {{ readingTime }} min read
@@ -38,9 +36,7 @@
             </div>
 
             <header class="article-header">
-                <h1
-                    class="article-title-large"
-                >
+                <h1 class="article-title-large">
                     {{ article.title }}
                 </h1>
                 <p class="article-summary">
@@ -51,18 +47,20 @@
             <div class="article-body">
                 <aside class="toc-aside">
                     <nav v-if="article.sections?.length">
-                        <h2
-                            class="toc-title"
-                        >
-                            On this page
-                        </h2>
+                        <h2 class="toc-title">On this page</h2>
                         <ul class="toc-list">
-                            <li v-for="section in article.sections" :key="section.id" class="toc-item">
+                            <li
+                                v-for="section in article.sections"
+                                :key="section.id"
+                                class="toc-item"
+                            >
                                 <a
                                     :href="`#${section.id}`"
                                     @click.prevent="scrollToSection(section.id)"
                                     class="toc-link"
-                                    :class="{ 'toc-link-active': currentActiveSection === section.id }"
+                                    :class="{
+                                        'toc-link-active': currentActiveSection === section.id,
+                                    }"
                                 >
                                     <div
                                         v-if="currentActiveSection === section.id"
@@ -75,9 +73,7 @@
                     </nav>
                 </aside>
 
-                <article
-                    class="article-content"
-                >
+                <article class="article-content">
                     <section
                         v-for="section in article.sections"
                         :id="section.id"
@@ -88,16 +84,17 @@
                             {{ section.label }}
                         </h3>
                         <div v-if="section.paragraphs" class="space-y-6">
-                            <p v-for="(paragraph, pIndex) in section.paragraphs" :key="pIndex" class="article-paragraph">
-                                {{ paragraph }}
+                            <p
+                                v-for="(paragraph, pIndex) in section.paragraphs"
+                                :key="pIndex"
+                                class="article-paragraph"
+                            >
+                                <GlossaryText :text="paragraph" :items="glossaryItems" />
                             </p>
                         </div>
-                        <ul
-                            v-if="section.items"
-                            class="pl-6 list-disc space-y-3 article-paragraph"
-                        >
+                        <ul v-if="section.items" class="pl-6 list-disc space-y-3 article-paragraph">
                             <li v-for="(item, iIndex) in section.items" :key="iIndex">
-                                {{ item }}
+                                <GlossaryText :text="item" :items="glossaryItems" />
                             </li>
                         </ul>
                     </section>
@@ -116,10 +113,7 @@
                 <p class="text-text-secondary mb-8">
                     The case study you are looking for does not exist or is no longer available.
                 </p>
-                <router-link
-                    to="/case-studies"
-                    class="btn-primary"
-                >
+                <router-link to="/case-studies" class="btn-primary">
                     Back to case studies
                 </router-link>
             </div>
@@ -128,23 +122,33 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, provide, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useWindowScroll } from '@vueuse/core';
 import { useCaseStudyArticle } from '@/modules/case-studies/data/case-studies.data.ts';
 import { headerComponentRef } from '@/store.ts';
 import { ArrowLeft, ArrowUp, BookOpen, Clock, FileQuestion } from 'lucide-vue-next';
+import GlossaryText from '@/core/components/glossary-text.vue';
 
 import { useSeo } from '@/core/composables/use-seo';
+import { language } from '@/store';
 
 const route = useRoute();
 const articleId = typeof route.params.articleId === 'string' ? route.params.articleId : '';
-const article = useCaseStudyArticle(articleId);
+const articleData = useCaseStudyArticle(articleId);
+const glossaryItems = computed(() => articleData.value?.glossary || []);
+const article = computed(() => articleData.value);
+
+const glossaryRegistry = new Set<string>();
+provide('glossaryRegistry', glossaryRegistry);
+
+watch([language, articleData], () => {
+    glossaryRegistry.clear();
+});
 
 const { y } = useWindowScroll();
 const currentActiveSection = ref<string>('');
 
-// Sync SEO
 useSeo(
     computed(() => {
         if (!article.value) return null;
@@ -156,7 +160,6 @@ useSeo(
     }),
 );
 
-// Calculate Reading Time
 const readingTime = computed(() => {
     if (!article.value) return 0;
 
@@ -171,7 +174,6 @@ const readingTime = computed(() => {
     return Math.ceil(words / 200); // 200 WPM baseline
 });
 
-// Scroll to Top
 const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 };
@@ -190,7 +192,6 @@ const scrollToSection = (id: string) => {
     }
 };
 
-// Intersection Observer for TOC
 let observer: IntersectionObserver | null = null;
 
 onMounted(() => {

@@ -1,5 +1,6 @@
 import { Link } from '@/core/types/link.types.ts';
 import { DrawerItem } from '@/core/types/drawer.types.ts';
+import { GlossaryItem } from '@/core/types/glossary.types';
 
 export interface CaseStudy {
     id: string;
@@ -27,6 +28,7 @@ export interface CaseStudyArticle {
         paragraphs?: string[];
         items?: string[];
     }[];
+    glossary?: GlossaryItem[];
 }
 export type CaseStudyArticles = CaseStudyArticle[];
 
@@ -35,5 +37,5 @@ export interface CaseStudiesDrawerItem extends DrawerItem {
 }
 export type CaseStudiesDrawer = CaseStudiesDrawerItem[];
 
-export interface CaseStudyArticleDrawerItem extends DrawerItem {}
+export interface CaseStudyArticleDrawerItem extends DrawerItem { }
 export type CaseStudyArticleDrawer = CaseStudyArticleDrawerItem[];

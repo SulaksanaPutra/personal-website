@@ -46,6 +46,23 @@ const ABOUT_BY_LOCALE: Record<'en' | 'id', About> = {
                 label: '→ Selected case studies',
             },
         ],
+        glossary: [
+            {
+                term: 'Multi-tenant',
+                definition:
+                    'Software architecture where a single application instance serves multiple customers while keeping their data isolated.',
+            },
+            {
+                term: 'fleet operations',
+                definition:
+                    'Management of commercial vehicles like trucks or vans, including tracking, routing, and maintenance.',
+            },
+            {
+                term: 'internal platforms',
+                definition:
+                    'Custom software built for employees to use for internal business processes and automation.',
+            },
+        ],
     },
     id: {
         intro: [
@@ -88,6 +105,23 @@ const ABOUT_BY_LOCALE: Record<'en' | 'id', About> = {
                 id: 'case-studies',
                 href: '/case-studies',
                 label: '→ Studi kasus pilihan',
+            },
+        ],
+        glossary: [
+            {
+                term: 'Multi-tenant',
+                definition:
+                    'Arsitektur perangkat lunak di mana satu instansi aplikasi melayani banyak pelanggan, memastikan isolasi data sambil berbagi infrastruktur.',
+            },
+            {
+                term: 'fleet operations',
+                definition:
+                    'Manajemen kendaraan komersial seperti truk atau van, termasuk pelacakan lokasi, jadwal pengiriman, dan pemeliharaan.',
+            },
+            {
+                term: 'internal platforms',
+                definition:
+                    'Perangkat lunak yang dibuat khusus untuk digunakan oleh karyawan perusahaan guna mengotomatiskan proses bisnis internal.',
             },
         ],
     },

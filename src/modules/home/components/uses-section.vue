@@ -1,15 +1,15 @@
 <template>
-    <section v-if="page" class="content-narrow">
+    <section v-if="usesData" class="content-narrow">
         <h1 class="heading-large">
-            {{ page.title }}
+            {{ usesData.title }}
         </h1>
         <div class="prose-content">
-            <p v-for="(paragraph, index) in page.descriptions" :key="index">
-                {{ paragraph }}
+            <p v-for="(paragraph, index) in usesData.descriptions" :key="index">
+                <GlossaryText :text="paragraph" :items="glossaryItems" />
             </p>
             <ul class="list-disc pl-5 space-y-2">
-                <li v-for="(item, index) in page.items" :key="index">
-                    {{ item }}
+                <li v-for="(item, index) in usesData.items" :key="index">
+                    <GlossaryText :text="item" :items="glossaryItems" />
                 </li>
             </ul>
         </div>
@@ -17,7 +17,18 @@
 </template>
 
 <script setup lang="ts">
+import { computed, provide, watch } from 'vue';
 import { useUsesData } from '@/modules/home/data/uses.data.ts';
+import GlossaryText from '@/core/components/glossary-text.vue';
+import { language } from '@/store';
 
-const page = useUsesData();
+const usesData = useUsesData();
+const glossaryItems = computed(() => usesData.value?.glossary || []);
+
+const glossaryRegistry = new Set<string>();
+provide('glossaryRegistry', glossaryRegistry);
+
+watch(language, () => {
+    glossaryRegistry.clear();
+});
 </script>

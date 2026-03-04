@@ -282,7 +282,7 @@
     }
 
     .article-body {
-        @apply flex flex-col md:flex-row md:gap-16 relative items-start;
+        @apply flex flex-col md:flex-row md:gap-16 relative items-start z-[1];
     }
 
     .article-content {
@@ -411,6 +411,22 @@
 
     .chat-box-input {
         @apply flex-1 bg-bg-muted border border-border-subtle text-text-primary py-2 px-4 rounded-md text-sm outline-none transition-all focus:bg-bg-main focus:border-accent-primary focus:ring-2 focus:ring-accent-primary;
+    }
+
+    /* Glossary & Tooltips */
+    .glossary-term {
+        @apply cursor-help border-b border-dotted border-accent-primary relative inline-block transition-colors hover:text-accent-primary hover:border-accent-primary leading-normal;
+    }
+
+    .glossary-tooltip {
+        @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 p-3 bg-bg-main border border-border-subtle rounded-xl shadow-2xl text-[11px] leading-relaxed text-text-secondary opacity-0 invisible transition-all duration-300 pointer-events-none z-[9999] normal-case font-normal text-left;
+        transform: translate(-50%, 10px);
+        backdrop-filter: blur(8px);
+    }
+
+    .glossary-term:hover .glossary-tooltip {
+        @apply opacity-100 visible;
+        transform: translate(-50%, 0);
     }
 }
 
