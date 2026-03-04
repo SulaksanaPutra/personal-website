@@ -89,21 +89,21 @@
                             :key="msg.id"
                             :class="[
                                 'flex flex-col gap-1.5 max-w-[85%]',
-                                msg.isUser ? 'self-end' : 'self-start',
+                                msg.direction === 'outgoing' ? 'self-end' : 'self-start',
                             ]"
                         >
                             <div
                                 :class="[
                                     'chat-box-bubble',
-                                    msg.isUser ? 'chat-box-bubble-user' : 'chat-box-bubble-bot',
+                                    msg.direction === 'outgoing' ? 'chat-box-bubble-user' : 'chat-box-bubble-bot',
                                 ]"
                             >
-                                {{ msg.body }}
+                                {{ msg.message }}
                             </div>
                             <span
                                 :class="[
                                     'text-[0.65rem] text-text-secondary font-medium',
-                                    msg.isUser ? 'self-end' : 'self-start',
+                                    msg.direction === 'outgoing' ? 'self-end' : 'self-start',
                                 ]"
                             >
                                 {{ formatTime(msg.timestamp) }}
@@ -209,11 +209,11 @@ watch(isOpen, (val) => {
     }
 });
 
-const formatTime = (date: Date) => {
+const formatTime = (timestamp: number) => {
     return new Intl.DateTimeFormat('id-ID', {
         hour: '2-digit',
         minute: '2-digit',
-    }).format(date);
+    }).format(new Date(timestamp));
 };
 </script>
 

@@ -5,3 +5,10 @@ declare module '*.vue' {
     const component: DefineComponent<object, object, any>;
     export default component;
 }
+interface ImportMetaEnv {
+    readonly VITE_CHAT_BASE_URL: string;
+}
+
+interface ImportMeta {
+    readonly env: ImportMetaEnv;
+}

@@ -1,66 +1,62 @@
 const ID_KEY = 'chat_session_id';
+const BASE_URL = import.meta.env.VITE_CHAT_BASE_URL;
 
 export const getSessionId = () => {
     let id = localStorage.getItem(ID_KEY);
     if (!id) {
-        id = crypto.randomUUID?.() || Math.random().toString(36).substring(2) + Date.now().toString(36);
+        // Generate an 8-character lowercase alphanumeric ID
+        id = Math.random().toString(36).substring(2, 10);
         localStorage.setItem(ID_KEY, id);
     }
     return id;
 };
 
 export interface Message {
-    id: number | string;
-    body: string;
-    isUser: boolean;
-    timestamp: Date;
+    id: string;
+    uid: string;
+    direction: 'outgoing' | 'incoming';
+    message: string;
+    timestamp: number;
 }
 
 export const chatService = {
-    async fetchInitialMessages(): Promise<Message[]> {
+    async fetchMessages(): Promise<Message[]> {
+        const uid = getSessionId();
         try {
-            const response = await fetch('https://jsonplaceholder.typicode.com/comments?_limit=3', {
+            const response = await fetch(`${BASE_URL}/messages`, {
                 headers: {
-                    'X-Chat-Session-Id': getSessionId()
+                    'x-uid': uid
                 }
             });
+            if (!response.ok) throw new Error('Failed to fetch messages');
             const data = await response.json();
-            return data.map((item: any) => ({
-                id: item.id,
-                body: item.body,
-                isUser: false,
-                timestamp: new Date()
-            }));
+            return data.messages || [];
         } catch (error) {
-            console.error('Failed to fetch initial messages:', error);
+            console.error('Failed to fetch messages:', error);
             return [];
         }
     },
 
-    async sendMessage(message: string): Promise<Message> {
+    async sendMessage(message: string): Promise<void> {
+        const uid = getSessionId();
         try {
-            const response = await fetch('https://jsonplaceholder.typicode.com/posts', {
+            const response = await fetch(`${BASE_URL}/send`, {
                 method: 'POST',
-                body: JSON.stringify({
-                    body: message,
-                    userId: 1,
-                    sessionId: getSessionId()
-                }),
                 headers: {
-                    'Content-type': 'application/json; charset=UTF-8',
-                    'X-Chat-Session-Id': getSessionId()
+                    'x-uid': uid,
+                    'Content-Type': 'application/json'
                 },
+                body: JSON.stringify({ message })
             });
-            const data = await response.json();
-            return {
-                id: data.id + Date.now(), // Ensure unique ID for UI
-                body: data.body,
-                isUser: true,
-                timestamp: new Date()
-            };
+            if (!response.ok) throw new Error('Failed to send message');
         } catch (error) {
             console.error('Failed to send message:', error);
             throw error;
         }
+    },
+
+    getSSEUrl(): string {
+        const uid = getSessionId();
+        return `${BASE_URL}/events?uid=${uid}`;
     }
 };
