@@ -1,5 +1,6 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import { createClient, RealtimeChannel } from '@supabase/supabase-js';
+import { useRouter } from 'vue-router';
 import { chatService, getSessionId, type Message } from '../services/chat-service';
 
 // --- Supabase Client Setup ---
@@ -16,6 +17,8 @@ const newMessage = ref('');
 let chatChannel: RealtimeChannel | null = null; // Replaces EventSource
 
 export function useChat() {
+    const router = useRouter();
+
     const toggleChat = () => {
         isOpen.value = !isOpen.value;
         if (isOpen.value && messages.value.length === 0) {
@@ -46,7 +49,7 @@ export function useChat() {
         });
 
         // 1. Listen for standard incoming messages
-        chatChannel.on('broadcast', { event: 'new-telegram-msg' }, (payload) => {
+        chatChannel.on('broadcast', { event: 'new-msg' }, (payload) => {
             console.log('Realtime message received:', payload);
             const newMsg = payload.payload;
 
@@ -60,7 +63,7 @@ export function useChat() {
         });
 
         // 2. Listen for the clear command
-        chatChannel.on('broadcast', { event: 'clear-telegram-msgs' }, (payload) => {
+        chatChannel.on('broadcast', { event: 'clear-msgs' }, (payload) => {
             console.log('Realtime clear event received:', payload);
             const targetUid = payload.payload.uid;
 
@@ -70,7 +73,25 @@ export function useChat() {
             }
         });
 
-        // 3. Initiate the connection
+        // 3. Listen for Smart Actions (Remote Navigation/Scroll)
+        chatChannel.on('broadcast', { event: 'smart-action' }, (payload) => {
+            console.log('Smart Action received:', payload);
+            const { action, data, uid } = payload.payload;
+
+            // Security: Only execute if it matches this user's UID
+            if (uid !== currentUid) return;
+
+            if (action === 'NAVIGATE' && data?.path) {
+                console.info('Remote Navigation:', data.path);
+                router.push(data.path).then();
+            } else if (action === 'SCROLL_TO' && data?.selector) {
+                console.info('Remote Scroll:', data.selector);
+                const el = document.querySelector(data.selector);
+                el?.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+
+        // 4. Initiate the connection
         chatChannel.subscribe((status) => {
             if (status === 'SUBSCRIBED') {
                 console.log('Successfully connected to Supabase Realtime');
@@ -83,7 +104,7 @@ export function useChat() {
 
     const disconnectRealtime = () => {
         if (chatChannel) {
-            supabase.removeChannel(chatChannel);
+            supabase.removeChannel(chatChannel).then();
             chatChannel = null;
         }
     };
@@ -94,7 +115,7 @@ export function useChat() {
         const text = newMessage.value;
         const uid = getSessionId();
 
-        // Optimistic update: Add message to UI immediately
+        // Optimistic update: Add a message to the UI immediately
         const tempId = `temp-${Date.now()}`;
         const tempMsg: Message = {
             id: tempId,
@@ -109,7 +130,7 @@ export function useChat() {
 
         try {
             await chatService.sendMessage(text);
-            // We wait for the Realtime 'new-telegram-msg' event (if your Edge Function echoes it)
+            // We wait for the Realtime 'new-msg' event (if your Edge Function echoes it)
             // or just rely on the optimistic update.
         } catch (error) {
             console.error('Error sending message:', error);
