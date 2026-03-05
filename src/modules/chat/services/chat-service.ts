@@ -1,6 +1,6 @@
 const ID_KEY = 'chat_session_id';
 
-const EDGE_FUNCTION_URL = import.meta.env.VITE_EDGE_FUNCTION_URL;
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY;
 
 export const getSessionId = () => {
@@ -26,7 +26,7 @@ export const chatService = {
     async fetchMessages(): Promise<Message[]> {
         const uid = getSessionId();
         try {
-            const response = await fetch(EDGE_FUNCTION_URL, {
+            const response = await fetch(SUPABASE_URL + '/functions/v1/handler', {
                 method: 'GET', // Explicitly setting GET
                 headers: {
                     Authorization: `Bearer ${SUPABASE_KEY}`,
@@ -49,7 +49,7 @@ export const chatService = {
     async sendMessage(message: string): Promise<void> {
         const uid = getSessionId();
         try {
-            const response = await fetch(EDGE_FUNCTION_URL, {
+            const response = await fetch(SUPABASE_URL + '/functions/v1/handler', {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${SUPABASE_KEY}`,

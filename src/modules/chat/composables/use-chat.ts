@@ -41,7 +41,9 @@ export function useChat() {
         const currentUid = getSessionId();
 
         // Target the same channel defined in your Edge Function
-        chatChannel = supabase.channel('chat-room');
+        chatChannel = supabase.channel('chat-room', {
+            config: { private: true },
+        });
 
         // 1. Listen for standard incoming messages
         chatChannel.on('broadcast', { event: 'new-telegram-msg' }, (payload) => {
