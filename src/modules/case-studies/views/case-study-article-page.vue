@@ -123,10 +123,10 @@
                         class="mt-16 pt-16 border-t border-border-subtle"
                     >
                         <div class="flex items-center gap-3 mb-8">
-                            <div class="p-2 bg-accent-primary/10 rounded-lg">
+                            <div class="bg-accent-primary/10 rounded-lg">
                                 <HelpCircle class="w-5 h-5 text-accent-primary" />
                             </div>
-                            <h2 class="text-2xl font-bold text-text-primary">
+                            <h2 class="mb-0 text-2xl font-bold text-text-primary">
                                 Questions & Answers
                             </h2>
                         </div>
@@ -144,7 +144,9 @@
                                         class="text-accent-primary opacity-50 font-mono mt-0.5 shrink-0"
                                         >Q.</span
                                     >
-                                    <span><TextBlock :text="qna.question" :items="glossaryItems" /></span>
+                                    <span
+                                        ><TextBlock :text="qna.question" :items="glossaryItems"
+                                    /></span>
                                 </h3>
                                 <div class="flex items-start gap-3 text-left">
                                     <span
@@ -206,8 +208,8 @@ import { computed, onMounted, onUnmounted, provide, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useWindowScroll } from '@vueuse/core';
 import {
-    useCaseStudyArticle,
     useCaseStudiesData,
+    useCaseStudyArticle,
 } from '@/modules/case-studies/data/case-studies.data.ts';
 import { headerComponentRef } from '@/store.ts';
 import { ArrowLeft, ArrowUp, BookOpen, Clock, FileQuestion, HelpCircle } from 'lucide-vue-next';
@@ -237,18 +239,18 @@ const nextCaseStudies = computed(() => {
     if (!article.value) return [];
 
     const currentId = article.value.id;
-    const currentSystemId = article.value.systemId;
+    const currentSystemIds = article.value.systemIds || [];
 
     // Filter out current
     const candidates = allCaseStudies.value.filter((cs) => cs.id !== currentId);
 
-    // Prioritize same system
+    // Prioritize the same system
     const sameSystem = candidates
-        .filter((cs) => cs.systemId === currentSystemId)
+        .filter((cs) => currentSystemIds.includes(cs.systemId))
         .sort(() => Math.random() - 0.5);
 
     const others = candidates
-        .filter((cs) => cs.systemId !== currentSystemId)
+        .filter((cs) => !currentSystemIds.includes(cs.systemId))
         .sort(() => Math.random() - 0.5);
 
     let result = [...sameSystem];

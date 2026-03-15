@@ -83,7 +83,7 @@ export const SYSTEMS_BY_LOCALE: Record<'en' | 'id', Systems> = {
             },
         },
         {
-            id: 'system-twin-v2-fleet',
+            id: 'system-twin-v2-fms',
             title: 'Twin V2 — Fleet Management System',
             heading: 'Twin V2 FMS',
             highlight: 'Delivery and settlement isolated into a correctness-first domain.',

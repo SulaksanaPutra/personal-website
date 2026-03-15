@@ -44,7 +44,7 @@ export function useChat() {
         const currentUid = getSessionId();
 
         // Target the same channel defined in your Edge Function
-        chatChannel = supabase.channel('chat-room', {
+        chatChannel = supabase.channel(`chat-room-${currentUid}`, {
             config: { private: true },
         });
 

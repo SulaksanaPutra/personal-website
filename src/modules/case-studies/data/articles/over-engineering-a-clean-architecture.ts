@@ -10,7 +10,7 @@ export const OVER_ENGINEERING_A_CLEAN_ARCHITECTURE: Record<'en' | 'id', CaseStud
             label: 'Back to Case Studies',
         },
         id: 'over-engineering-a-clean-architecture',
-        systemId: 'system-twin-v2-wms',
+        systemIds: ['system-twin-v2-wms', 'system-twin-v2-fms'],
         title: 'Over-engineering a Clean Architecture',
         heading: 'Clean Architecture Trade-offs',
         highlight:
@@ -81,16 +81,6 @@ export const OVER_ENGINEERING_A_CLEAN_ARCHITECTURE: Record<'en' | 'id', CaseStud
                     'Clean architecture is valuable, but it must match the scale of the product and the maturity of the team. I now prioritize progressive complexity: start simple, define clear boundaries, and evolve structure as real needs emerge.',
                     'Architecture should serve the product—not the architect’s vision of perfection. Good ideas do not need to be implemented all at once; some are better introduced when the system truly demands them.',
                 ],
-            },
-        ],
-        qnas: [
-            {
-                question: 'Does "Clean Architecture" always mean better code?',
-                answer: "Not necessarily. If the abstraction layers exceed the actual complexity of the problem or the team's needs, it creates friction and slows down development without adding real value.",
-            },
-            {
-                question: 'What did you learn about implementing complex structures in Go?',
-                answer: 'Unlike frameworks like Laravel, Go requires explicit boilerplate for every layer. One should start simple and only introduce layers when there is a concrete need for that level of abstraction.',
             },
         ],
     },

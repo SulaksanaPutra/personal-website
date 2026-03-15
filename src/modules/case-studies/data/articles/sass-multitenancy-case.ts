@@ -10,7 +10,7 @@ export const SAAS_MULTITENANCY_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArti
             label: 'Back to Case Studies',
         },
         id: 'resolving-cross-tenant-data-contamination-go-saas',
-        systemId: 'system-twin-v2-wms',
+        systemIds: ['system-twin-v2-wms', 'system-twin-v2-fms'],
         title: 'Resolving Cross-Tenant Data Contamination in a High-Traffic Go SaaS',
         heading: 'Multi-Tenant Architecture Redesign',
         highlight: 'Twin WMS & FMS — Fixing a critical concurrency flaw to secure tenant data',

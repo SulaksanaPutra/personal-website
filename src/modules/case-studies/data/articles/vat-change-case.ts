@@ -10,93 +10,89 @@ export const VAT_CHANGE_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArticle | n
             label: 'Back to Case Studies',
         },
         id: 'handling-a-vat-increase-in-a-legacy-real-time-system',
-        systemId: 'system-twin-v1',
+        systemIds: ['system-twin-v1'],
         title: 'Handling a VAT Increase in a Legacy, Real-Time System',
         heading: 'VAT Increase Handling',
-        highlight: 'Twin v1 — Regulatory change under production and architectural constraints',
+        highlight:
+            'Twin v1 — Managing a strict regulatory shift within a brittle legacy architecture',
         subtitle:
-            'How I managed a critical regulatory update in a legacy system with hardcoded tax logic, ensuring zero downtime and data integrity.',
+            'How I navigated a critical tax update in a legacy ERP riddled with hardcoded logic, protecting historical financial data without halting production.',
         sections: [
             {
                 id: 'context',
                 label: 'Context',
                 paragraphs: [
-                    'Twin v1 is a business-critical distributor system used daily for sales, invoicing, and financial reporting across multiple branches. In 2022, the Indonesian government officially increased VAT (PPN) from 10% to 11%, directly impacting invoice totals, financial reports, and legal compliance.',
-                    'I had long been aware that the system’s tax logic was fragile, as VAT percentages were hardcoded deep inside the codebase. When the regulation change was announced, the request to handle this update came directly from the CEO, reflecting the financial and legal sensitivity of the issue.',
+                    'Twin v1 was the operational and financial lifeblood of the distributor business. When the Indonesian government announced a VAT (PPN) increase from 10% to 11% in 2022, it wasn’t just a minor regulatory update—it was a hard deadline imposed on a system entirely ill-equipped to handle it.',
+                    'I had long known the system’s tax logic was fragile, with VAT percentages hardcoded deep within the application. Given the severe legal and financial implications of getting this wrong, the mandate to handle the update came directly from the CEO. The margin for error was non-existent.',
                 ],
             },
             {
                 id: 'the-problem',
                 label: 'The Problem',
                 paragraphs: [
-                    'The system calculated VAT dynamically every time data was fetched. There were no persisted calculated values for totals, VAT, or grand totals. Instead, all values were recalculated in real time from master data.',
-                    'VAT logic was duplicated across multiple APIs, and there was no reliable historical record of which VAT percentage had been applied to a given transaction. Changing hardcoded values was never a valid option, as it would retroactively alter historical invoices and reports, creating serious accounting and legal risks.',
+                    'The legacy architecture suffered from a severe structural flaw for a financial application: it didn’t persist calculated totals. Grand totals, tax amounts, and net values were never saved to the database; instead, they were recalculated dynamically "on the fly" from master data every time an invoice was viewed or a report was generated.',
+                    'Because this logic was duplicated across dozens of APIs, simply updating a hardcoded `0.10` to `0.11` was out of the question. Doing so would instantly and retroactively recalculate years of historical invoices, mutating past financial reports and creating massive accounting discrepancies.',
                 ],
             },
             {
                 id: 'constraints',
                 label: 'Constraints',
                 items: [
-                    'Transactions could not be paused or stopped during the change.',
-                    'No centralized calculation service existed in the codebase.',
-                    'Automated test coverage was minimal and uneven.',
-                    'The system relied heavily on real-time recalculation.',
-                    'I handled the fix alone due to system complexity and sensitivity.',
-                    'A full architectural refactor was too risky for a production-critical system.',
+                    'The business could not pause transactions; the fix had to be deployed while the system was live.',
+                    'There was no centralized calculation service—tax logic was scattered across controllers and models.',
+                    'Automated test coverage was virtually non-existent for these legacy flows.',
+                    'The system relied entirely on fragile, real-time dynamic recalculation.',
+                    'Due to the extreme sensitivity of the data, I had to architect and deploy the fix entirely solo.',
+                    'A full structural refactor was the correct engineering answer, but completely unfeasible for a live, production-critical ERP.',
                 ],
             },
             {
                 id: 'decision-and-approach',
                 label: 'Decision and Approach',
                 paragraphs: [
-                    'I implemented a versioned, configuration-based tax strategy. For new transactions, VAT was driven by configuration rather than hardcoded values. I introduced a new column in the existing transaction table to store the VAT percentage applied to each transaction.',
-                    'Historical records preserved their original VAT values, while new transactions respected the configured rate. This prevented retroactive recalculation and allowed the system to safely support regulatory changes.',
+                    'Accepting that a rewrite was impossible, I opted for a pragmatic, versioned tax strategy. I introduced a new `vat_percentage` column directly into the transaction tables to capture and freeze the rate at the exact moment of sale (Point-in-Time Snapshotting).',
+                    "For all new transactions, the system would read from a centralized configuration file rather than hardcoded floats. Historical records were constrained to retain their original, implicitly calculated values, while new transactions utilized the injected configuration. It was a defensive measure designed to ensure the dynamic recalculation wouldn't compromise historical data integrity.",
                 ],
             },
             {
                 id: 'risk-management-and-verification',
                 label: 'Risk Management and Verification',
                 paragraphs: [
-                    'To reduce operational and legal risk, I added end-to-end tests for critical operational APIs and performed extensive manual validation. I collaborated closely with the finance team to verify calculations and edge cases.',
-                    'I also introduced a runtime flag that blocked transactions if the VAT percentage did not match the officially valid value during the initial rollout period. For two weeks, invoices and reports were continuously revalidated to ensure correctness.',
+                    'To mitigate the operational risk, I built out end-to-end test suites specifically for the critical APIs. I also introduced a runtime feature flag—a defensive block that would hard-fail any transaction if the calculated VAT didn’t strictly match the legally valid rate during the rollout window.',
+                    'For two weeks, I worked directly with the finance team, manually cross-verifying live reports to ensure not a single rupiah was miscalculated or retrospectively altered.',
                 ],
             },
             {
                 id: 'outcome',
                 label: 'Outcome',
                 paragraphs: [
-                    'The system handled the VAT increase without disrupting daily operations. Invoice totals and reports remained accurate, historical data was preserved, and a major legal and financial risk was removed without stopping the business.',
+                    'We navigated the regulatory shift with zero downtime. Invoice totals remained accurate, the integrity of years of historical data was protected, and a significant legal risk was mitigated without interrupting business operations.',
                 ],
             },
             {
                 id: 'reflection',
                 label: 'Reflection',
                 paragraphs: [
-                    'This change did not improve Twin v1’s overall architecture. Due to the lack of centralized logic, the solution required defensive additions across multiple APIs. In practice, this was a controlled patch rather than a structural refactor.',
-                    'However, this experience strongly influenced how I designed later systemsPage—especially LAAS—where tax and pricing logic are treated as versioned, auditable data rather than dynamically recomputed values.',
+                    "This wasn't an architectural upgrade; it did nothing to resolve Twin v1’s underlying structural debt. Lacking a centralized calculation engine meant I still had to apply repetitive, defensive patches across the API layer. It was a calculated stopgap to stabilize the system, not a long-term resolution.",
+                    'However, the friction of managing dynamically recalculated financial data permanently shaped how I build software. In every system I’ve designed since—especially LAAS—pricing and tax logic are treated as immutable, versioned data. Financial state must be captured and frozen, never recomputed on the fly.',
                 ],
             },
         ],
         glossary: [
             {
-                term: 'legacy system',
+                term: 'Point-in-Time Snapshotting',
                 definition:
-                    'An outdated computer system, programming language, or software application that is still in use by an organization.',
+                    'The practice of recording the exact state of dependent data (like tax rates or prices) at the moment a transaction occurs, ensuring the record remains accurate even if master data changes later.',
             },
             {
-                term: 'master data',
+                term: 'Legacy System',
                 definition:
-                    'The core data within an enterprise that describes objects like products, customers, and suppliers around which business is conducted.',
-            },
-        ],
-        qnas: [
-            {
-                question: 'Why was changing the hardcoded VAT value directly not an option?',
-                answer: 'Because the system recalculated totals in real-time. Changing the value would have retroactively altered all historical invoices, causing massive legal and accounting discrepancies.',
+                    'An outdated computer system or software that is still in use because it still performs critical business functions, despite its architectural debt.',
             },
             {
-                question: 'How do you handle regulatory changes in legacy systems safely?',
-                answer: 'By shifting from hardcoded logic to versioned, configuration-based strategies and persisting the actual applied rates at the time of transaction.',
+                term: 'Master Data',
+                definition:
+                    'The core data within an enterprise (like product catalogs or customer lists) that provides context for business transactions.',
             },
         ],
     },

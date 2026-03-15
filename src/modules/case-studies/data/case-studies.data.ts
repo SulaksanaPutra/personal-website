@@ -26,19 +26,21 @@ export const CASE_STUDIES_BY_LOCALE: Record<'en' | 'id', CaseStudies> = {
     CASE_STUDIES_BY_LOCALE[locale] = articlesByLocale
         .map((articleMap) => articleMap[locale])
         .filter((article): article is CaseStudyArticle => !!article)
-        .map((article) => ({
-            id: article.id,
-            title: article.title,
-            heading: article.heading,
-            highlight: article.highlight,
-            description: article.subtitle || article.description || '',
-            systemId: article.systemId,
-            link: {
-                id: 'read-' + article.id,
-                href: '/case-studies/' + article.systemId + '/' + article.id,
-                label: 'Read Case Study →',
-            },
-        }));
+        .flatMap((article) =>
+            article.systemIds.map((systemId) => ({
+                id: article.id,
+                title: article.title,
+                heading: article.heading,
+                highlight: article.highlight,
+                description: article.subtitle || article.description || '',
+                systemId: systemId,
+                link: {
+                    id: 'read-' + article.id + '-' + systemId,
+                    href: '/case-studies/' + systemId + '/' + article.id,
+                    label: 'Read Case Study →',
+                },
+            }))
+        );
 });
 
 export function useCaseStudiesData(systemId?: string | import('vue').Ref<string | undefined>) {
@@ -52,7 +54,15 @@ export function useCaseStudiesData(systemId?: string | import('vue').Ref<string 
             return currentLocale.filter((caseStudy) => caseStudy.systemId === resolvedSystemId);
         }
 
-        return currentLocale;
+        const uniqueCaseStudies: CaseStudies = [];
+        const seenIds = new Set<string>();
+        for (const caseStudy of currentLocale) {
+            if (!seenIds.has(caseStudy.id)) {
+                seenIds.add(caseStudy.id);
+                uniqueCaseStudies.push(caseStudy);
+            }
+        }
+        return uniqueCaseStudies;
     });
 }
 

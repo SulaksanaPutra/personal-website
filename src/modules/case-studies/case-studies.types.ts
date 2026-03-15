@@ -21,7 +21,7 @@ export interface CaseStudyArticle {
     subtitle?: string;
     highlight: string;
     description?: string;
-    systemId: string;
+    systemIds: string[];
     sections: {
         id: string;
         label?: string;
@@ -45,5 +45,5 @@ export interface CaseStudiesDrawerItem extends DrawerItem {
 }
 export type CaseStudiesDrawer = CaseStudiesDrawerItem[];
 
-export interface CaseStudyArticleDrawerItem extends DrawerItem {}
+export interface CaseStudyArticleDrawerItem extends DrawerItem { }
 export type CaseStudyArticleDrawer = CaseStudyArticleDrawerItem[];

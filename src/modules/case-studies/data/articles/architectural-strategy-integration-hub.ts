@@ -10,7 +10,7 @@ export const INTEGRATION_STRATEGY_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyA
             label: 'Back to Case Studies',
         },
         id: 'architectural-strategy-integration-hub',
-        systemId: 'system-twin-v2-wms',
+        systemIds: ['system-twin-v2-wms'],
         title: 'Architectural Strategy: Decoupling a Point-to-Point Integration',
         heading: 'Centralized Integration Hub Proposal',
         highlight:
