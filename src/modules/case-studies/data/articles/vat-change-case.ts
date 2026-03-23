@@ -11,7 +11,7 @@ export const VAT_CHANGE_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArticle | n
         },
         id: 'handling-a-vat-increase-in-a-legacy-real-time-system',
         systemIds: ['system-twin-v1'],
-        title: 'Handling a VAT Increase in a Legacy, Real-Time System',
+        title: 'Handling a VAT Increase in a Legacy Real-Time System',
         heading: 'VAT Increase Handling',
         highlight:
             'Twin v1 — Managing a strict regulatory shift within a brittle legacy architecture',
@@ -23,7 +23,8 @@ export const VAT_CHANGE_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArticle | n
                 label: 'Context',
                 paragraphs: [
                     'Twin v1 was the operational and financial lifeblood of the distributor business. When the Indonesian government announced a VAT (PPN) increase from 10% to 11% in 2022, it wasn’t just a minor regulatory update—it was a hard deadline imposed on a system entirely ill-equipped to handle it.',
-                    'I had long known the system’s tax logic was fragile, with VAT percentages hardcoded deep within the application. Given the severe legal and financial implications of getting this wrong, the mandate to handle the update came directly from the CEO. The margin for error was non-existent.',
+                    'Tax logic in Twin v1 was decentralized, with VAT percentages scattered as hardcoded `0.10` literals directly within dozens of API controllers. While this was functionally stable for years, the lack of a single source of truth meant the new tax regulation wasn’t a simple config change—it was a high-risk manual synchronization across the entire entry-point layer.',
+                    'The primary technical hurdle was that the system recalculated all totals on the fly using these hardcoded values. Updating them to 11% for compliance would have caused an immediate, retroactive mutation of every historical invoice in the database, compromising the integrity of all past financial reporting.',
                 ],
             },
             {
