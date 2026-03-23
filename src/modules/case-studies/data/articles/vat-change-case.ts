@@ -22,29 +22,25 @@ export const VAT_CHANGE_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArticle | n
                 id: 'context',
                 label: 'Context',
                 paragraphs: [
-                    'Twin v1 was the operational and financial lifeblood of the distributor business. When the Indonesian government announced a VAT (PPN) increase from 10% to 11% in 2022, it wasn’t just a minor regulatory update—it was a hard deadline imposed on a system entirely ill-equipped to handle it.',
-                    'Tax logic in Twin v1 was decentralized, with VAT percentages scattered as hardcoded `0.10` literals directly within dozens of API controllers. While this was functionally stable for years, the lack of a single source of truth meant the new tax regulation wasn’t a simple config change—it was a high-risk manual synchronization across the entire entry-point layer.',
-                    'The primary technical hurdle was that the system recalculated all totals on the fly using these hardcoded values. Updating them to 11% for compliance would have caused an immediate, retroactive mutation of every historical invoice in the database, compromising the integrity of all past financial reporting.',
+                    'Twin v1 served as the core operational system for the distributor business. In 2022, the Indonesian government increased VAT from `10%` to `11%`, requiring a system-wide update to our financial logic. While the system had been functionally stable for years, this regulatory shift exposed deep-seated architectural debt in how we handled tax calculations.',
                 ],
             },
             {
                 id: 'the-problem',
                 label: 'The Problem',
                 paragraphs: [
-                    'The legacy architecture suffered from a severe structural flaw for a financial application: it didn’t persist calculated totals. Grand totals, tax amounts, and net values were never saved to the database; instead, they were recalculated dynamically "on the fly" from master data every time an invoice was viewed or a report was generated.',
-                    'Because this logic was duplicated across dozens of APIs, simply updating a hardcoded `0.10` to `0.11` was out of the question. Doing so would instantly and retroactively recalculate years of historical invoices, mutating past financial reports and creating massive accounting discrepancies.',
+                    'The legacy architecture lacked temporal awareness and data persistence for financial totals. Grand totals and tax amounts were never saved to the database; instead, they were recalculated dynamically "on the fly" every time an invoice was viewed or a report was generated.',
+                    "This logic was decentralized, with the VAT percentage hardcoded as `0.10` magic numbers directly within dozens of API controllers. Because calculations were performed in real-time rather than persisted at the point of sale, a simple update to `11%` would have triggered a retroactive mutation of every historical invoice. We couldn't comply with the new regulation without simultaneously corrupting years of past financial records.",
                 ],
             },
             {
                 id: 'constraints',
                 label: 'Constraints',
                 items: [
-                    'The business could not pause transactions; the fix had to be deployed while the system was live.',
-                    'There was no centralized calculation service—tax logic was scattered across controllers and models.',
-                    'Automated test coverage was virtually non-existent for these legacy flows.',
-                    'The system relied entirely on fragile, real-time dynamic recalculation.',
-                    'Due to the extreme sensitivity of the data, I had to architect and deploy the fix entirely solo.',
-                    'A full structural refactor was the correct engineering answer, but completely unfeasible for a live, production-critical ERP.',
+                    '`Zero Downtime Requirement`: The business could not pause transactions; the solution had to be deployed and verified while the system was live and processing orders.',
+                    '`Architectural Rigidity`: The lack of a centralized calculation service made a full structural refactor unfeasible within the regulatory deadline. Stability and risk mitigation took precedence over architectural purity.',
+                    '`Testing Deficit`: Automated test coverage was virtually non-existent for these legacy flows, providing no safety net for changes to critical financial logic.',
+                    '`Strict Data Security`: Given the sensitivity of the financial records and the legal implications of the update, the design and rollout were conducted under highly restricted access, necessitating a siloed execution.',
                 ],
             },
             {
@@ -79,6 +75,17 @@ export const VAT_CHANGE_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArticle | n
                 ],
             },
         ],
+        qnas: [
+            {
+                question: 'Why not backfill historical totals with a one-time data migration?',
+                answer: 'Mass migration in a test-less legacy environment carried unacceptable risk. A "do no harm" strategy was the most reliable path to compliance, avoiding the compute overhead and potential corruption risks of backfilling millions of rows for a purely regulatory shift.',
+            },
+            {
+                question:
+                    'Did adding a `vat_percentage` column create significant database overhead?',
+                answer: 'The storage overhead was negligible compared to the gain in auditability. Trading a few bytes per row for an `immutable snapshot` replaced unreliable date-based inference with 100% financial accuracy, a high-ROI trade-off for any financial system.',
+            },
+        ],
         glossary: [
             {
                 term: 'Point-in-Time Snapshotting',
@@ -94,6 +101,31 @@ export const VAT_CHANGE_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArticle | n
                 term: 'Master Data',
                 definition:
                     'The core data within an enterprise (like product catalogs or customer lists) that provides context for business transactions.',
+            },
+            {
+                term: 'Architectural Debt',
+                definition:
+                    'The long-term cost of choosing an easy or "quick-fix" solution now instead of using a better approach that would take longer to implement.',
+            },
+            {
+                term: 'Temporal Awareness',
+                definition:
+                    "A system's ability to track and process data based on when it occurred in time, rather than only knowing the 'current' state of the data.",
+            },
+            {
+                term: 'Magic Numbers',
+                definition:
+                    'Unique values—like the 0.10 tax rate—hardcoded directly into source code without explanation, making them difficult to locate and update safely.',
+            },
+            {
+                term: 'Retroactive Mutation',
+                definition:
+                    'An unintended change to historical records caused by updating logic or configurations that the system applies to both new and old data indiscriminately.',
+            },
+            {
+                term: 'Feature Flag',
+                definition:
+                    'A technical toggle that allows functionality to be turned on or off at runtime, providing a safety net to disable new logic instantly if it causes production issues.',
             },
         ],
     },

@@ -50,11 +50,11 @@
                         {{ isDev ? editableArticle.title : article.title }}
                     </h1>
                 </component>
-                
+
                 <!-- Highlight -->
                 <component
                     :is="isDev ? DevInlineEditor : 'div'"
-                    v-if="(isDev ? editableArticle.highlight : article.highlight)"
+                    v-if="isDev ? editableArticle.highlight : article.highlight"
                     v-model="editableArticle.highlight"
                     @save="saveArticleData"
                     :is-saving="isSavingDraft"
@@ -65,11 +65,11 @@
                         {{ isDev ? editableArticle.highlight : article.highlight }}
                     </p>
                 </component>
-                
+
                 <!-- Subtitle -->
                 <component
                     :is="isDev ? DevInlineEditor : 'div'"
-                    v-if="(isDev ? editableArticle.subtitle : article.subtitle)"
+                    v-if="isDev ? editableArticle.subtitle : article.subtitle"
                     v-model="editableArticle.subtitle"
                     @save="saveArticleData"
                     :is-saving="isSavingDraft"
@@ -77,7 +77,10 @@
                     :custom-class="'article-subtitle mt-4 text-text-secondary !px-0 !py-0 border-none'"
                     :class="!isDev ? 'contents' : ''"
                 >
-                    <p class="article-subtitle mt-4 text-text-secondary" :class="isDev ? 'mb-0' : ''">
+                    <p
+                        class="article-subtitle mt-4 text-text-secondary"
+                        :class="isDev ? 'mb-0' : ''"
+                    >
                         {{ isDev ? editableArticle.subtitle : article.subtitle }}
                     </p>
                 </component>
@@ -114,7 +117,9 @@
 
                 <article class="article-content">
                     <section
-                        v-for="(section, sIndex) in (isDev ? editableArticle.sections : article.sections)"
+                        v-for="(section, sIndex) in isDev
+                            ? editableArticle.sections
+                            : article.sections"
                         :id="section.id"
                         :key="section.id"
                         class="article-section"
@@ -131,41 +136,105 @@
                                 {{ section.label }}
                             </h3>
                         </component>
-                        
-                        <div v-if="section.paragraphs" class="space-y-6" :class="isDev ? 'mt-6' : ''">
-                            <component
-                                :is="isDev ? DevInlineEditor : 'div'"
+
+                        <div
+                            v-if="section.paragraphs"
+                            class="space-y-6"
+                            :class="isDev ? 'mt-6' : ''"
+                        >
+                            <div
                                 v-for="(paragraph, pIndex) in section.paragraphs"
                                 :key="pIndex"
-                                v-model="(isDev ? editableArticle.sections[sIndex] : section).paragraphs[pIndex]"
-                                @save="saveArticleData"
-                                :is-saving="isSavingDraft"
-                                :multiline="true"
-                                :class="!isDev ? 'contents' : ''"
+                                class="group/row relative"
                             >
-                                <p class="article-paragraph" :class="isDev ? 'mb-0' : ''">
-                                    <TextBlock :text="paragraph" :items="glossaryItems" />
-                                </p>
-                            </component>
+                                <component
+                                    :is="isDev ? DevInlineEditor : 'div'"
+                                    v-model="
+                                        (isDev ? editableArticle.sections[sIndex] : section)
+                                            .paragraphs[pIndex]
+                                    "
+                                    @save="saveArticleData"
+                                    :is-saving="isSavingDraft"
+                                    :multiline="true"
+                                    :class="!isDev ? 'contents' : ''"
+                                >
+                                    <p class="article-paragraph" :class="isDev ? 'mb-0' : ''">
+                                        <TextBlock :text="paragraph" :items="glossaryItems" />
+                                    </p>
+                                    <template #actions>
+                                        <button
+                                            v-if="isDev"
+                                            @click="removeRow(sIndex, pIndex, 'paragraphs')"
+                                            class="flex items-center justify-center p-1.5 bg-bg-main border border-border-subtle text-text-secondary rounded hover:text-white hover:bg-red-500 hover:border-red-500 transition-colors"
+                                            title="Delete Row"
+                                        >
+                                            <Trash2 class="w-3 h-3" />
+                                        </button>
+                                    </template>
+                                </component>
+                            </div>
                         </div>
-                        
-                        <ul v-if="section.items" class="pl-6 list-disc space-y-3 article-paragraph" :class="isDev ? 'mt-6' : ''">
-                            <component
-                                :is="isDev ? DevInlineEditor : 'div'"
+
+                        <ul
+                            v-if="section.items"
+                            class="pl-6 list-disc space-y-2 article-paragraph"
+                            :class="isDev ? 'mt-6' : ''"
+                        >
+                            <div
                                 v-for="(item, iIndex) in section.items"
                                 :key="iIndex"
-                                v-model="(isDev ? editableArticle.sections[sIndex] : section).items[iIndex]"
-                                @save="saveArticleData"
-                                :is-saving="isSavingDraft"
-                                :multiline="true"
-                                :class="!isDev ? 'contents' : ''"
+                                class="group/row relative"
                             >
-                                <li :class="isDev ? 'mb-0' : ''">
-                                    <TextBlock :text="item" :items="glossaryItems" />
-                                </li>
-                            </component>
+                                <component
+                                    :is="isDev ? DevInlineEditor : 'div'"
+                                    v-model="
+                                        (isDev ? editableArticle.sections[sIndex] : section).items[
+                                            iIndex
+                                        ]
+                                    "
+                                    @save="saveArticleData"
+                                    :is-saving="isSavingDraft"
+                                    :multiline="true"
+                                    :class="!isDev ? 'contents' : 'flex-1 w-full relative'"
+                                >
+                                    <li :class="isDev ? 'mb-0' : ''">
+                                        <TextBlock :text="item" :items="glossaryItems" />
+                                    </li>
+                                    <template #actions>
+                                        <button
+                                            v-if="isDev"
+                                            @click="removeRow(sIndex, iIndex, 'items')"
+                                            class="flex items-center justify-center p-1.5 bg-bg-main border border-border-subtle text-text-secondary rounded hover:text-white hover:bg-red-500 hover:border-red-500 transition-colors"
+                                            title="Delete Item"
+                                        >
+                                            <Trash2 class="w-3 h-3" />
+                                        </button>
+                                    </template>
+                                </component>
+                            </div>
                         </ul>
-                        
+
+                        <!-- Developer Section Toolbar -->
+                        <div
+                            v-if="isDev"
+                            class="mt-4 flex gap-2 items-center opacity-30 hover:opacity-100 transition-opacity"
+                        >
+                            <button
+                                @click="addRow(sIndex, section.paragraphs ? 'paragraphs' : 'items')"
+                                class="flex items-center gap-1.5 text-[11px] font-semibold tracking-wider uppercase text-text-secondary bg-bg-muted hover:text-text-primary px-3 py-1.5 rounded-md border border-border-subtle hover:border-text-primary transition-all"
+                            >
+                                <Plus class="w-3.5 h-3.5" /> Add Row
+                            </button>
+                            <button
+                                @click="toggleSectionType(sIndex)"
+                                class="flex items-center gap-1.5 text-[11px] font-semibold tracking-wider uppercase text-text-secondary bg-bg-muted hover:text-accent-primary px-3 py-1.5 rounded-md border border-border-subtle hover:border-accent-primary transition-all"
+                            >
+                                <List v-if="section.paragraphs" class="w-3.5 h-3.5" />
+                                <AlignLeft v-else class="w-3.5 h-3.5" />
+                                Change to {{ section.paragraphs ? 'List' : 'Paragraphs' }}
+                            </button>
+                        </div>
+
                         <div v-if="section.codeBlock" class="mt-6 mb-8 group">
                             <div
                                 class="rounded-xl overflow-hidden border border-border-subtle bg-[#1a1b26]/90 shadow-lg relative"
@@ -188,7 +257,7 @@
 
                     <!-- QnA Section -->
                     <section
-                        v-if="(isDev ? editableArticle.qnas?.length : article.qnas?.length)"
+                        v-if="isDev ? editableArticle.qnas?.length : article.qnas?.length"
                         class="mt-16 pt-16 border-t border-border-subtle"
                     >
                         <div class="flex items-center gap-3 mb-8">
@@ -202,31 +271,56 @@
 
                         <div class="grid gap-8">
                             <div
-                                v-for="(qna, index) in (isDev ? editableArticle.qnas : article.qnas)"
+                                v-for="(qna, index) in isDev ? editableArticle.qnas : article.qnas"
                                 :key="index"
-                                class="p-6 bg-bg-muted/50 rounded-2xl border border-border-subtle hover:border-accent-primary/30 transition-colors group"
+                                class="p-6 bg-bg-muted/50 rounded-2xl border border-border-subtle hover:border-accent-primary/30 transition-colors group/qna relative"
                             >
                                 <h3
                                     class="text-lg font-semibold text-text-primary mb-3 flex items-start gap-3 text-left"
                                 >
-                                    <span class="text-accent-primary opacity-50 font-mono mt-0.5 shrink-0">Q.</span>
+                                    <span
+                                        class="text-accent-primary opacity-50 font-mono mt-0.5 shrink-0"
+                                        >Q.</span
+                                    >
                                     <component
                                         :is="isDev ? DevInlineEditor : 'div'"
-                                        v-model="(isDev ? editableArticle.qnas : article.qnas)[index].question"
+                                        v-model="
+                                            (isDev ? editableArticle.qnas : article.qnas)[index]
+                                                .question
+                                        "
                                         @save="saveArticleData"
                                         :is-saving="isSavingDraft"
                                         :multiline="true"
                                         :class="!isDev ? 'contents' : ''"
+                                        class="w-full relative"
                                     >
-                                        <span><TextBlock :text="qna.question" :items="glossaryItems" /></span>
+                                        <span
+                                            ><TextBlock :text="qna.question" :items="glossaryItems"
+                                        /></span>
+                                        <template #actions>
+                                            <button
+                                                v-if="isDev"
+                                                @click="removeQna(index)"
+                                                class="flex items-center justify-center p-1.5 bg-bg-main border border-border-subtle text-text-secondary rounded hover:text-white hover:bg-red-500 hover:border-red-500 transition-colors"
+                                                title="Delete Q&A"
+                                            >
+                                                <Trash2 class="w-3 h-3" />
+                                            </button>
+                                        </template>
                                     </component>
                                 </h3>
-                                
+
                                 <div class="flex items-start gap-3 text-left">
-                                    <span class="text-text-secondary opacity-50 font-mono mt-0.5 shrink-0">A.</span>
+                                    <span
+                                        class="text-text-secondary opacity-50 font-mono mt-0.5 shrink-0"
+                                        >A.</span
+                                    >
                                     <component
                                         :is="isDev ? DevInlineEditor : 'div'"
-                                        v-model="(isDev ? editableArticle.qnas : article.qnas)[index].answer"
+                                        v-model="
+                                            (isDev ? editableArticle.qnas : article.qnas)[index]
+                                                .answer
+                                        "
                                         @save="saveArticleData"
                                         :is-saving="isSavingDraft"
                                         :multiline="true"
@@ -238,6 +332,15 @@
                                     </component>
                                 </div>
                             </div>
+                        </div>
+
+                        <div v-if="isDev" class="mt-6 flex justify-center">
+                            <button
+                                @click="addQna"
+                                class="flex items-center gap-2 text-[11px] font-semibold tracking-wider uppercase text-text-secondary bg-bg-muted hover:text-accent-primary px-4 py-2 rounded-md border border-border-subtle hover:border-accent-primary transition-all shadow-sm"
+                            >
+                                <Plus class="w-4 h-4" /> Add Q&A Pair
+                            </button>
                         </div>
                     </section>
 
@@ -292,7 +395,18 @@ import {
     useCaseStudyArticle,
 } from '@/modules/case-studies/data/case-studies.data.ts';
 import { headerComponentRef } from '@/store.ts';
-import { ArrowLeft, ArrowUp, BookOpen, Clock, FileQuestion, HelpCircle } from 'lucide-vue-next';
+import {
+    AlignLeft,
+    ArrowLeft,
+    ArrowUp,
+    BookOpen,
+    Clock,
+    FileQuestion,
+    HelpCircle,
+    List,
+    Plus,
+    Trash2,
+} from 'lucide-vue-next';
 import TextBlock from '@/core/components/text-block.vue';
 
 import { useSeo } from '@/core/composables/use-seo';
@@ -311,11 +425,15 @@ const DevInlineEditor = isDev
 const editableArticle = ref<any>(null);
 const isSavingDraft = ref(false);
 
-watch(articleData, (newVal) => {
-    if (newVal) {
-        editableArticle.value = isDev ? JSON.parse(JSON.stringify(newVal)) : newVal;
-    }
-}, { immediate: true });
+watch(
+    articleData,
+    (newVal) => {
+        if (newVal) {
+            editableArticle.value = isDev ? JSON.parse(JSON.stringify(newVal)) : newVal;
+        }
+    },
+    { immediate: true },
+);
 
 const saveArticleData = async () => {
     try {
@@ -327,16 +445,18 @@ const saveArticleData = async () => {
             },
             body: JSON.stringify(editableArticle.value),
         });
-        
+
         if (!res.ok) {
             throw new Error((await res.json()).error || 'Failed to save');
         }
-        
+
         const notification = document.createElement('div');
-        notification.className = 'fixed top-4 right-4 bg-green-500/10 text-green-400 border border-green-500/20 px-4 py-3 rounded-lg z-50 shadow-lg flex items-center gap-2 text-sm font-medium transition-all duration-300 pointer-events-none';
-        notification.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Saved successfully to TS file';
+        notification.className =
+            'fixed top-4 right-4 bg-green-500/10 text-green-400 border border-green-500/20 px-4 py-3 rounded-lg z-50 shadow-lg flex items-center gap-2 text-sm font-medium transition-all duration-300 pointer-events-none';
+        notification.innerHTML =
+            '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Saved successfully to TS file';
         document.body.appendChild(notification);
-        setTimeout(() => notification.style.opacity = '0', 2700);
+        setTimeout(() => (notification.style.opacity = '0'), 2700);
         setTimeout(() => notification.remove(), 3000);
     } catch (e: any) {
         alert('Error saving: ' + e.message);
@@ -345,7 +465,55 @@ const saveArticleData = async () => {
     }
 };
 
-const currentArticle = computed(() => isDev ? editableArticle.value || articleData.value : articleData.value);
+const addRow = (sIndex: number, type: 'paragraphs' | 'items') => {
+    if (!editableArticle.value.sections[sIndex][type]) {
+        editableArticle.value.sections[sIndex][type] = [];
+    }
+    editableArticle.value.sections[sIndex][type].push(
+        'New ' + (type === 'paragraphs' ? 'paragraph' : 'item'),
+    );
+    saveArticleData();
+};
+
+const removeRow = (sIndex: number, rowIndex: number, type: 'paragraphs' | 'items') => {
+    if (confirm('Delete this row?')) {
+        editableArticle.value.sections[sIndex][type].splice(rowIndex, 1);
+        saveArticleData();
+    }
+};
+
+const toggleSectionType = (sIndex: number) => {
+    const section = editableArticle.value.sections[sIndex];
+    if (section.paragraphs) {
+        section.items = [...section.paragraphs];
+        delete section.paragraphs;
+    } else if (section.items) {
+        section.paragraphs = [...section.items];
+        delete section.items;
+    } else {
+        section.paragraphs = ['New paragraph'];
+    }
+    saveArticleData();
+};
+
+const addQna = () => {
+    if (!editableArticle.value.qnas) {
+        editableArticle.value.qnas = [];
+    }
+    editableArticle.value.qnas.push({ question: 'New Question?', answer: 'New Answer.' });
+    saveArticleData();
+};
+
+const removeQna = (index: number) => {
+    if (confirm('Delete this Q&A?')) {
+        editableArticle.value.qnas.splice(index, 1);
+        saveArticleData();
+    }
+};
+
+const currentArticle = computed(() =>
+    isDev ? editableArticle.value || articleData.value : articleData.value,
+);
 
 const glossaryItems = computed(() => currentArticle.value?.glossary || []);
 const article = computed(() => currentArticle.value);
@@ -443,7 +611,7 @@ onMounted(() => {
                 }
             });
         },
-        { rootMargin: '-20% 0px -60% 0px', threshold: 0 }
+        { rootMargin: '-20% 0px -60% 0px', threshold: 0 },
     );
 
     article.value?.sections?.forEach((s: any) => {

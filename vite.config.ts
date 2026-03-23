@@ -19,15 +19,26 @@ function caseStudyDevPlugin() {
                         try {
                             const data = JSON.parse(body);
                             const articleId = data.id;
-                            const filepath = path.resolve(
-                                __dirname,
-                                `src/modules/case-studies/data/articles/${articleId}.ts`
-                            );
-                            if (fs.existsSync(filepath)) {
-                                let content = fs.readFileSync(filepath, 'utf-8');
-                                
-                                // Replace the "en: { ... }" block before "id:"
-                                const regex = /en:\s*\{[\s\S]*?\}(?=\s*,\s*id:)/;
+                            const articlesDir = path.resolve(__dirname, 'src/modules/case-studies/data/articles');
+                            const files = fs.readdirSync(articlesDir);
+                            let filepath: string | null = null;
+                            let content: string = '';
+
+                            for (const file of files) {
+                                if (file.endsWith('.ts')) {
+                                    const fp = path.join(articlesDir, file);
+                                    content = fs.readFileSync(fp, 'utf-8');
+                                    // Search for exact id match in the file
+                                    if (content.match(new RegExp(`id:\\s*['"\`]${articleId}['"\`]`))) {
+                                        filepath = fp;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            if (filepath && fs.existsSync(filepath)) {
+                                // Replace the "en: { ... }" block before "id: null"
+                                const regex = /en:\s*\{[\s\S]*?\}(?=\s*,\s*id:\s*null)/;
                                 content = content.replace(regex, `en: ${JSON.stringify(data, null, 4)}`);
                                 
                                 fs.writeFileSync(filepath, content);

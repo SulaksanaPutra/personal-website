@@ -113,6 +113,17 @@
                     <Moon v-if="!isDark" :size="20" class="text-text-primary" />
                     <Sun v-else :size="20" class="text-text-primary" />
                 </button>
+                <button
+                    v-if="isDev"
+                    type="button"
+                    class="hidden md:flex btn-icon ml-4 transition-colors"
+                    :class="isEditorActive ? 'text-accent-primary bg-bg-muted' : 'text-text-secondary'"
+                    aria-label="Toggle editor"
+                    @click="isEditorActive = !isEditorActive"
+                    title="Toggle Inline Editor"
+                >
+                    <Edit3 :size="18" />
+                </button>
                 <div class="hidden md:flex lang-switcher-container ml-4">
                     <button
                         v-for="lang in ['EN', 'ID']"
@@ -136,14 +147,16 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import { Menu, MessageCircle, Moon, Search, Sun, X } from 'lucide-vue-next';
-import { headerComponentRef, isDark, isDrawerEmpty, language, scrollProgress } from '@/store';
+import { Menu, MessageCircle, Moon, Search, Sun, X, Edit3 } from 'lucide-vue-next';
+import { headerComponentRef, isDark, isDrawerEmpty, language, scrollProgress, isEditorActive } from '@/store';
 
 import { useHeaderData } from '@/core/data/header.data.ts';
 import { CASE_STUDIES_BY_LOCALE } from '@/modules/case-studies/data/case-studies.data.ts';
 import { SYSTEMS_BY_LOCALE } from '@/modules/systems/data/systems.data.ts';
 import { useDrawerManagement } from '@/core/composables/use-drawer-management';
 import { useChat } from '@/modules/chat/composables/use-chat';
+
+const isDev = import.meta.env.DEV;
 
 const page = useHeaderData();
 const router = useRouter();

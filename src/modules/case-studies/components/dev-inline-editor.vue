@@ -3,13 +3,17 @@
         <!-- View Mode -->
         <div v-if="!isEditing" class="relative">
             <slot />
-            <button
-                @click="startEdit"
-                class="absolute -top-1 -right-4 p-1 bg-bg-main border border-border-subtle text-text-secondary rounded opacity-0 group-hover:opacity-100 transition-all z-[2] hover:bg-bg-muted hover:text-accent-primary focus:outline-none"
-                title="Edit text"
-            >
-                <Edit2 class="w-3 h-3" />
-            </button>
+            
+            <div class="opacity-0 group-hover:opacity-100 transition-all flex items-center gap-1.5 mt-2 h-0 overflow-visible z-[5] w-full justify-end">
+                <button
+                    @click="startEdit"
+                    class="flex items-center justify-center p-1.5 bg-bg-main border border-border-subtle text-text-secondary rounded hover:bg-bg-muted hover:text-accent-primary focus:outline-none transition-colors"
+                    title="Edit text"
+                >
+                    <Edit2 class="w-3 h-3" />
+                </button>
+                <slot name="actions" />
+            </div>
         </div>
         
         <!-- Edit Mode -->
