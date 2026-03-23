@@ -36,12 +36,51 @@
             </div>
 
             <header class="article-header">
-                <h1 class="article-title-large">
-                    {{ article.title }}
-                </h1>
-                <p class="article-summary">
-                    {{ article.highlight }}
-                </p>
+                <!-- Title -->
+                <component
+                    :is="isDev ? DevInlineEditor : 'div'"
+                    v-if="isDev ? editableArticle : article"
+                    v-model="editableArticle.title"
+                    @save="saveArticleData"
+                    :is-saving="isSavingDraft"
+                    :custom-class="'article-title-large !px-0 !py-0 border-none'"
+                    :class="!isDev ? 'contents' : ''"
+                >
+                    <h1 class="article-title-large">
+                        {{ isDev ? editableArticle.title : article.title }}
+                    </h1>
+                </component>
+                
+                <!-- Highlight -->
+                <component
+                    :is="isDev ? DevInlineEditor : 'div'"
+                    v-if="(isDev ? editableArticle.highlight : article.highlight)"
+                    v-model="editableArticle.highlight"
+                    @save="saveArticleData"
+                    :is-saving="isSavingDraft"
+                    :multiline="true"
+                    :class="!isDev ? 'contents' : ''"
+                >
+                    <p class="article-summary" :class="isDev ? 'mb-0' : ''">
+                        {{ isDev ? editableArticle.highlight : article.highlight }}
+                    </p>
+                </component>
+                
+                <!-- Subtitle -->
+                <component
+                    :is="isDev ? DevInlineEditor : 'div'"
+                    v-if="(isDev ? editableArticle.subtitle : article.subtitle)"
+                    v-model="editableArticle.subtitle"
+                    @save="saveArticleData"
+                    :is-saving="isSavingDraft"
+                    :multiline="true"
+                    :custom-class="'article-subtitle mt-4 text-text-secondary !px-0 !py-0 border-none'"
+                    :class="!isDev ? 'contents' : ''"
+                >
+                    <p class="article-subtitle mt-4 text-text-secondary" :class="isDev ? 'mb-0' : ''">
+                        {{ isDev ? editableArticle.subtitle : article.subtitle }}
+                    </p>
+                </component>
             </header>
 
             <div class="article-body">
@@ -75,28 +114,58 @@
 
                 <article class="article-content">
                     <section
-                        v-for="section in article.sections"
+                        v-for="(section, sIndex) in (isDev ? editableArticle.sections : article.sections)"
                         :id="section.id"
                         :key="section.id"
                         class="article-section"
                     >
-                        <h3 class="article-section-title" v-if="section.label">
-                            {{ section.label }}
-                        </h3>
-                        <div v-if="section.paragraphs" class="space-y-6">
-                            <p
+                        <component
+                            :is="isDev ? DevInlineEditor : 'div'"
+                            v-if="section.label"
+                            v-model="(isDev ? editableArticle.sections[sIndex] : section).label"
+                            @save="saveArticleData"
+                            :is-saving="isSavingDraft"
+                            :class="!isDev ? 'contents' : ''"
+                        >
+                            <h3 class="article-section-title" :class="isDev ? 'mb-0' : ''">
+                                {{ section.label }}
+                            </h3>
+                        </component>
+                        
+                        <div v-if="section.paragraphs" class="space-y-6" :class="isDev ? 'mt-6' : ''">
+                            <component
+                                :is="isDev ? DevInlineEditor : 'div'"
                                 v-for="(paragraph, pIndex) in section.paragraphs"
                                 :key="pIndex"
-                                class="article-paragraph"
+                                v-model="(isDev ? editableArticle.sections[sIndex] : section).paragraphs[pIndex]"
+                                @save="saveArticleData"
+                                :is-saving="isSavingDraft"
+                                :multiline="true"
+                                :class="!isDev ? 'contents' : ''"
                             >
-                                <TextBlock :text="paragraph" :items="glossaryItems" />
-                            </p>
+                                <p class="article-paragraph" :class="isDev ? 'mb-0' : ''">
+                                    <TextBlock :text="paragraph" :items="glossaryItems" />
+                                </p>
+                            </component>
                         </div>
-                        <ul v-if="section.items" class="pl-6 list-disc space-y-3 article-paragraph">
-                            <li v-for="(item, iIndex) in section.items" :key="iIndex">
-                                <TextBlock :text="item" :items="glossaryItems" />
-                            </li>
+                        
+                        <ul v-if="section.items" class="pl-6 list-disc space-y-3 article-paragraph" :class="isDev ? 'mt-6' : ''">
+                            <component
+                                :is="isDev ? DevInlineEditor : 'div'"
+                                v-for="(item, iIndex) in section.items"
+                                :key="iIndex"
+                                v-model="(isDev ? editableArticle.sections[sIndex] : section).items[iIndex]"
+                                @save="saveArticleData"
+                                :is-saving="isSavingDraft"
+                                :multiline="true"
+                                :class="!isDev ? 'contents' : ''"
+                            >
+                                <li :class="isDev ? 'mb-0' : ''">
+                                    <TextBlock :text="item" :items="glossaryItems" />
+                                </li>
+                            </component>
                         </ul>
+                        
                         <div v-if="section.codeBlock" class="mt-6 mb-8 group">
                             <div
                                 class="rounded-xl overflow-hidden border border-border-subtle bg-[#1a1b26]/90 shadow-lg relative"
@@ -119,7 +188,7 @@
 
                     <!-- QnA Section -->
                     <section
-                        v-if="article.qnas?.length"
+                        v-if="(isDev ? editableArticle.qnas?.length : article.qnas?.length)"
                         class="mt-16 pt-16 border-t border-border-subtle"
                     >
                         <div class="flex items-center gap-3 mb-8">
@@ -133,29 +202,40 @@
 
                         <div class="grid gap-8">
                             <div
-                                v-for="(qna, index) in article.qnas"
+                                v-for="(qna, index) in (isDev ? editableArticle.qnas : article.qnas)"
                                 :key="index"
                                 class="p-6 bg-bg-muted/50 rounded-2xl border border-border-subtle hover:border-accent-primary/30 transition-colors group"
                             >
                                 <h3
                                     class="text-lg font-semibold text-text-primary mb-3 flex items-start gap-3 text-left"
                                 >
-                                    <span
-                                        class="text-accent-primary opacity-50 font-mono mt-0.5 shrink-0"
-                                        >Q.</span
+                                    <span class="text-accent-primary opacity-50 font-mono mt-0.5 shrink-0">Q.</span>
+                                    <component
+                                        :is="isDev ? DevInlineEditor : 'div'"
+                                        v-model="(isDev ? editableArticle.qnas : article.qnas)[index].question"
+                                        @save="saveArticleData"
+                                        :is-saving="isSavingDraft"
+                                        :multiline="true"
+                                        :class="!isDev ? 'contents' : ''"
                                     >
-                                    <span
-                                        ><TextBlock :text="qna.question" :items="glossaryItems"
-                                    /></span>
+                                        <span><TextBlock :text="qna.question" :items="glossaryItems" /></span>
+                                    </component>
                                 </h3>
+                                
                                 <div class="flex items-start gap-3 text-left">
-                                    <span
-                                        class="text-text-secondary opacity-50 font-mono mt-0.5 shrink-0"
-                                        >A.</span
+                                    <span class="text-text-secondary opacity-50 font-mono mt-0.5 shrink-0">A.</span>
+                                    <component
+                                        :is="isDev ? DevInlineEditor : 'div'"
+                                        v-model="(isDev ? editableArticle.qnas : article.qnas)[index].answer"
+                                        @save="saveArticleData"
+                                        :is-saving="isSavingDraft"
+                                        :multiline="true"
+                                        :class="!isDev ? 'contents' : ''"
                                     >
-                                    <div class="text-text-secondary leading-relaxed">
-                                        <TextBlock :text="qna.answer" :items="glossaryItems" />
-                                    </div>
+                                        <div class="text-text-secondary leading-relaxed">
+                                            <TextBlock :text="qna.answer" :items="glossaryItems" />
+                                        </div>
+                                    </component>
                                 </div>
                             </div>
                         </div>
@@ -204,7 +284,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, onUnmounted, provide, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, onMounted, onUnmounted, provide, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useWindowScroll } from '@vueuse/core';
 import {
@@ -221,8 +301,54 @@ import { language } from '@/store';
 const route = useRoute();
 const articleId = typeof route.params.articleId === 'string' ? route.params.articleId : '';
 const articleData = useCaseStudyArticle(articleId);
-const glossaryItems = computed(() => articleData.value?.glossary || []);
-const article = computed(() => articleData.value);
+
+const isDev = import.meta.env.DEV;
+const DevInlineEditor = isDev
+    ? defineAsyncComponent(() => import('@/modules/case-studies/components/dev-inline-editor.vue'))
+    : null;
+
+// Use a local ref for realtime preview in Dev mode
+const editableArticle = ref<any>(null);
+const isSavingDraft = ref(false);
+
+watch(articleData, (newVal) => {
+    if (newVal) {
+        editableArticle.value = isDev ? JSON.parse(JSON.stringify(newVal)) : newVal;
+    }
+}, { immediate: true });
+
+const saveArticleData = async () => {
+    try {
+        isSavingDraft.value = true;
+        const res = await fetch('/__dev/save-article', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(editableArticle.value),
+        });
+        
+        if (!res.ok) {
+            throw new Error((await res.json()).error || 'Failed to save');
+        }
+        
+        const notification = document.createElement('div');
+        notification.className = 'fixed top-4 right-4 bg-green-500/10 text-green-400 border border-green-500/20 px-4 py-3 rounded-lg z-50 shadow-lg flex items-center gap-2 text-sm font-medium transition-all duration-300 pointer-events-none';
+        notification.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg> Saved successfully to TS file';
+        document.body.appendChild(notification);
+        setTimeout(() => notification.style.opacity = '0', 2700);
+        setTimeout(() => notification.remove(), 3000);
+    } catch (e: any) {
+        alert('Error saving: ' + e.message);
+    } finally {
+        isSavingDraft.value = false;
+    }
+};
+
+const currentArticle = computed(() => isDev ? editableArticle.value || articleData.value : articleData.value);
+
+const glossaryItems = computed(() => currentArticle.value?.glossary || []);
+const article = computed(() => currentArticle.value);
 
 const glossaryRegistry = new Set<string>();
 provide('glossaryRegistry', glossaryRegistry);
@@ -241,10 +367,7 @@ const nextCaseStudies = computed(() => {
     const currentId = article.value.id;
     const currentSystemIds = article.value.systemIds || [];
 
-    // Filter out current
     const candidates = allCaseStudies.value.filter((cs) => cs.id !== currentId);
-
-    // Prioritize the same system
     const sameSystem = candidates
         .filter((cs) => currentSystemIds.includes(cs.systemId))
         .sort(() => Math.random() - 0.5);
@@ -276,11 +399,12 @@ useSeo(
 const readingTime = computed(() => {
     if (!article.value) return 0;
 
-    let text = article.value.title + ' ' + article.value.highlight + ' ';
+    let text = article.value.title + ' ' + (article.value.highlight || '') + ' ';
     article.value.sections?.forEach((s: any) => {
         text += (s.label || '') + ' ';
         s.paragraphs?.forEach((p: string) => (text += p + ' '));
         s.items?.forEach((i: string) => (text += i + ' '));
+        if (s.codeBlock) text += s.codeBlock.code + ' ';
     });
 
     article.value.qnas?.forEach((qna: any) => {
@@ -288,14 +412,13 @@ const readingTime = computed(() => {
     });
 
     const words = text.trim().split(/\s+/).length;
-    return Math.ceil(words / 200); // 200 WPM baseline
+    return Math.ceil(words / 200);
 });
 
 const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 };
 
-// Scroll to Section
 const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
@@ -320,10 +443,7 @@ onMounted(() => {
                 }
             });
         },
-        {
-            rootMargin: '-20% 0px -60% 0px',
-            threshold: 0,
-        },
+        { rootMargin: '-20% 0px -60% 0px', threshold: 0 }
     );
 
     article.value?.sections?.forEach((s: any) => {
