@@ -13,9 +13,9 @@ export const SCALING_STATE_IN_VUE_SPA_BY_LOCALE: Record<'en' | 'id', CaseStudyAr
         title: 'Front-end State Management at Scale (Vue → Vuex)',
         heading: 'State Management at Scale',
         subtitle:
-            'Untangling a fragile Vue Single-Page Application by slowly migrating away from deeply nested prop-drilling toward centralized state management—without halting feature delivery.',
+            'Optimizing development throughput in a complex SPA by surgically migrating to a domain-driven state model—eliminating side-effect fragility without interrupting the business feature roadmap.',
         highlight:
-            'Twin v1 — Paying down front-end architectural debt by replacing unsustainable prop-drilling with Vuex.',
+            'Twin v1 — Scaling front-end architecture by replacing high-friction prop-drilling with a centralized Vuex state model.',
         description:
             'As Twin v1 grew into a massive SPA, its reliance on prop-based state became a cognitive nightmare. This case study details the painful but necessary incremental migration to Vuex to restore team velocity and system predictability.',
         systemIds: ['system-twin-v1'],
@@ -52,47 +52,43 @@ export const SCALING_STATE_IN_VUE_SPA_BY_LOCALE: Record<'en' | 'id', CaseStudyAr
                 id: 'trigger',
                 label: 'Trigger',
                 paragraphs: [
-                    'The breaking point arrived during a team reshuffle. When new, highly experienced developers joined, they were completely paralyzed by the codebase. Explaining a single feature required whiteboarding convoluted callback chains and apologizing for the architecture.',
-                    'That was the moment I had to admit the harsh reality: the problem wasn’t that the team lacked discipline. The problem was the complete absence of a shared, predictable state model.',
+                    'The breaking point arrived during team expansion. Onboarding new developers revealed that tracing data flow for even minor features required manual walkthroughs of deep component trees and hidden event listeners that were impossible to follow via code alone.',
+                    'This friction confirmed that the overhead of managing state was disproportionate to the value we were delivering. Without a shared state model, simple UI updates had become high-risk architectural tasks that stifled our velocity.',
                 ],
             },
             {
                 id: 'constraints',
                 label: 'Constraints',
                 paragraphs: [
-                    'As always, we were constrained by reality: this was a live, revenue-generating production system. Pausing development for a glamorous, ground-up rewrite was out of the question. We had a constant influx of feature requests from the business, and any structural improvements had to happen surgically, while the engine was still running.',
+                    'A full rewrite was not a viable option for a stable production system. While a move to a more modular architecture would have optimized developer workflow, the investment of time and resources offered no immediate business benefit. The risk of destabilizing a working system outweighed the internal gains of "cleaner" code. Consequently, all architectural improvements had to be implemented surgically, without disrupting the ongoing delivery of business features.',
                 ],
             },
             {
                 id: 'decision',
                 label: 'Decision',
                 paragraphs: [
-                    "We decided to introduce `Vuex`. At the time, Vue didn't have the robust built-in reactivity APIs (like `ref` or `reactive`) it does today, making Vuex the official, pragmatic choice. It offered exactly what we were starved for: a single source of truth, predictable one-way data flow (`actions` -> `mutations` -> `state`), and dev tools that actually let us see what was happening.",
-                    'Continuing without a global store wasn’t a brave stand against dependencies; it was architectural negligence. The prop-drilling had to stop.',
-                ],
-            },
-            {
-                id: 'Approach',
-                label: 'Approach',
-                paragraphs: [
-                    'We committed to a slow, incremental migration. Instead of trying to boil the ocean, we targeted the most painful, calculation-heavy operational pages first—the ones that broke the most often.',
-                    "For a long time, we lived with a fractured architecture. Legacy prop-based pages coexisted alongside newly refactored `Vuex` modules. It wasn't pretty, but it was the only way to pay down the technical debt without halting feature delivery.",
+                    'We adopted `Vuex` as our state management standard because it was the most pragmatic choice for the Vue 2 ecosystem. At the time, the framework lacked the native reactivity primitives (like `ref` or `reactive`) found in modern Vue 3, making `Vuex` the only robust way to ensure a single source of truth and provide the DevTools integration necessary for predictable debugging.',
                 ],
             },
             {
                 id: 'implementation',
                 label: 'Implementation',
                 paragraphs: [
-                    'When we did implement Vuex, we structured the store by business domain (e.g., `store/modules/invoicing.js`), not by UI layout. I established a strict rule: only state that genuinely needed to be shared across the application was allowed into the global store.',
-                    'Local, ephemeral UI state (like a `v-model` for a dropdown toggle) stayed locked inside local components. We enforced strict state transitions—direct state manipulation (`state.x = y`) was forbidden; everything had to flow through `mutations`. The goal wasn’t to centrally manage everything, but to centrally manage only what was causing us pain.',
+                    'To minimize production risk, we committed to a surgical, incremental migration. We prioritized high-friction, calculation-heavy modules first, accepting a temporary hybrid architecture where legacy prop-drilling coexisted with new Vuex modules. This was a necessary trade-off to pay down technical debt without halting the delivery of business features.\n',
+                    'The technical rollout was guided by three strict rules:',
+                ],
+                items: [
+                    'Domain-Based Organization: The store was structured by business domain (e.g., `store/invoicing.js`) rather than mirroring the volatile UI tree. This ensured the state remained predictable and decoupled from layout changes.',
+                    'Strict State Boundaries: Only data required by multiple distant components was promoted to the global store. Ephemeral UI state (like dropdown toggles) remained local to keep the store lean and avoid `state bloat`.',
+                    'Traceable Transitions: We forbid direct state mutation. Every change had to flow through Actions and Mutations, moving debugging from a "guessing game" of event listeners to a visible, chronological log of transitions in the `Vue DevTools`.',
                 ],
             },
             {
                 id: 'outcome',
                 label: 'Outcome',
                 paragraphs: [
-                    'The extraction worked. Velocity slowly returned. Features that previously took days of anxious prop-wiring were suddenly being shipped in hours. Debugging shifted from a guessing game to a predictable science of checking state transitions in the Vue dev tools.',
-                    'The fragile, house-of-cards feeling faded, and developers stopped being afraid of the codebase. It’s worth noting that this wasn’t a performance optimization—the app didn’t necessarily run faster for the user. But it massively optimized the cognitive load for the engineers maintaining it.',
+                    'The migration successfully decoupled our data layer from the UI hierarchy, leading to a measurable increase in development throughput. Features that previously required days of manual prop-wiring and event-tracing were delivered in hours. By centralizing the state, we transformed debugging from a "guessing game" into a predictable inspection of chronological state transitions.',
+                    "This shift eliminated the side-effect fragility that had plagued the codebase. Developers no longer had to account for unintended regressions in distant components when making minor UI updates, significantly lowering the risk of change. While this wasn't a runtime performance optimization for the end-user, it drastically reduced the cognitive load for the engineering team, turning a high-maintenance legacy SPA into a manageable, scalable platform.",
                 ],
             },
             {
@@ -102,6 +98,59 @@ export const SCALING_STATE_IN_VUE_SPA_BY_LOCALE: Record<'en' | 'id', CaseStudyAr
                     "Looking back, I wouldn't touch `Vuex` for a modern project today; Vue 3’s `Composition API` and `Pinia` have made it largely obsolete. But the underlying architectural lesson remains permanently etched in my mind: state management is not an optimization you tack on later. It is a foundational design decision.",
                     'I learned the hard way that introducing centralized state to a mature SPA is an agonizing process of untangling wires. Since this project, I always define clear state boundaries on day one. Global state stays global, local state stays local, and I never let a component tree grow deep enough to become a cognitive trap.',
                 ],
+            },
+        ],
+        qnas: [
+            {
+                question: 'Why not use a Global Event Bus to solve the prop-drilling issue?',
+                answer: 'An Event Bus only solves the data transport problem; it doesn\'t solve the state management problem. In a complex SPA, events quickly become "invisible spaghetti" that are nearly impossible to trace. I chose Vuex because it provided side-effect traceability—allowing us to see exactly which component triggered a change and how the state responded.',
+            },
+            {
+                question:
+                    'Did the boilerplate of Vuex (`Actions`, `Mutations`, `Getters`) slow down the team?',
+                answer: 'Initially, yes, but this was a deliberate trade-off. We traded a small amount of "writing time" for a massive reduction in "debugging time." In a codebase with high side-effect fragility, explicit boilerplate is safer than implicit "magic" data flows. It moved the system from being "easy to write" to being "easy to reason about."',
+            },
+        ],
+        glossary: [
+            {
+                term: 'Prop-Drilling',
+                definition:
+                    'An anti-pattern where data is passed through multiple layers of components that do not need the information, simply to reach a deeply nested child component.',
+            },
+            {
+                term: 'God Component',
+                definition:
+                    'A component that has grown too large and complex, taking on too many responsibilities and becoming a "puppet master" for the rest of the UI tree.',
+            },
+            {
+                term: 'Single Source of Truth (SSoT)',
+                definition:
+                    'The practice of structuring a system so that every piece of data is stored in only one place, ensuring that all parts of the application stay in sync.',
+            },
+            {
+                term: 'Side-Effect Fragility',
+                definition:
+                    'A state where the codebase is so interconnected that a minor change in one area triggers unexpected and difficult-to-trace bugs in unrelated parts of the system.',
+            },
+            {
+                term: 'State Mutation',
+                definition:
+                    'The act of changing the data within the store. By strictly controlling mutations, developers can track exactly when and why the application state changed.',
+            },
+            {
+                term: 'Race Condition',
+                definition:
+                    'A bug that occurs when the system’s timing or sequence of events (like multiple API calls) affects the final state in an unpredictable way.',
+            },
+            {
+                term: 'Ephemeral State',
+                definition:
+                    'Temporary UI data—such as whether a dropdown is open or a loading spinner is active—that does not need to be stored globally and is kept local to a component.',
+            },
+            {
+                term: 'Cognitive Load',
+                definition:
+                    'The amount of mental effort required for a developer to understand a piece of code. High cognitive load leads to more bugs and slower development velocity.',
             },
         ],
     },

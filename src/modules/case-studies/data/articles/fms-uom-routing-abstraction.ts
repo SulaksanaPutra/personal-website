@@ -12,7 +12,7 @@ export const TWIN_FMS_ROUTING_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArtic
         id: 'fms-uom-routing-abstraction',
         systemIds: ['system-twin-v2-fms'],
         title: 'The Friction of Units: Bridging Physical Habits and Digital Logic',
-        heading: 'The Friction of Units',
+        heading: 'Bridging Human Habit and Logic',
         highlight:
             'Twin FMS — Navigating the conflict between standardized volumetric routing and entrenched "box-based" business habits.',
         subtitle:
@@ -31,7 +31,7 @@ export const TWIN_FMS_ROUTING_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArtic
                 label: 'Problem',
                 paragraphs: [
                     'To achieve automation, a routing engine requires rigid, calculable parameters like volume (m³) and weight (kg). However, we hit an immediate wall with operational habits. For decades, the business had operated using "Boxes" and "Pieces" as their primary units of measure (UOM).',
-                    'While a "Box" sounds like a unit, it is physically inconsistent—a box of tissue and a box of canned goods have vastly different footprints. Furthermore, the business insisted on using "Product Value" to determine delivery priority. From an architectural standpoint, injecting sales data (financial value) into a specialized delivery service felt like domain contamination. An FMS should be "price-blind"; it should care about the physical dimensions of the cargo, not the invoice total.',
+                    'While a "Box" sounds like a unit, it lacks physical consistency—a box of tissues and a box of canned goods occupy vastly different volumes. More critically, the business requirement to prioritize by Order Value rather than physical capacity introduced significant domain leakage. This forced financial data into an FMS that should have remained value-agnostic, coupling the logistics engine to ERP-level sales logic that was entirely outside its intended scope.',
                 ],
             },
             {
@@ -46,8 +46,12 @@ export const TWIN_FMS_ROUTING_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArtic
                 id: 'solution',
                 label: 'Solution',
                 paragraphs: [
-                    'As a Senior Developer, I realized that fighting tribal knowledge was a losing battle. Instead, I designed a layer of abstraction. We introduced "Custom Calculable UOMs." We allowed the system to keep the term "Box," but required each product to be mapped to a decimal-equivalent of a "Standard Box." This allowed the engine to perform the math in the background while the UI remained in a language the users understood.',
-                    'To solve the prioritization issue without contaminating the domain, we implemented a "Priority Flag" system. Instead of the FMS knowing the price of an order, the Sales system would calculate urgency and simply pass a metadata label (e.g., High, Medium, Low) to the FMS. This kept the service modular and focused strictly on logistics.',
+                    'I recognized that forcing a rigid technical ideal onto an established business model was a losing strategy. Instead of trying to rewrite decades of operational habits, I designed an abstraction layer to bridge the gap between human habits and digital logic.',
+                    'We implemented two key architectural solutions:',
+                ],
+                items: [
+                    '`Normalized UOM Mapping`: We introduced "Calculable Units." This allowed users to continue using the term "Box" in the UI, while the system mapped each product to a decimal equivalent of a Standardized Volume. This enabled the routing engine to perform precise mathematical capacity checks in the background without forcing the warehouse staff to change their vocabulary.',
+                    '`Decoupled Priority Logic`: To respect the business’s need for "Order Value" priority without contaminating the FMS domain, we implemented a metadata-driven flag system. The Sales system (ERP) would calculate urgency based on financial value and pass a simple priority label (e.g., High, Medium, Low) to the FMS. This kept the service modular and focused strictly on physical logistics, ensuring it remained "price-blind" while still respecting commercial priorities.',
                 ],
             },
             {
@@ -62,26 +66,51 @@ export const TWIN_FMS_ROUTING_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArtic
                 id: 'reflection',
                 label: 'Reflection',
                 paragraphs: [
-                    'Even today, I find using "Boxes" as a routing parameter to be technically offensive, but I have learned that software engineering is often the art of negotiating with human habit. Forcing a "correct" technical unit like m³ on a workforce that thinks in "Boxes" doesn\'t result in better data—it results in a system that people find ways to bypass.',
-                    'My role shifted from being a pure coder to a translator—finding the "best-fit" solution that respected the architectural vision while acknowledging the messy, unmovable reality of the business process.',
+                    'While using "Boxes" as a routing parameter remains technically imprecise, I have learned that senior software engineering is often the art of negotiating with human habit. Forcing a theoretically ideal unit like m³ on a workforce that thinks in "Boxes" doesn\'t produce better data—it creates friction that encourages users to bypass the system entirely.',
+                    'My role on this project shifted from being a pure developer to a translator between technical rigor and operational reality. I learned that success isn\'t always about a "perfect" data model; it’s about finding a best-fit abstraction that protects the architectural vision while respecting the unmovable workflows of the business.',
                 ],
             },
         ],
         glossary: [
             {
-                term: 'Routing Engine',
+                term: 'UOM (Unit of Measure)',
                 definition:
-                    'An algorithm or service used to determine the most efficient sequence of stops and vehicle allocations for a set of deliveries.',
+                    'A standard magnitude of a physical quantity. In logistics, this refers to how items are counted or sized, such as Pieces, Boxes, Kilograms, or Cubic Meters.',
             },
             {
-                term: 'UOM Abstraction',
+                term: 'Domain Leakage',
                 definition:
-                    'A technique where non-standard units (like "Boxes") are mapped to a calculable numerical value to allow for mathematical processing without changing the user-facing terminology.',
+                    'A design flaw where logic or data from one specific business area (like Finance) inadvertently "leaks" into an unrelated system (like Logistics), creating unnecessary coupling.',
             },
             {
-                term: 'Domain Contamination',
+                term: 'Miniservice',
                 definition:
-                    'When logic or data from one business area (like Sales/Finance) leaks into a service designed for a different area (like Logistics), making the system harder to maintain and decouple.',
+                    'An architectural style that sits between a monolith and microservices. It is a decoupled, independent service focused on a specific business capability, like fleet management.',
+            },
+            {
+                term: 'Last-Mile Delivery',
+                definition:
+                    'The final and most complex stage of the logistics process, involving the movement of goods from a distribution hub to the final customer destination.',
+            },
+            {
+                term: 'Abstraction Layer',
+                definition:
+                    'A technical bridge that hides complex logic (like volumetric math) behind a simplified interface (like the term "Box"), allowing users to work in familiar ways while the system stays precise.',
+            },
+            {
+                term: 'Metadata-Driven Logic',
+                definition:
+                    'A design approach where a system changes its behavior based on "tags" or "flags" passed along with the data, rather than having hardcoded rules for every specific scenario.',
+            },
+            {
+                term: 'FIFO (First-In, First-Out)',
+                definition:
+                    'An inventory and logistics management principle where the oldest orders or items are prioritized for processing and delivery first.',
+            },
+            {
+                term: 'Decoupling',
+                definition:
+                    'The process of separating software components so they can operate, scale, and be updated independently without affecting the rest of the system.',
             },
         ],
         qnas: [

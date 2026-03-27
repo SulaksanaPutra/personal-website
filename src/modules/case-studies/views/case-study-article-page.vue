@@ -69,7 +69,7 @@
                 <!-- Subtitle -->
                 <component
                     :is="isDev ? DevInlineEditor : 'div'"
-                    v-if="isDev ? editableArticle.subtitle : article.subtitle"
+                    v-if="isDev"
                     v-model="editableArticle.subtitle"
                     @save="saveArticleData"
                     :is-saving="isSavingDraft"
@@ -81,7 +81,7 @@
                         class="article-subtitle mt-4 text-text-secondary"
                         :class="isDev ? 'mb-0' : ''"
                     >
-                        {{ isDev ? editableArticle.subtitle : article.subtitle }}
+                        {{ editableArticle.subtitle || 'Add subtitle...' }}
                     </p>
                 </component>
             </header>
@@ -177,7 +177,7 @@
 
                         <ul
                             v-if="section.items"
-                            class="pl-6 list-disc space-y-2 article-paragraph"
+                            class="pl-6 list-disc space-y-3 article-paragraph"
                             :class="isDev ? 'mt-6' : ''"
                         >
                             <div
@@ -410,14 +410,16 @@ import {
 import TextBlock from '@/core/components/text-block.vue';
 
 import { useSeo } from '@/core/composables/use-seo';
-import { language } from '@/store';
+import { isEditorActive, language } from '@/store';
 
 const route = useRoute();
 const articleId = typeof route.params.articleId === 'string' ? route.params.articleId : '';
 const articleData = useCaseStudyArticle(articleId);
 
-const isDev = import.meta.env.DEV;
-const DevInlineEditor = isDev
+const isDevEnv = import.meta.env.DEV;
+const isDev = computed(() => isDevEnv && isEditorActive.value);
+
+const DevInlineEditor = isDevEnv
     ? defineAsyncComponent(() => import('@/modules/case-studies/components/dev-inline-editor.vue'))
     : null;
 
@@ -429,7 +431,7 @@ watch(
     articleData,
     (newVal) => {
         if (newVal) {
-            editableArticle.value = isDev ? JSON.parse(JSON.stringify(newVal)) : newVal;
+            editableArticle.value = isDevEnv ? JSON.parse(JSON.stringify(newVal)) : newVal;
         }
     },
     { immediate: true },
@@ -521,7 +523,7 @@ const article = computed(() => currentArticle.value);
 const glossaryRegistry = new Set<string>();
 provide('glossaryRegistry', glossaryRegistry);
 
-watch([language, articleData], () => {
+watch([language, articleData, isDev], () => {
     glossaryRegistry.clear();
 });
 
