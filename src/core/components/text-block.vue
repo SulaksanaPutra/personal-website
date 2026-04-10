@@ -4,8 +4,21 @@
     </template>
     <template v-else>
         <template v-for="(part, index) in parts" :key="index">
+            <div 
+                v-if="part.isBlockCode" 
+                class="mt-6 mb-8 group"
+            >
+                <div class="rounded-xl overflow-hidden border border-border-subtle bg-bg-muted/40 shadow-sm relative">
+                    <div v-if="part.language" class="px-4 py-2 bg-bg-muted border-b border-border-subtle flex justify-between items-center text-[10px] text-text-secondary font-mono uppercase tracking-wider">
+                        <span class="opacity-70">{{ part.language }}</span>
+                    </div>
+                    <div class="p-4 overflow-x-auto text-sm font-mono text-text-primary leading-relaxed text-left">
+                        <CodeHighlighter :code="part.text" :language="part.language" />
+                    </div>
+                </div>
+            </div>
             <code 
-                v-if="part.isCode" 
+                v-else-if="part.isCode" 
                 class="inline-code bg-bg-muted text-accent-primary px-1.5 py-0.5 rounded-md text-[0.85em] font-mono border border-border-subtle"
             >{{ part.text }}</code>
             <strong 
@@ -31,6 +44,7 @@
 import { computed } from 'vue';
 import { ExternalLink } from 'lucide-vue-next';
 import GlossaryText from './glossary-text.vue';
+import CodeHighlighter from './code-highlighter.vue';
 import { GlossaryItem } from '@/core/types/glossary.types';
 
 const props = defineProps<{
@@ -53,14 +67,21 @@ const isExternal = (url?: string) => {
 const parts = computed(() => {
     if (!props.text) return [];
     
-    const result: { text: string; isCode?: boolean; isBold?: boolean; isLink?: boolean; href?: string }[] = [];
-    const regex = /(`[^`]+`|\*[^*]+\*|\[[^\]]+\]\([^)]+\)|<a\s+[^>]*>.*?<\/a>)/g;
+    const result: { text: string; isCode?: boolean; isBlockCode?: boolean; language?: string; isBold?: boolean; isLink?: boolean; href?: string }[] = [];
+    const regex = /(```[\s\S]+?```|`[^`]+`|\*[^*]+\*|\[[^\]]+\]\([^)]+\)|<a\s+[^>]*>.*?<\/a>)/g;
     const pieces = props.text.split(regex);
     
     pieces.forEach((piece) => {
         if (!piece) return;
         
-        if (piece.startsWith('`') && piece.endsWith('`') && piece.length >= 2) {
+        if (piece.startsWith('```') && piece.endsWith('```') && piece.length >= 6) {
+            const match = piece.match(/^```([a-zA-Z0-9]+)?\s*?\n?([\s\S]*?)```$/);
+            if (match) {
+                result.push({ text: match[2].trim(), isBlockCode: true, language: match[1] || '' });
+            } else {
+                result.push({ text: piece.slice(3, -3).trim(), isBlockCode: true });
+            }
+        } else if (piece.startsWith('`') && piece.endsWith('`') && piece.length >= 2) {
             result.push({ text: piece.slice(1, -1), isCode: true });
         } else if (piece.startsWith('*') && piece.endsWith('*') && piece.length >= 2) {
             result.push({ text: piece.slice(1, -1), isBold: true });

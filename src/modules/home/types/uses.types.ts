@@ -1,8 +1,12 @@
-import { GlossaryItem } from '@/core/types/glossary.types';
-
-export interface Uses {
+export interface UsesCategory {
     title: string;
     descriptions: string[];
-    items: string[];
-    glossary?: GlossaryItem[];
+    groups: {
+        label: string;
+        items: string[];
+    }[];
+    glossary: {
+        term: string;
+        definition: string;
+    }[];
 }

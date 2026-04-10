@@ -31,7 +31,7 @@ export const TWIN_WMS_STOCK_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArticle
                 label: 'Problem',
                 paragraphs: [
                     'The most critical architectural failure occurred during transaction modifications. In Twin v1, any update to a confirmed order—even for attributes unrelated to inventory, such as a price or discount adjustment—triggered a full rollback of the associated stock allocation.',
-                    'This behavior is a classic anti-pattern I’ve categorized as `Naive State Reset` (or Premature Resource De-allocation). By failing to implement granular state management, the system treated every minor edit as a total transaction reversal. (I’ve written a deeper architectural analysis of this pattern here).',
+                    'This behavior is a classic anti-pattern I’ve categorized as `Naive State Reset` (or Premature Resource De-allocation). By failing to implement granular state management, the system treated every minor edit as a total transaction reversal. (I’ve written a deeper architectural analysis of this pattern [here](/writing/naive-state-reset-architectural-debt)).',
                     'In high-concurrency scenarios, this logic created a destructive race condition. When a transaction like Order A entered a modification state, its reserved inventory was prematurely released. Concurrent processes, such as the placement of Order B, would immediately claim this newly unallocated stock.',
                     "Consequently, the subsequent attempt to re-commit Order A would fail with an `insufficient stock` exception, as the original inventory had already been consumed by a parallel process. This architectural flaw necessitated manual intervention to restore data consistency and significantly eroded the system's overall operational reliability.",
                 ],
@@ -72,7 +72,7 @@ export const TWIN_WMS_STOCK_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArticle
                 id: 'reflection',
                 label: 'Reflection',
                 paragraphs: [
-                    'This project taught me that stock is fundamentally a time-series problem, not a simple relational status. If I were to rebuild this today, I would rely exclusively on an indexed, append-only transaction table where the latest entry represents the current state. This eliminates the need for "summary" tables and removes the risk of state contamination between the ledger and the cache. (I’ve written a deeper architectural analysis of why I prefer this `Single Source of Truth [here](/writing/architectural-analysis)).',
+                    'This project taught me that stock is fundamentally a time-series problem, not a simple relational status. If I were to rebuild this today, I would rely exclusively on an indexed, append-only transaction table where the latest entry represents the current state. This eliminates the need for "summary" tables and removes the risk of state contamination between the ledger and the cache. (I’ve written a deeper architectural analysis of why I prefer this `Single Source of Truth [here](/writing/killing-the-summary-table)).',
                     'Additionally, I learned that Unit of Measure (UOM) complexity is most effectively handled by storing all inventory in the smallest base unit. By applying a packaging factor only at the point of transaction, we reduce relational overhead and make the system significantly more resilient to changes in how items are packaged or sold.',
                 ],
             },

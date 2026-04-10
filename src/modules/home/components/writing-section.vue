@@ -19,7 +19,7 @@
                 class="group block"
             >
                 <div class="relative aspect-video mb-4 overflow-hidden rounded-2xl border border-border-subtle bg-bg-muted group-hover:border-accent-primary/50 transition-all">
-                    <img
+                    <ThemeImage
                         :src="writing.thumbnail"
                         :alt="writing.title"
                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -46,6 +46,7 @@
 import { useWritingData } from '@/modules/home/data/writing.data';
 import { useWritingsData } from '@/modules/writings/data/writings.data';
 import { Clock } from 'lucide-vue-next';
+import ThemeImage from '@/core/components/theme-image.vue';
 
 const page = useWritingData();
 const writings = useWritingsData();

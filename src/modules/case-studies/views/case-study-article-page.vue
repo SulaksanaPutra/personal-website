@@ -158,9 +158,9 @@
                                     :multiline="true"
                                     :class="!isDev ? 'contents' : ''"
                                 >
-                                    <p class="article-paragraph" :class="isDev ? 'mb-0' : ''">
+                                    <div class="article-paragraph" :class="isDev ? 'mb-0' : ''">
                                         <TextBlock :text="paragraph" :items="glossaryItems" />
-                                    </p>
+                                    </div>
                                     <template #actions>
                                         <button
                                             v-if="isDev"
@@ -237,19 +237,20 @@
 
                         <div v-if="section.codeBlock" class="mt-6 mb-8 group">
                             <div
-                                class="rounded-xl overflow-hidden border border-border-subtle bg-[#1a1b26]/90 shadow-lg relative"
+                                class="rounded-xl overflow-hidden border border-border-subtle bg-bg-muted/40 shadow-sm relative"
                             >
                                 <div
-                                    class="px-4 py-2 bg-[#16161e] border-b border-border-subtle/30 flex justify-between items-center text-[10px] text-text-secondary font-mono uppercase tracking-wider"
+                                    class="px-4 py-2 bg-bg-muted border-b border-border-subtle flex justify-between items-center text-[10px] text-text-secondary font-mono uppercase tracking-wider"
                                 >
                                     <span class="opacity-70">{{ section.codeBlock.language }}</span>
                                 </div>
                                 <div
-                                    class="p-4 overflow-x-auto text-sm font-mono text-[#c0caf5] leading-relaxed"
+                                    class="p-4 overflow-x-auto text-sm font-mono text-text-primary leading-relaxed"
                                 >
-                                    <pre
-                                        class="whitespace-pre-wrap"
-                                    ><code v-text="section.codeBlock.code"></code></pre>
+                                    <CodeHighlighter
+                                        :code="section.codeBlock.code"
+                                        :language="section.codeBlock.language"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -409,6 +410,7 @@ import {
     Trash2,
 } from 'lucide-vue-next';
 import TextBlock from '@/core/components/text-block.vue';
+import CodeHighlighter from '@/core/components/code-highlighter.vue';
 
 import { useSeo } from '@/core/composables/use-seo';
 import { isEditorActive, language } from '@/store';

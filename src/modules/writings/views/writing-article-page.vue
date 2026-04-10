@@ -85,13 +85,13 @@
                         </h3>
 
                         <div class="space-y-6">
-                            <p
+                            <div
                                 v-for="(paragraph, pIndex) in section.paragraphs"
                                 :key="pIndex"
                                 class="article-paragraph"
                             >
                                 <TextBlock :text="paragraph" :items="glossaryItems" />
-                            </p>
+                            </div>
                         </div>
 
                         <ul
@@ -103,21 +103,26 @@
                             </li>
                         </ul>
 
+                        <div v-if="section.image" class="mt-8 mb-8 rounded-xl overflow-hidden border border-border-subtle shadow-md">
+                            <ThemeImage :src="section.image" :alt="section.label || 'Section image'" class="w-full h-auto" />
+                        </div>
+
                         <div v-if="section.codeBlock" class="mt-6 mb-8 group">
                             <div
-                                class="rounded-xl overflow-hidden border border-border-subtle bg-[#1a1b26]/90 shadow-lg relative"
+                                class="rounded-xl overflow-hidden border border-border-subtle bg-bg-muted/40 shadow-sm relative"
                             >
                                 <div
-                                    class="px-4 py-2 bg-[#16161e] border-b border-border-subtle/30 flex justify-between items-center text-[10px] text-text-secondary font-mono uppercase tracking-wider"
+                                    class="px-4 py-2 bg-bg-muted border-b border-border-subtle flex justify-between items-center text-[10px] text-text-secondary font-mono uppercase tracking-wider"
                                 >
                                     <span class="opacity-70">{{ section.codeBlock.language }}</span>
                                 </div>
                                 <div
-                                    class="p-4 overflow-x-auto text-sm font-mono text-[#c0caf5] leading-relaxed"
+                                    class="p-4 overflow-x-auto text-sm font-mono text-text-primary leading-relaxed"
                                 >
-                                    <pre
-                                        class="whitespace-pre-wrap"
-                                    ><code v-text="section.codeBlock.code"></code></pre>
+                                    <CodeHighlighter
+                                        :code="section.codeBlock.code"
+                                        :language="section.codeBlock.language"
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -195,6 +200,8 @@ import { useWindowScroll } from '@vueuse/core';
 import { useWritingArticle } from '@/modules/writings/data/writings.data';
 import { ArrowLeft, ArrowUp, Calendar, Clock, FileQuestion, HelpCircle } from 'lucide-vue-next';
 import TextBlock from '@/core/components/text-block.vue';
+import CodeHighlighter from '@/core/components/code-highlighter.vue';
+import ThemeImage from '@/core/components/theme-image.vue';
 import { useSeo } from '@/core/composables/use-seo';
 import { language } from '@/store';
 import { headerComponentRef } from '@/store.ts';

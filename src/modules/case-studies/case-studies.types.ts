@@ -21,16 +21,18 @@ export interface CaseStudyArticle {
     subtitle?: string;
     highlight: string;
     description?: string;
+    thumbnail?: string | { light: string; dark: string }; // Main image for the article
     systemIds: string[];
     sections: {
         id: string;
         label?: string;
         paragraphs?: string[];
         items?: string[];
+        image?: string | { light: string; dark: string }; // Optional diagram or illustration for a section
         codeBlock?: {
             language: string;
             code: string;
-        };
+            };
     }[];
     glossary?: GlossaryItem[];
     qnas?: {

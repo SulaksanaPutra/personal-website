@@ -7,6 +7,7 @@ const PROJECTS_BY_LOCALE: Record<'en' | 'id', Projects> = {
         title: 'Projects',
         descriptions: [
             "A collection of short ideas, experiments, and drafts. These are projects that I've worked on to explore new technologies or to solve specific problems.",
+            'Coming soon!',
         ],
     },
     id: {

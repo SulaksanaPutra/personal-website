@@ -16,6 +16,14 @@
         --border-subtle: #e2ded8;
         --accent-primary: #6f4e37;
         --header-height: 73px;
+
+        /* Syntax Highlighting */
+        --code-keyword: #855ca5;
+        --code-string: #487e02;
+        --code-comment: #8a8a8a;
+        --code-function: #2d5db1;
+        --code-number: #c24b00;
+        --code-variable: #6f4e37;
     }
 
     .dark {
@@ -31,13 +39,19 @@
         /* subtle divider */
         --accent-primary: #8c715b;
         /* softer warm accent for elegance */
+
+        /* Syntax Highlighting */
+        --code-keyword: #bb9af7;
+        --code-string: #9ece6a;
+        --code-comment: #565f89;
+        --code-function: #7aa2f7;
+        --code-number: #ff9e64;
+        --code-variable: #e0af68;
     }
 
     body {
-        @apply bg-bg-main text-text-primary font-sans antialiased;
-        /*font-size: 1.125rem; !* ~18px *!*/
+        @apply bg-bg-main text-text-primary font-sans antialiased text-base md:text-lg;
         line-height: 1.75;
-        /* ~31.5px - Explicit for scroll snapping */
     }
 
     /* Custom Scrollbar */
@@ -112,7 +126,7 @@
 
     /* Typography Presets */
     .prose-content {
-        @apply text-justify hyphens-auto leading-relaxed space-y-4;
+        @apply text-left md:text-justify hyphens-auto leading-relaxed space-y-4;
     }
 
     .heading-large {
@@ -200,6 +214,64 @@
 
     .tag-pill {
         @apply text-sm px-2 py-1 rounded border border-border-subtle text-text-secondary;
+    }
+
+    /* Skills List & Sections */
+    .skills-section-header {
+        @apply flex items-baseline gap-4 mb-3;
+    }
+
+    .skills-section-title {
+        @apply text-lg md:text-xl font-bold tracking-tight text-text-primary mb-0;
+    }
+
+    .skills-section-line {
+        @apply h-px flex-1 bg-border-subtle;
+    }
+
+    .skills-list {
+        @apply grid grid-cols-1 gap-2 list-none p-0;
+    }
+
+    .skills-list-item {
+        @apply flex gap-3;
+    }
+
+    .skills-list-bullet {
+        @apply text-text-secondary mt-1.5 leading-none;
+    }
+
+    .skills-list-text {
+        @apply text-text-primary;
+    }
+
+    /* Uses & Generic List Sections */
+    .uses-group-header {
+        @apply flex items-center gap-4 mb-2;
+    }
+
+    .uses-group-title {
+        @apply text-xs font-bold uppercase tracking-[0.2em] text-text-secondary mb-0;
+    }
+
+    .uses-group-line {
+        @apply h-px flex-1 bg-border-subtle;
+    }
+
+    .uses-list {
+        @apply space-y-2 list-none p-0;
+    }
+
+    .uses-list-item {
+        @apply flex gap-3;
+    }
+
+    .uses-list-bullet {
+        @apply text-text-secondary opacity-30;
+    }
+
+    .uses-list-content {
+        @apply text-text-primary leading-relaxed;
     }
 
     /* Buttons & Controls */
@@ -298,7 +370,7 @@
     }
 
     .article-paragraph {
-        @apply text-lg text-text-primary leading-relaxed;
+        @apply text-text-primary leading-relaxed;
     }
 
     /* Major Layout Shells */

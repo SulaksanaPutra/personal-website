@@ -6,59 +6,49 @@ const SKILLS_BY_LOCALE: Record<'en' | 'id', Skills | null> = {
     en: {
         sections: [
             {
-                id: 'system-oriented-full-stack-development',
-                label: 'System-oriented full-stack development',
-                paragraphs: [
-                    'I design and build systems end to end, from backend architecture to frontend implementation. I’m comfortable moving across layers and choosing technologies based on constraints such as performance, maintainability, team experience, and long-term cost, rather than following trends.',
+                id: 'backend-architecture',
+                label: 'Core: Backend Architecture & Systems',
+                description:
+                    'My primary expertise lies in building resilient, scalable server-side systems. I favor designs that remain predictable and easy to debug under production pressure.',
+                points: [
+                    'Primary Stack: Go, PHP (Laravel), and Node.js for high-concurrency services.',
+                    'Data & Caching: Expert usage of PostgreSQL and MySQL; implementation of Redis for performance.',
+                    'Integration: Proficient in REST and GraphQL API design, including OpenAI API integration patterns.',
+                    'Security: Implementation of multi-tenancy and complex auth flows (OAuth 2, JWT).',
                 ],
             },
             {
-                id: 'backend-architecture-production-concerns',
-                label: 'Backend architecture & production concerns',
-                paragraphs: [
-                    'I build backend services using PHP, Go, and Node.js with an emphasis on explicit logic, predictable data flow, and debuggability. I’m familiar with service and repository patterns, multi-tenancy, authentication flows (OAuth 2, JWT), and handling concurrency, particularly in Go. I tend to favor designs that remain understandable and operable under real production pressure.',
+                id: 'supporting-frontend',
+                label: 'Supporting: Full-Stack Implementation',
+                description:
+                    'I am a full-stack capable developer who builds clean, functional interfaces to support system requirements, focusing on back-office and internal tooling.',
+                points: [
+                    'Web: React/Next.js and Vue/Nuxt for state-heavy administrative applications.',
+                    'Mobile: Foundational experience with Flutter for cross-platform mobile execution.',
+                    'UI Systems: Translation of design systems (shadcn/ui, Material) into maintainable frontend code.',
+                    'Rendering: Strategic choice of SSR vs. CSR based on the specific needs of the application.',
                 ],
             },
             {
-                id: 'frontend-implementation-with-structured-state-management',
-                label: 'Frontend implementation with structured state management',
-                paragraphs: [
-                    'I implement frontend applications using React, Vue, Next.js, and Nuxt, with attention to state management, data ownership, and component boundaries. I’m familiar with design system–driven UI implementation using shadcn/ui and Material Design, focusing on consistency, accessibility, and maintainability. While I’m not a visual designer, I can reliably translate design systems and specifications into clean, scalable frontend code.',
+                id: 'ops-automation',
+                label: 'Infrastructure & Observability',
+                description:
+                    'I treat infrastructure as a delivery multiplier, ensuring that code moves safely from local to production.',
+                points: [
+                    'Automation: Orchestrating CI/CD pipelines via GitHub Actions and containerization with Docker.',
+                    'Monitoring: Actionable observability using Sentry and data visualization through Metabase.',
+                    'Low-Code/Ops: Utilizing n8n for rapid internal automation and data pipeline management.',
                 ],
             },
             {
-                id: 'rendering-strategy-performance-awareness',
-                label: 'Rendering strategy & performance awareness',
-                paragraphs: [
-                    'I understand both SSR and CSR approaches and choose between them based on functionality, SEO requirements, and user experience. I treat rendering strategy as a system-level decision rather than a framework default.',
-                ],
-            },
-            {
-                id: 'data-persistence',
-                label: 'Data & persistence',
-                paragraphs: [
-                    'I work comfortably with SQL and NoSQL databases, including MySQL, MariaDB, PostgreSQL, and MongoDB. I care about clear data modeling, query behavior, and how database decisions affect performance and future change.',
-                ],
-            },
-            {
-                id: 'testing-automation-delivery',
-                label: 'Testing, automation & delivery',
-                paragraphs: [
-                    'I’m familiar with unit testing and end-to-end testing and view tests as a safety net for refactoring rather than a checkbox. I work with Docker, GitHub workflows, CI/CD pipelines, data pipelines, and automation tools such as n8n. I’ve also used analytics and monitoring tools like Metabase to support data visibility.',
-                ],
-            },
-            {
-                id: 'integration-tooling-mindset',
-                label: 'Integration & tooling mindset',
-                paragraphs: [
-                    'I integrate systems through APIs and internal tools with a focus on reducing operational friction. I’ve worked with collaboration and delivery tooling such as Jira and GitHub dashboards to support planning, visibility, and team workflows. For production observability, I’m familiar with error tracking and logging using tools like Sentry, and I value instrumentation that makes failures understandable and actionable rather than noisy.',
-                ],
-            },
-            {
-                id: 'workload-management-execution',
-                label: 'Workload management & execution',
-                paragraphs: [
-                    'I’m comfortable working with task- and ticket-based workflows, including writing and refining requirements to make work executable rather than ambiguous. I’ve worked within Kanban and Scrumban processes and focus on clear priorities, controlled work-in-progress, and steady delivery. I prefer lightweight process that supports momentum and communication over rigid ceremony.',
+                id: 'execution',
+                label: 'Execution & Team Leadership',
+                description:
+                    'With years of experience, I focus on reducing operational friction and making work executable.',
+                points: [
+                    'Product Mindset: Refining ambiguous business needs into high-clarity technical specifications.',
+                    'Process: Leading teams via Kanban/Scrumban frameworks using Jira and Confluence.',
+                    'Velocity: Managing technical debt and architectural decisions to maintain long-term delivery momentum.',
                 ],
             },
         ],

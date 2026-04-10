@@ -5,16 +5,29 @@
                 v-for="section in page.sections"
                 :id="section.id"
                 :key="section.id"
-                class="article-item mb-8 pb-8"
+                class="mb-12 group"
             >
-                <h2 class="article-title" v-if="section.label">
-                    {{ section.label }}
-                </h2>
-                <div v-if="section.paragraphs" class="space-y-4">
-                    <p v-for="(paragraph, pIndex) in section.paragraphs" :key="pIndex">
-                        {{ paragraph }}
-                    </p>
+                <div class="skills-section-header">
+                    <h2 class="skills-section-title">
+                        {{ section.label }}
+                    </h2>
+                    <div class="skills-section-line"></div>
                 </div>
+
+                <p class="text-text-secondary mb-4 leading-relaxed">
+                    {{ section.description }}
+                </p>
+
+                <ul class="skills-list">
+                    <li
+                        v-for="(point, index) in section.points"
+                        :key="index"
+                        class="skills-list-item"
+                    >
+                        <span class="skills-list-bullet">•</span>
+                        <span class="skills-list-text">{{ point }}</span>
+                    </li>
+                </ul>
             </section>
         </div>
     </div>
