@@ -40,29 +40,29 @@
                 <component
                     :is="isDev ? DevInlineEditor : 'div'"
                     v-if="isDev ? editableArticle : article"
-                    v-model="editableArticle.title"
+                    v-model="editableArticle!.title"
                     @save="saveArticleData"
                     :is-saving="isSavingDraft"
                     :custom-class="'article-title-large !px-0 !py-0 border-none'"
                     :class="!isDev ? 'contents' : ''"
                 >
                     <h1 class="article-title-large">
-                        {{ isDev ? editableArticle.title : article.title }}
+                        {{ isDev ? editableArticle?.title : article?.title }}
                     </h1>
                 </component>
 
                 <!-- Highlight -->
                 <component
                     :is="isDev ? DevInlineEditor : 'div'"
-                    v-if="isDev ? editableArticle.highlight : article.highlight"
-                    v-model="editableArticle.highlight"
+                    v-if="isDev ? editableArticle?.highlight : article?.highlight"
+                    v-model="editableArticle!.highlight"
                     @save="saveArticleData"
                     :is-saving="isSavingDraft"
                     :multiline="true"
                     :class="!isDev ? 'contents' : ''"
                 >
                     <p class="article-summary" :class="isDev ? 'mb-0' : ''">
-                        {{ isDev ? editableArticle.highlight : article.highlight }}
+                        {{ isDev ? editableArticle?.highlight : article?.highlight }}
                     </p>
                 </component>
 
@@ -70,7 +70,7 @@
                 <component
                     :is="isDev ? DevInlineEditor : 'div'"
                     v-if="isDev"
-                    v-model="editableArticle.subtitle"
+                    v-model="editableArticle!.subtitle"
                     @save="saveArticleData"
                     :is-saving="isSavingDraft"
                     :multiline="true"
@@ -81,7 +81,7 @@
                         class="article-subtitle mt-4 text-text-secondary"
                         :class="isDev ? 'mb-0' : ''"
                     >
-                        {{ editableArticle.subtitle || 'Add subtitle...' }}
+                        {{ editableArticle?.subtitle || 'Add subtitle...' }}
                     </p>
                 </component>
             </header>
@@ -118,8 +118,8 @@
                 <article class="article-content">
                     <section
                         v-for="(section, sIndex) in isDev
-                            ? editableArticle.sections
-                            : article.sections"
+                            ? editableArticle?.sections
+                            : article?.sections"
                         :id="section.id"
                         :key="section.id"
                         class="article-section"
@@ -127,7 +127,7 @@
                         <component
                             :is="isDev ? DevInlineEditor : 'div'"
                             v-if="section.label"
-                            v-model="(isDev ? editableArticle.sections[sIndex] : section).label"
+                            v-model="(isDev ? editableArticle!.sections[sIndex] : section).label"
                             @save="saveArticleData"
                             :is-saving="isSavingDraft"
                             :class="!isDev ? 'contents' : ''"
@@ -138,7 +138,7 @@
                         </component>
 
                         <div
-                            v-if="section.paragraphs"
+                            v-if="section"
                             class="space-y-6"
                             :class="isDev ? 'mt-6' : ''"
                         >
@@ -150,8 +150,8 @@
                                 <component
                                     :is="isDev ? DevInlineEditor : 'div'"
                                     v-model="
-                                        (isDev ? editableArticle.sections[sIndex] : section)
-                                            .paragraphs[pIndex]
+                                        (isDev ? editableArticle!.sections[sIndex] : section)
+                                            .paragraphs![pIndex]
                                     "
                                     @save="saveArticleData"
                                     :is-saving="isSavingDraft"
@@ -164,7 +164,7 @@
                                     <template #actions>
                                         <button
                                             v-if="isDev"
-                                            @click="removeRow(sIndex, pIndex, 'paragraphs')"
+                                            @click="removeRow(Number(sIndex), Number(pIndex), 'paragraphs')"
                                             class="flex items-center justify-center p-1.5 bg-bg-main border border-border-subtle text-text-secondary rounded hover:text-white hover:bg-red-500 hover:border-red-500 transition-colors"
                                             title="Delete Row"
                                         >
@@ -188,7 +188,7 @@
                                 <component
                                     :is="isDev ? DevInlineEditor : 'div'"
                                     v-model="
-                                        (isDev ? editableArticle.sections[sIndex] : section).items[
+                                        (isDev ? editableArticle!.sections[sIndex] : section).items![
                                             iIndex
                                         ]
                                     "
@@ -203,7 +203,7 @@
                                     <template #actions>
                                         <button
                                             v-if="isDev"
-                                            @click="removeRow(sIndex, iIndex, 'items')"
+                                            @click="removeRow(Number(sIndex), Number(iIndex), 'items')"
                                             class="flex items-center justify-center p-1.5 bg-bg-main border border-border-subtle text-text-secondary rounded hover:text-white hover:bg-red-500 hover:border-red-500 transition-colors"
                                             title="Delete Item"
                                         >
@@ -257,7 +257,7 @@
 
                     <!-- QnA Section -->
                     <section
-                        v-if="isDev ? editableArticle.qnas?.length : article.qnas?.length"
+                        v-if="isDev ? editableArticle?.qnas?.length : article?.qnas?.length"
                         class="mt-16 pt-16 border-t border-border-subtle"
                     >
                         <div class="flex items-center gap-3 mb-8">
@@ -271,7 +271,7 @@
 
                         <div class="grid gap-8">
                             <div
-                                v-for="(qna, index) in isDev ? editableArticle.qnas : article.qnas"
+                                v-for="(qna, index) in isDev ? editableArticle?.qnas : article?.qnas"
                                 :key="index"
                                 class="p-6 bg-bg-muted/50 rounded-2xl border border-border-subtle hover:border-accent-primary/30 transition-colors group/qna relative"
                             >
@@ -285,7 +285,7 @@
                                     <component
                                         :is="isDev ? DevInlineEditor : 'div'"
                                         v-model="
-                                            (isDev ? editableArticle.qnas : article.qnas)[index]
+                                            (isDev ? editableArticle!.qnas! : article!.qnas!)[index]
                                                 .question
                                         "
                                         @save="saveArticleData"
@@ -318,7 +318,7 @@
                                     <component
                                         :is="isDev ? DevInlineEditor : 'div'"
                                         v-model="
-                                            (isDev ? editableArticle.qnas : article.qnas)[index]
+                                            (isDev ? editableArticle!.qnas! : article!.qnas!)[index]
                                                 .answer
                                         "
                                         @save="saveArticleData"
@@ -394,6 +394,7 @@ import {
     useCaseStudiesData,
     useCaseStudyArticle,
 } from '@/modules/case-studies/data/case-studies.data.ts';
+import type { CaseStudyArticle } from '@/modules/case-studies/case-studies.types.ts';
 import { headerComponentRef } from '@/store.ts';
 import {
     AlignLeft,
@@ -424,7 +425,7 @@ const DevInlineEditor = isDevEnv
     : null;
 
 // Use a local ref for realtime preview in Dev mode
-const editableArticle = ref<any>(null);
+const editableArticle = ref<CaseStudyArticle | null>(null);
 const isSavingDraft = ref(false);
 
 watch(
@@ -468,10 +469,12 @@ const saveArticleData = async () => {
 };
 
 const addRow = (sIndex: number, type: 'paragraphs' | 'items') => {
+    if (!editableArticle.value?.sections[sIndex]) return;
+
     if (!editableArticle.value.sections[sIndex][type]) {
         editableArticle.value.sections[sIndex][type] = [];
     }
-    editableArticle.value.sections[sIndex][type].push(
+    editableArticle.value.sections[sIndex][type]?.push(
         'New ' + (type === 'paragraphs' ? 'paragraph' : 'item'),
     );
     saveArticleData();
@@ -479,13 +482,15 @@ const addRow = (sIndex: number, type: 'paragraphs' | 'items') => {
 
 const removeRow = (sIndex: number, rowIndex: number, type: 'paragraphs' | 'items') => {
     if (confirm('Delete this row?')) {
-        editableArticle.value.sections[sIndex][type].splice(rowIndex, 1);
+        editableArticle.value?.sections[sIndex][type]?.splice(rowIndex, 1);
         saveArticleData();
     }
 };
 
 const toggleSectionType = (sIndex: number) => {
-    const section = editableArticle.value.sections[sIndex];
+    const section = editableArticle.value?.sections[sIndex];
+    if (!section) return;
+
     if (section.paragraphs) {
         section.items = [...section.paragraphs];
         delete section.paragraphs;
@@ -499,6 +504,7 @@ const toggleSectionType = (sIndex: number) => {
 };
 
 const addQna = () => {
+    if (!editableArticle.value) return;
     if (!editableArticle.value.qnas) {
         editableArticle.value.qnas = [];
     }
@@ -508,13 +514,13 @@ const addQna = () => {
 
 const removeQna = (index: number) => {
     if (confirm('Delete this Q&A?')) {
-        editableArticle.value.qnas.splice(index, 1);
+        editableArticle.value?.qnas?.splice(index, 1);
         saveArticleData();
     }
 };
 
 const currentArticle = computed(() =>
-    isDev ? editableArticle.value || articleData.value : articleData.value,
+    isDev.value ? editableArticle.value || articleData.value : articleData.value,
 );
 
 const glossaryItems = computed(() => currentArticle.value?.glossary || []);

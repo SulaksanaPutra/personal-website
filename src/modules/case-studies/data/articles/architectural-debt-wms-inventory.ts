@@ -72,7 +72,7 @@ export const TWIN_WMS_STOCK_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArticle
                 id: 'reflection',
                 label: 'Reflection',
                 paragraphs: [
-                    'This project taught me that stock is fundamentally a time-series problem, not a simple relational status. If I were to rebuild this today, I would rely exclusively on an indexed, append-only transaction table where the latest entry represents the current state. This eliminates the need for "summary" tables and removes the risk of state contamination between the ledger and the cache. (I’ve written a deeper architectural analysis of why I prefer this "Single Source of Truth" model here).',
+                    'This project taught me that stock is fundamentally a time-series problem, not a simple relational status. If I were to rebuild this today, I would rely exclusively on an indexed, append-only transaction table where the latest entry represents the current state. This eliminates the need for "summary" tables and removes the risk of state contamination between the ledger and the cache. (I’ve written a deeper architectural analysis of why I prefer this `Single Source of Truth [here](/writing/architectural-analysis)).',
                     'Additionally, I learned that Unit of Measure (UOM) complexity is most effectively handled by storing all inventory in the smallest base unit. By applying a packaging factor only at the point of transaction, we reduce relational overhead and make the system significantly more resilient to changes in how items are packaged or sold.',
                 ],
             },

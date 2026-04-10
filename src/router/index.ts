@@ -4,6 +4,7 @@ const SystemsPage = () => import('@/modules/systems/views/systems-page.vue');
 const CaseStudiesPage = () => import('@/modules/case-studies/views/case-studies-page.vue');
 const CaseStudyArticlePage = () =>
     import('@/modules/case-studies/views/case-study-article-page.vue');
+const WritingArticlePage = () => import('@/modules/writings/views/writing-article-page.vue');
 const SkillsPage = () => import('@/modules/skills/views/skills-page.vue');
 const ContactPage = () => import('@/modules/contact/views/contact-page.vue');
 const NotFoundPage = () => import('@/modules/error/views/NotFoundPage.vue');
@@ -54,6 +55,12 @@ const routes: RouteRecordRaw[] = [
         path: '/writing',
         name: 'writing',
         component: HomePage,
+        meta: { drawer: HomeDrawer },
+    },
+    {
+        path: '/writing/:articleId',
+        name: 'writing-article',
+        component: WritingArticlePage,
         meta: { drawer: HomeDrawer },
     },
     {
