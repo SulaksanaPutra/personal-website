@@ -9,10 +9,7 @@ const SYSTEMS_DRAWER_BY_LOCALE: Record<'en' | 'id', SystemsDrawer> = {
 };
 
 (['en', 'id'] as const).forEach((locale) => {
-    let systems = SYSTEMS_BY_LOCALE[locale];
-    if (!systems || systems.length === 0) {
-        systems = SYSTEMS_BY_LOCALE.en;
-    }
+    const systems = SYSTEMS_BY_LOCALE[locale] || [];
 
     SYSTEMS_DRAWER_BY_LOCALE[locale] = systems.map((system) => ({
         id: system.id,

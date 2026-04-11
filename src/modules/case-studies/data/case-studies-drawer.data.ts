@@ -111,7 +111,7 @@ export function useCaseStudiesDrawerData() {
     const { locale } = useI18n();
 
     return computed<CaseStudiesDrawer>(
-        () => CASE_STUDIES_DRAWER_BY_LOCALE[locale.value] ?? CASE_STUDIES_DRAWER_BY_LOCALE.en,
+        () => CASE_STUDIES_DRAWER_BY_LOCALE[locale.value],
     );
 }
 

@@ -12,7 +12,7 @@ const SKILLS_BY_LOCALE: Record<'en' | 'id', Skills | null> = {
                     'My primary expertise lies in building resilient, scalable server-side systems. I favor designs that remain predictable and easy to debug under production pressure.',
                 points: [
                     'Primary Stack: Go, PHP (Laravel), and Node.js for high-concurrency services.',
-                    'Data & Caching: Expert usage of PostgreSQL and MySQL; implementation of Redis for performance.',
+                    'Data & Caching: Expert usage of SQL and NoSQL; implementation of Redis for performance.',
                     'Integration: Proficient in REST and GraphQL API design, including OpenAI API integration patterns.',
                     'Security: Implementation of multi-tenancy and complex auth flows (OAuth 2, JWT).',
                 ],
@@ -25,7 +25,7 @@ const SKILLS_BY_LOCALE: Record<'en' | 'id', Skills | null> = {
                 points: [
                     'Web: React/Next.js and Vue/Nuxt for state-heavy administrative applications.',
                     'Mobile: Foundational experience with Flutter for cross-platform mobile execution.',
-                    'UI Systems: Translation of design systems (shadcn/ui, Material) into maintainable frontend code.',
+                    'UI Systems: Translation of design systems (shadcn/ui, Material, Boostrap, Tailwind) into maintainable frontend code.',
                     'Rendering: Strategic choice of SSR vs. CSR based on the specific needs of the application.',
                 ],
             },
@@ -59,7 +59,16 @@ const SKILLS_BY_LOCALE: Record<'en' | 'id', Skills | null> = {
 export function useSkillsData() {
     const { locale } = useI18n();
 
-    return computed<Skills | null>(() => SKILLS_BY_LOCALE[locale.value] ?? SKILLS_BY_LOCALE.en);
+    return computed<Skills | null>(() => SKILLS_BY_LOCALE[locale.value]);
+}
+
+export function useSkillsAvailability() {
+    return computed(() => {
+        const availableLocales = [];
+        if (SKILLS_BY_LOCALE.en) availableLocales.push('en');
+        if (SKILLS_BY_LOCALE.id) availableLocales.push('id');
+        return availableLocales;
+    });
 }
 
 export default SKILLS_BY_LOCALE.en;

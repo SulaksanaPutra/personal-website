@@ -176,6 +176,33 @@
             </div>
         </section>
 
+        <section v-else-if="availability && availability.availableLocales.length > 0" class="py-16 text-center">
+            <div class="max-w-md mx-auto">
+                <div
+                    class="w-16 h-16 bg-bg-muted rounded-full flex items-center justify-center mx-auto mb-6"
+                >
+                    <FileQuestion class="text-text-secondary" />
+                </div>
+                <h1 class="text-2xl text-text-primary mb-2 font-bold">Language Not Available</h1>
+                <p class="text-text-secondary mb-8">
+                    This article is not yet available in your currently selected language. You can read it in the available languages below:
+                </p>
+                <div class="flex flex-col gap-4 max-w-[250px] mx-auto">
+                    <button
+                        v-for="loc in availability.availableLocales"
+                        :key="loc"
+                        @click="switchLanguageTo(loc)"
+                        class="btn-primary justify-center"
+                    >
+                        Read in {{ loc === 'en' ? 'English' : 'Indonesian' }}
+                    </button>
+                    <router-link to="/writing" class="text-text-secondary hover:text-text-primary mt-2 text-sm underline underline-offset-4">
+                        Back to writing
+                    </router-link>
+                </div>
+            </div>
+        </section>
+
         <section v-else class="py-16 text-center">
             <div class="max-w-md mx-auto">
                 <div
@@ -197,7 +224,7 @@
 import { computed, onMounted, onUnmounted, provide, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { useWindowScroll } from '@vueuse/core';
-import { useWritingArticle } from '@/modules/writings/data/writings.data';
+import { useWritingArticle, useWritingArticleAvailability } from '@/modules/writings/data/writings.data';
 import { ArrowLeft, ArrowUp, Calendar, Clock, FileQuestion, HelpCircle } from 'lucide-vue-next';
 import TextBlock from '@/core/components/text-block.vue';
 import CodeHighlighter from '@/core/components/code-highlighter.vue';
@@ -209,6 +236,15 @@ import { headerComponentRef } from '@/store.ts';
 const route = useRoute();
 const articleId = typeof route.params.articleId === 'string' ? route.params.articleId : '';
 const article = useWritingArticle(articleId);
+const availability = useWritingArticleAvailability(articleId);
+
+const switchLanguageTo = (loc: string) => {
+    const lang = loc.toLowerCase() === 'id' ? 'ID' : 'EN';
+    language.value = lang;
+    if (typeof window !== 'undefined') {
+        window.localStorage.setItem('language', lang);
+    }
+};
 
 const glossaryItems = computed(() => article.value?.glossary || []);
 

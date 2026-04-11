@@ -97,32 +97,8 @@ export function useHeaderData() {
         const data = HEADER_BY_LOCALE[locale.value] || HEADER_BY_LOCALE.en;
 
         // Step 2: Content Availability Filtering
-        // This removes menu items if the target page has no content for the current language
-        const filteredNavigations = data.navigations.filter((nav) => {
-            if (nav.id === 'systemsPage') {
-                return SYSTEMS_BY_LOCALE[locale.value]?.length > 0;
-            }
-            if (nav.id === 'case-studies') {
-                return CASE_STUDIES_BY_LOCALE[locale.value]?.length > 0;
-            }
-            return true;
-        });
-
-        const filteredSearchLinks = data.searchLinks.filter((link) => {
-            if (link.id === 'systemsPage') {
-                return SYSTEMS_BY_LOCALE[locale.value]?.length > 0;
-            }
-            if (link.id === 'case-studies') {
-                return CASE_STUDIES_BY_LOCALE[locale.value]?.length > 0;
-            }
-            return true;
-        });
-
-        return {
-            ...data,
-            navigations: filteredNavigations,
-            searchLinks: filteredSearchLinks,
-        };
+        // Menus are no longer filtered; language fallback UI is handled directly within the page views.
+        return data;
     });
 }
 

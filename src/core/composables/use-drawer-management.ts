@@ -88,6 +88,12 @@ export function useDrawerManagement() {
         { immediate: true },
     );
 
+    watch(isDrawerEmpty, (isEmpty) => {
+        if (isEmpty) {
+            isDrawerOpen.value = false;
+        }
+    });
+
     return {
         currentDrawer,
         isDrawerOpen,

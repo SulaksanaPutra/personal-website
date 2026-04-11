@@ -27,13 +27,38 @@
                 </article>
             </div>
         </section>
+        <section v-else-if="availability.length > 0" class="py-16 text-center">
+            <div class="max-w-md mx-auto">
+                <div class="w-16 h-16 bg-bg-muted rounded-full flex items-center justify-center mx-auto mb-6">
+                    <FileQuestion class="text-text-secondary" />
+                </div>
+                <h1 class="text-2xl text-text-primary mb-2 font-bold">Language Not Available</h1>
+                <p class="text-text-secondary mb-8">
+                    This page is not yet available in your currently selected language. You can view it in the available languages below:
+                </p>
+                <div class="flex flex-col gap-4 max-w-[250px] mx-auto">
+                    <button
+                        v-for="loc in availability"
+                        :key="loc"
+                        @click="switchLanguageTo(loc)"
+                        class="btn-primary justify-center"
+                    >
+                        View in {{ loc === 'en' ? 'English' : 'Indonesian' }}
+                    </button>
+                    <router-link v-if="systemId" to="/case-studies" class="text-text-secondary hover:text-text-primary mt-2 text-sm underline underline-offset-4">
+                        View all case studies
+                    </router-link>
+                </div>
+            </div>
+        </section>
+
         <section v-else>
             <div class="py-16 text-center">
                 <h2 class="text-xl text-text-primary mb-2">No case studies found</h2>
                 <p class="text-text-secondary mb-6">
-                    There are no case studies available for the selected system.
+                    There are no case studies available.
                 </p>
-                <router-link to="/case-studies" class="text-sm text-primary hover:underline">
+                <router-link v-if="systemId" to="/case-studies" class="text-sm text-primary hover:underline">
                     View all case studies
                 </router-link>
             </div>
@@ -44,17 +69,12 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { useCaseStudiesData } from '@/modules/case-studies/data/case-studies.data.ts';
+import { useCaseStudiesData, useCaseStudiesAvailability } from '@/modules/case-studies/data/case-studies.data.ts';
 import { useSeo } from '@/core/composables/use-seo';
+import { FileQuestion } from 'lucide-vue-next';
+import { language } from '@/store';
 
 const route = useRoute();
-
-useSeo(
-    computed(() => ({
-        title: 'Case Studies',
-        description: 'Selected projects and deep dives into engineering challenges.',
-    })),
-);
 
 const systemId = computed(() => {
     const value = route.query.systemId;
@@ -62,4 +82,20 @@ const systemId = computed(() => {
 });
 
 const caseStudies = useCaseStudiesData(systemId);
+const availability = useCaseStudiesAvailability(systemId);
+
+const switchLanguageTo = (loc: string) => {
+    const lang = loc.toLowerCase() === 'id' ? 'ID' : 'EN';
+    language.value = lang;
+    if (typeof window !== 'undefined') {
+        window.localStorage.setItem('language', lang);
+    }
+};
+
+useSeo(
+    computed(() => ({
+        title: 'Case Studies',
+        description: 'Selected projects and deep dives into engineering challenges.',
+    })),
+);
 </script>

@@ -164,4 +164,13 @@ export function useSystemsData() {
     return computed<Systems>(() => SYSTEMS_BY_LOCALE[locale.value] ?? []);
 }
 
+export function useSystemsAvailability() {
+    return computed(() => {
+        const availableLocales = [];
+        if (SYSTEMS_BY_LOCALE.en?.length > 0) availableLocales.push('en');
+        if (SYSTEMS_BY_LOCALE.id?.length > 0) availableLocales.push('id');
+        return availableLocales;
+    });
+}
+
 export default SYSTEMS_BY_LOCALE.en;

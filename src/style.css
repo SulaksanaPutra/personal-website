@@ -108,7 +108,7 @@
     }
 
     .content-narrow {
-        @apply max-w-narrow;
+        @apply max-w-narrow mx-auto;
     }
 
     .label-overline {

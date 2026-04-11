@@ -40,13 +40,26 @@
 </template>
 
 <script setup lang="ts">
+import { watch } from 'vue';
 import { X } from 'lucide-vue-next';
-import { activeSection, headerComponentRef } from '@/store';
+import { activeSection, headerComponentRef, isDrawerEmpty, isDrawerOpen } from '@/store';
 import { useDrawerManagement } from '@/core/composables/use-drawer-management';
 import { useSystemsDrawerData } from '@/modules/systems/data/systems-drawer.data.ts';
 
 const systemsDrawer = useSystemsDrawerData();
-const { toggleDrawer, isDrawerOpen } = useDrawerManagement();
+const { toggleDrawer } = useDrawerManagement();
+
+watch(
+    systemsDrawer,
+    (newList) => {
+        const isEmpty = !newList || newList.length === 0;
+        isDrawerEmpty.value = isEmpty;
+        if (isEmpty) {
+            isDrawerOpen.value = false;
+        }
+    },
+    { immediate: true },
+);
 
 const scrollToSection = (id: string) => {
     const element = document.getElementById(id);

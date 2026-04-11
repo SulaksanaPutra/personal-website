@@ -22,7 +22,7 @@ export function useWritingsData() {
 
     return computed<Writings>(() => {
         return articlesByLocale
-            .map((articleMap) => articleMap[locale.value] || articleMap.en)
+            .map((articleMap) => articleMap[locale.value] || articleMap.en || articleMap.id)
             .filter((article): article is WritingArticle => !!article)
             .map((article) => ({
                 id: article.id,
@@ -44,10 +44,30 @@ export function useWritingArticle(articleId: string) {
 
     return computed<WritingArticle | null>(() => {
         const articleMap = articlesByLocale.find((map) => {
-            const article = map[locale.value] || map.en;
+            const article = map.en || map.id;
             return article?.id === articleId;
         });
 
-        return articleMap ? articleMap[locale.value] || articleMap.en : null;
+        return articleMap ? articleMap[locale.value] : null;
+    });
+}
+
+export function useWritingArticleAvailability(articleId: string) {
+    return computed(() => {
+        const articleMap = articlesByLocale.find((map) => {
+            const article = map.en || map.id;
+            return article?.id === articleId;
+        });
+
+        if (!articleMap) return null;
+
+        const availableLocales = [];
+        if (articleMap.en) availableLocales.push('en');
+        if (articleMap.id) availableLocales.push('id');
+
+        return {
+            availableLocales,
+            fallbackArticle: articleMap.en || articleMap.id
+        };
     });
 }

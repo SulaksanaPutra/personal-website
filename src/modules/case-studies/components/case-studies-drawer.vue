@@ -64,14 +64,26 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { activeSection } from '@/store';
+import { computed, ref, watch } from 'vue';
+import { activeSection, isDrawerEmpty, isDrawerOpen } from '@/store';
 import { ChevronDown, X } from 'lucide-vue-next';
 import { useCaseStudiesDrawerData } from '@/modules/case-studies/data/case-studies-drawer.data.ts';
 import { useDrawerManagement } from '@/core/composables/use-drawer-management';
 
 const caseStudiesDrawer = useCaseStudiesDrawerData();
-const { toggleDrawer, isDrawerOpen } = useDrawerManagement();
+const { toggleDrawer } = useDrawerManagement();
+
+watch(
+    caseStudiesDrawer,
+    (newList) => {
+        const isEmpty = !newList || newList.length === 0;
+        isDrawerEmpty.value = isEmpty;
+        if (isEmpty) {
+            isDrawerOpen.value = false;
+        }
+    },
+    { immediate: true },
+);
 
 const allSystemIds = computed<string[]>(() => caseStudiesDrawer.value.map((s) => s.id));
 

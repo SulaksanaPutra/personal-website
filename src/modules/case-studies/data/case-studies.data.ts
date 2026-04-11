@@ -71,11 +71,49 @@ export function useCaseStudyArticle(articleId: string) {
 
     return computed<CaseStudyArticle | null>(() => {
         const articleMap = articlesByLocale.find((map) => {
-            const article = map[locale.value] || map.en;
+            const article = map.en || map.id;
             return article?.id === articleId;
         });
 
-        return articleMap ? articleMap[locale.value] || articleMap.en : null;
+        return articleMap ? articleMap[locale.value] : null;
+    });
+}
+
+export function useCaseStudiesAvailability(systemId?: string | import('vue').Ref<string | undefined>) {
+    return computed(() => {
+        const availableLocales: ('en' | 'id')[] = [];
+        const resolvedSystemId = unref(systemId);
+
+        (['en', 'id'] as const).forEach((loc) => {
+            const currentLocale = CASE_STUDIES_BY_LOCALE[loc] ?? [];
+            const hasData = resolvedSystemId 
+                ? currentLocale.some(cs => cs.systemId === resolvedSystemId)
+                : currentLocale.length > 0;
+            
+            if (hasData) availableLocales.push(loc);
+        });
+
+        return availableLocales;
+    });
+}
+
+export function useCaseStudyArticleAvailability(articleId: string) {
+    return computed(() => {
+        const articleMap = articlesByLocale.find((map) => {
+            const article = map.en || map.id;
+            return article?.id === articleId;
+        });
+
+        if (!articleMap) return null;
+
+        const availableLocales = [];
+        if (articleMap.en) availableLocales.push('en');
+        if (articleMap.id) availableLocales.push('id');
+
+        return {
+            availableLocales,
+            fallbackArticle: articleMap.en || articleMap.id
+        };
     });
 }
 

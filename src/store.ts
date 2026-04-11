@@ -21,4 +21,4 @@ export const scrollProgress = ref(0);
 export const activeSection = ref('');
 export const headerComponentRef = ref<{ headerRef: HTMLElement | null } | null>(null);
 export const isDrawerEmpty = ref(true);
-export const isEditorActive = ref(import.meta.env.DEV);
+export const isEditorActive = ref(false);
