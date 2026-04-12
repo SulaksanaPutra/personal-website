@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
 import { computed, provide, watch } from 'vue';
-import { useAboutData } from '@/modules/home/data/about.data.ts';
+import { useAboutData } from '@/modules/home/data/home.data.ts';
 import GlossaryText from '@/core/components/glossary-text.vue';
 import { language } from '@/store';
 

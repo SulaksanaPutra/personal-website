@@ -45,11 +45,13 @@ const route = useRoute();
 
 useSeo(
     computed(() => {
-        const sectionName =
-            (route.name as string)?.charAt(0).toUpperCase() + (route.name as string)?.slice(1);
+        const name = (route.name as string) || '';
+        const sectionName = name.charAt(0).toUpperCase() + name.slice(1);
+        
         return {
-            title: sectionName || 'Fullstack Engineer',
-            description: 'Bayu Aksana - Fullstack Software Engineer portfolio and case studies.',
+            title: sectionName || 'Senior Backend Engineer',
+            description: 'Portfolio and technical insights of Bayu Aksana, a Senior Backend Engineer specializing in scalable systems and architecture.',
+            ogType: 'website',
         };
     }),
 );

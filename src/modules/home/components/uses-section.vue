@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { computed, provide, watch } from 'vue';
-import { useUsesData } from '@/modules/home/data/uses.data.ts';
+import { useUsesData } from '@/modules/home/data/home.data.ts';
 import GlossaryText from '@/core/components/glossary-text.vue';
 import { language } from '@/store';
 

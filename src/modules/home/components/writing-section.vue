@@ -77,7 +77,7 @@
 </template>
 
 <script setup lang="ts">
-import { useWritingData } from '@/modules/home/data/writing.data';
+import { useWritingData } from '@/modules/home/data/home.data.ts';
 import {
     useWritingBlendedFallbackData,
     useWritingsDataStrict,

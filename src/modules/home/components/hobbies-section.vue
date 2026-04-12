@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { useHobbiesData } from '@/modules/home/data/hobbies.data.ts';
+import { useHobbiesData } from '@/modules/home/data/home.data.ts';
 
 const hobbiesData = useHobbiesData();
 </script>

@@ -228,10 +228,16 @@ const currentActiveSection = ref<string>('');
 useSeo(
     computed(() => {
         if (!article.value) return null;
+        
+        const ogImage = typeof article.value.thumbnail === 'string' 
+            ? article.value.thumbnail 
+            : article.value.thumbnail?.light || '';
+
         return {
             title: article.value.title,
             description: article.value.highlight,
             ogType: 'article',
+            ogImage: ogImage,
         };
     }),
 );

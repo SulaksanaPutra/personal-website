@@ -6,6 +6,8 @@ interface SeoOptions {
     ogTitle?: string;
     ogDescription?: string;
     ogType?: 'website' | 'article';
+    ogImage?: string;
+    twitterCard?: 'summary' | 'summary_large_image';
 }
 
 export function useSeo(options: Ref<SeoOptions | null | undefined>) {
@@ -19,7 +21,7 @@ export function useSeo(options: Ref<SeoOptions | null | undefined>) {
         el.setAttribute('content', content);
     };
 
-    const updateOG = (property: string, content: string) => {
+    const updateProperty = (property: string, content: string) => {
         let el = document.querySelector(`meta[property="${property}"]`);
         if (!el) {
             el = document.createElement('meta');
@@ -35,17 +37,30 @@ export function useSeo(options: Ref<SeoOptions | null | undefined>) {
             if (!newOptions) return;
 
             // Update Page Title
-            document.title = `${newOptions.title} | Bayu Aksana Portfolio`;
+            const fullTitle = `${newOptions.title} | Bayu Aksana Portfolio`;
+            document.title = fullTitle;
 
             // Update Metadata
+            updateMeta('title', fullTitle);
             if (newOptions.description) {
                 updateMeta('description', newOptions.description);
             }
 
             // Update OpenGraph
-            updateOG('og:title', newOptions.ogTitle || newOptions.title);
-            updateOG('og:description', newOptions.ogDescription || newOptions.description || '');
-            updateOG('og:type', newOptions.ogType || 'website');
+            updateProperty('og:title', newOptions.ogTitle || newOptions.title);
+            updateProperty('og:description', newOptions.ogDescription || newOptions.description || '');
+            updateProperty('og:type', newOptions.ogType || 'website');
+            if (newOptions.ogImage) {
+                updateProperty('og:image', newOptions.ogImage);
+            }
+
+            // Update Twitter
+            updateMeta('twitter:title', newOptions.ogTitle || newOptions.title);
+            updateMeta('twitter:description', newOptions.ogDescription || newOptions.description || '');
+            if (newOptions.ogImage) {
+                updateMeta('twitter:image', newOptions.ogImage);
+            }
+            updateMeta('twitter:card', newOptions.twitterCard || 'summary_large_image');
         },
         { immediate: true },
     );

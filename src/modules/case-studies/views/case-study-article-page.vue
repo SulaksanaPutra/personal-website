@@ -568,10 +568,16 @@ const nextCaseStudies = computed(() => {
 useSeo(
     computed(() => {
         if (!article.value) return null;
+
+        const ogImage = typeof article.value.thumbnail === 'string'
+            ? article.value.thumbnail
+            : article.value.thumbnail?.light || '';
+
         return {
             title: article.value.title,
-            description: article.value.highlight,
+            description: article.value.highlight || article.value.subtitle || '',
             ogType: 'article',
+            ogImage: ogImage,
         };
     }),
 );

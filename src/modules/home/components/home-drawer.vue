@@ -50,7 +50,7 @@ import { ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { X } from 'lucide-vue-next';
 import { HomeDrawerItem } from '@/modules/home/types/home.types.ts';
-import { useHomeDrawerData } from '@/modules/home/data/home-drawer.data.ts';
+import { useHomeDrawerData } from '@/modules/home/data/home.data.ts';
 import { useDrawerManagement } from '@/core/composables/use-drawer-management';
 
 const route = useRoute();

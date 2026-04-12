@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-import { useProjectsData } from '@/modules/home/data/projects.data.ts';
+import { useProjectsData } from '@/modules/home/data/home.data.ts';
 
 const projectsData = useProjectsData();
 </script>
