@@ -6,44 +6,41 @@
                 {{ part.text }}
                 <span
                     v-if="part.definition"
-                    class="glossary-tooltip"
+                    class="glossary-tooltip md:flex hidden"
                     :class="{ 'is-active': activeTooltipIndex === index }"
                 >
-                    <div class="flex justify-between items-center md:hidden mb-4">
-                        <span
-                            class="font-bold text-accent-primary uppercase tracking-widest text-[10px]"
-                        >
-                            {{ part.text }}
-                        </span>
-                        <button
-                            @click.stop="activeTooltipIndex = null"
-                            class="p-1 -mr-2 text-text-secondary hover:text-text-primary"
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="20"
-                                height="20"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="2"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                            >
-                                <line x1="18" y1="6" x2="6" y2="18"></line>
-                                <line x1="6" y1="6" x2="18" y2="18"></line>
-                            </svg>
-                        </button>
-                    </div>
                     {{ part.definition }}
                 </span>
-                <!-- Mobile Backdrop -->
+                
+                <!-- Mobile Backdrop & Tooltip (Teleported to avoid stacking context issues like z-[1] on article-body) -->
                 <teleport to="body">
-                    <div
-                        v-if="activeTooltipIndex === index"
-                        class="glossary-backdrop md:hidden"
-                        @click="activeTooltipIndex = null"
-                    ></div>
+                    <transition name="fade-backdrop">
+                        <div
+                            v-if="activeTooltipIndex === index"
+                            class="glossary-backdrop md:hidden"
+                            @click="activeTooltipIndex = null"
+                        ></div>
+                    </transition>
+                    
+                    <transition name="slide-up">
+                        <div
+                            v-if="activeTooltipIndex === index && part.definition"
+                            class="glossary-tooltip md:hidden !flex flex-col is-active"
+                        >
+                            <div class="flex justify-between items-center mb-4">
+                                <span class="font-bold text-accent-primary uppercase tracking-widest text-[10px]">
+                                    {{ part.text }}
+                                </span>
+                                <button
+                                    @click.stop="activeTooltipIndex = null"
+                                    class="p-1 -mr-2 text-text-secondary hover:text-text-primary"
+                                >
+                                    <X class="w-5 h-5" />
+                                </button>
+                            </div>
+                            {{ part.definition }}
+                        </div>
+                    </transition>
                 </teleport>
             </span>
             <template v-else>{{ part.text }}</template>
@@ -56,6 +53,7 @@ import { computed, inject, ref } from 'vue';
 import { language } from '@/store';
 import { GLOSSARY_BY_LOCALE } from '@/core/data/common-glossary.data';
 import { GlossaryItem } from '@/core/types/glossary.types';
+import { X } from 'lucide-vue-next';
 
 const props = defineProps<{
     text: string;
