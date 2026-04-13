@@ -69,6 +69,7 @@ function caseStudyDevPlugin() {
 }
 
 export default defineConfig({
+    base: '/website/', // Set this to your repository name if NOT using a custom domain
     plugins: [vue(), caseStudyDevPlugin()],
     resolve: {
         alias: {
