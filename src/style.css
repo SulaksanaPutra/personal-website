@@ -81,7 +81,7 @@
     h4,
     h5,
     h6 {
-        @apply font-semibold mt-0 mb-6 leading-tight;
+        @apply font-semibold mt-0 mb-4 md:mb-6 lg:mb-8 leading-tight;
     }
 
     p,
@@ -90,7 +90,7 @@
     dl,
     pre,
     blockquote {
-        @apply mt-0 mb-6;
+        @apply mt-0 mb-4 md:mb-6;
     }
 
     a {
@@ -104,7 +104,7 @@
 
 @layer components {
     .container {
-        @apply max-w-container mx-auto px-6 md:px-16;
+        @apply max-w-container mx-auto px-6 md:px-12 lg:px-16;
     }
 
     .content-narrow {
@@ -112,12 +112,16 @@
     }
 
     .label-overline {
-        @apply font-sans text-sm font-semibold uppercase tracking-wider text-text-secondary block mb-3;
+        @apply font-sans text-xs md:text-sm font-semibold uppercase tracking-wider text-text-secondary block mb-2 sm:mb-3;
     }
 
     /* Section & Layout Components */
     .section-wrapper {
         @apply min-h-[100dvh] w-full relative;
+    }
+
+    .section-error-wrapper {
+        @apply min-h-[60dvh] w-full flex items-center justify-center;
     }
 
     .section-container {
@@ -126,11 +130,11 @@
 
     /* Typography Presets */
     .prose-content {
-        @apply text-left md:text-justify hyphens-auto leading-relaxed space-y-4 py-4 md:py-8;
+        @apply text-left md:text-justify hyphens-auto leading-relaxed space-y-5 md:space-y-6 py-6 md:py-8;
     }
 
     .heading-large {
-        @apply text-3xl md:text-4xl font-bold mb-3 md:mb-6 tracking-tight;
+        @apply text-3xl md:text-4xl lg:text-5xl font-bold mb-4 md:mb-6 tracking-tight;
     }
 
     /* Header & Navigation */
@@ -143,7 +147,7 @@
     }
 
     .header-logo {
-        @apply mb-4 hover:no-underline md:mb-0 cursor-pointer text-accent-primary font-semibold text-[1.125rem] leading-[1.35] tracking-[-0.015em];
+        @apply mb-4 md:mb-0 hover:no-underline cursor-pointer text-accent-primary font-semibold text-lg md:text-[1.125rem] leading-[1.35] tracking-[-0.015em];
     }
 
     .nav-wrapper {
@@ -151,7 +155,7 @@
     }
 
     .nav-list {
-        @apply flex flex-wrap justify-center md:justify-start gap-x-4 md:gap-x-9 gap-y-3 list-none p-0 m-0 w-full md:w-auto;
+        @apply flex flex-wrap justify-center md:justify-start gap-x-5 md:gap-x-9 gap-y-3 list-none p-0 m-0 w-full md:w-auto;
     }
 
     .nav-link {
@@ -168,7 +172,7 @@
 
     /* Form Elements */
     .search-wrapper {
-        @apply relative ml-8 hidden md:block;
+        @apply relative ml-4 sm:ml-6 md:ml-8 hidden md:block;
     }
 
     .search-icon-wrapper {
@@ -176,11 +180,11 @@
     }
 
     .search-input {
-        @apply w-56 md:w-72 pl-8 bg-bg-muted border border-border-subtle rounded-md py-2 px-4 text-sm focus:outline-none;
+        @apply w-full sm:w-56 md:w-72 pl-8 bg-bg-muted border border-border-subtle rounded-md py-2.5 md:py-2 px-4 text-base md:text-sm focus:outline-none;
     }
 
     .search-result-container {
-        @apply absolute left-0 mt-2 w-[28rem] max-w-[90vw] bg-bg-main border border-border-subtle rounded-md shadow-lg z-[100] max-h-[70dvh] overflow-y-auto;
+        @apply absolute left-0 mt-2 w-[90vw] md:w-[28rem] max-w-[90vw] bg-bg-main border border-border-subtle rounded-md shadow-lg z-[100] max-h-[70dvh] overflow-y-auto;
     }
 
     .search-result-item {
@@ -201,7 +205,7 @@
     }
 
     .article-title {
-        @apply text-xl font-semibold text-left mb-2 leading-snug;
+        @apply text-xl font-semibold text-left mb-2.5 md:mb-2 leading-snug;
     }
 
     .article-link {
@@ -209,11 +213,11 @@
     }
 
     .article-meta {
-        @apply text-text-secondary max-w-2xl mb-4;
+        @apply text-sm text-text-secondary max-w-2xl mb-4;
     }
 
     .tag-pill {
-        @apply text-sm px-2 py-1 rounded border border-border-subtle text-text-secondary;
+        @apply text-sm px-2.5 py-1 md:px-2 md:py-1 rounded border border-border-subtle text-text-secondary;
     }
 
     /* Skills List & Sections */
@@ -276,15 +280,15 @@
 
     /* Buttons & Controls */
     .btn-icon {
-        @apply flex items-center justify-center w-10 h-10 rounded-full border border-border-subtle transition-all duration-300 ease-out hover:scale-105 active:scale-95 hover:bg-bg-muted;
+        @apply flex items-center justify-center w-11 h-11 md:w-10 md:h-10 rounded-full border border-border-subtle transition-all duration-300 ease-out hover:scale-105 active:scale-95 hover:bg-bg-muted;
     }
 
     .btn-floating {
-        @apply fixed bottom-8 right-8 z-[80] w-12 h-12 rounded-full bg-bg-main text-accent-primary outline flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300;
+        @apply fixed bottom-5 right-5 md:bottom-8 md:right-8 z-[80] w-14 h-14 md:w-12 md:h-12 rounded-full bg-bg-main text-accent-primary outline flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 shadow-xl md:shadow-none;
     }
 
     .btn-primary {
-        @apply inline-flex items-center gap-2 px-6 py-2.5 bg-accent-primary text-white rounded-full hover:scale-105 active:scale-95 transition-all;
+        @apply inline-flex items-center gap-2 px-6 py-3 md:py-2.5 text-base bg-accent-primary text-white rounded-full hover:scale-105 active:scale-95 transition-all;
     }
 
     .lang-switcher-container {
@@ -334,15 +338,15 @@
 
     /* Article Detail Patterns */
     .article-container {
-        @apply py-8;
+        @apply py-8 lg:py-12;
     }
 
     .article-header {
-        @apply mb-12;
+        @apply mb-10 md:mb-12;
     }
 
     .article-title-large {
-        @apply text-3xl md:text-4xl text-left text-text-primary leading-tight mb-4 font-bold tracking-tight;
+        @apply text-3xl md:text-4xl lg:text-5xl text-left text-text-primary leading-tight mb-4 font-bold tracking-tight;
     }
 
     .article-summary {
@@ -350,15 +354,15 @@
     }
 
     .article-meta-row {
-        @apply flex items-center gap-3 text-xs font-medium uppercase tracking-widest text-text-secondary;
+        @apply flex items-center gap-3 text-xs md:text-sm font-medium uppercase tracking-widest text-text-secondary;
     }
 
     .article-body {
-        @apply flex flex-col md:flex-row md:gap-16 relative items-start z-[1];
+        @apply flex flex-col md:flex-row md:gap-12 lg:gap-16 relative items-start z-[1];
     }
 
     .article-content {
-        @apply text-justify hyphens-auto leading-relaxed space-y-12 flex-1 min-w-0;
+        @apply text-justify hyphens-auto leading-relaxed space-y-8 md:space-y-12 flex-1 min-w-0;
     }
 
     .article-section {
@@ -425,7 +429,7 @@
     }
 
     .drawer-close-btn {
-        @apply absolute top-4 right-4 md:hidden flex items-center justify-center w-8 h-8 rounded-full hover:bg-bg-muted;
+        @apply absolute top-5 right-5 md:hidden flex items-center justify-center w-11 h-11 rounded-full hover:bg-bg-muted;
     }
 
     .drawer-item {
@@ -437,7 +441,7 @@
     }
 
     .drawer-item-description {
-        @apply text-sm text-text-secondary mt-1 leading-relaxed hyphens-auto snap-y snap-mandatory;
+        @apply text-sm text-text-secondary mt-1.5 leading-relaxed hyphens-auto snap-y snap-mandatory;
     }
 
     /* Chatbox Components */
@@ -462,15 +466,15 @@
     }
 
     .chat-box-header {
-        @apply p-6 md:p-5 bg-bg-main border-b border-border-subtle flex items-center justify-between md:pt-5 pt-0;
+        @apply p-4 md:p-5 bg-bg-main border-b border-border-subtle flex items-center justify-between md:pt-5 pt-0;
     }
 
     .chat-box-messages {
-        @apply flex-1 overflow-y-auto p-6 flex flex-col gap-6 md:gap-5 scrollbar-hide;
+        @apply flex-1 overflow-y-auto p-4 md:p-6 flex flex-col gap-4 md:gap-5 scrollbar-hide;
     }
 
     .chat-box-bubble {
-        @apply p-3.5 px-5 md:p-3 md:px-4 text-[0.95rem] md:text-sm leading-relaxed rounded-[1.25rem] md:rounded-xl;
+        @apply p-3 px-4 text-[0.95rem] md:text-sm leading-relaxed rounded-[1.25rem] md:rounded-xl;
     }
 
     .chat-box-bubble-bot {
@@ -482,11 +486,51 @@
     }
 
     .chat-box-input-area {
-        @apply p-6 md:p-5 pb-8 md:pb-5 bg-bg-main border-t border-border-subtle flex gap-3 items-center;
+        @apply p-4 pb-6 md:p-5 md:pb-5 bg-bg-main border-t border-border-subtle flex gap-3 items-center;
     }
 
     .chat-box-input {
-        @apply flex-1 bg-bg-muted border border-border-subtle text-text-primary py-2 px-4 rounded-md text-sm outline-none transition-all focus:bg-bg-main focus:border-accent-primary focus:ring-2 focus:ring-accent-primary;
+        @apply flex-1 bg-bg-muted border border-border-subtle text-text-primary py-2.5 md:py-2 px-4 rounded-md text-base md:text-sm outline-none transition-all focus:bg-bg-main focus:border-accent-primary focus:ring-2 focus:ring-accent-primary;
+    }
+
+    .chat-box-send-btn {
+        @apply text-accent-primary hover:scale-110 active:scale-95 transition-transform disabled:opacity-50 disabled:cursor-not-allowed p-2;
+    }
+
+    /* Chatbox Empty State */
+    .chat-box-empty {
+        @apply flex flex-col items-center justify-center h-full text-center px-4 py-8 md:px-6 md:py-12;
+    }
+
+    .chat-box-empty-icon-wrapper {
+        @apply w-16 h-16 md:w-20 md:h-20 rounded-full flex items-center justify-center mb-5 md:mb-6;
+        background-color: color-mix(in srgb, var(--accent-primary) 10%, transparent);
+    }
+
+    .chat-box-empty-title {
+        @apply text-xl md:text-2xl font-bold mb-3 text-text-primary;
+    }
+
+    .chat-box-empty-desc {
+        @apply text-sm md:text-base text-text-secondary leading-relaxed max-w-[240px] md:max-w-[280px];
+    }
+
+    /* Chatbox Message Elements */
+    .chat-box-message-wrapper {
+        @apply flex flex-col gap-1.5 max-w-[85%] md:max-w-[80%];
+    }
+
+    .chat-box-timestamp {
+        @apply text-[0.65rem] md:text-[0.7rem] text-text-secondary font-medium;
+    }
+
+    .chat-box-typing-indicator {
+        @apply flex gap-1.5 p-3 px-4 md:p-2.5 md:px-3.5 rounded-xl rounded-bl-none bg-bg-muted border border-border-subtle self-start items-center;
+    }
+
+    .chat-box-typing-dot {
+        @apply w-1.5 h-1.5 md:w-1 md:h-1 rounded-full anim-typing;
+        background-color: color-mix(in srgb, var(--text-secondary) 40%, transparent);
     }
 
     /* Glossary & Tooltips */
@@ -495,7 +539,7 @@
     }
 
     .glossary-tooltip {
-        @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 p-3 bg-bg-main border border-border-subtle rounded-xl shadow-2xl text-[11px] leading-relaxed text-text-secondary opacity-0 invisible transition-all duration-300 pointer-events-none z-[9999] normal-case font-normal text-left translate-y-2 backdrop-blur-md;
+        @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-3 w-56 p-3 bg-bg-main border border-border-subtle rounded-xl shadow-2xl text-[11px] md:text-xs leading-relaxed text-text-secondary opacity-0 invisible transition-all duration-300 pointer-events-none z-[9999] normal-case font-normal text-left translate-y-2 backdrop-blur-md;
     }
 
     @media (max-width: 768px) {
@@ -560,6 +604,34 @@
 
     .scrollbar-hide::-webkit-scrollbar {
         display: none;
+    }
+
+    /* Chatbox Transitions & Animations */
+    .chat-window-enter-active,
+    .chat-window-leave-active {
+        @apply transition-all duration-500 ease-out-expo;
+        transform-origin: bottom right;
+    }
+
+    .chat-window-enter-from,
+    .chat-window-leave-to {
+        @apply opacity-0 scale-90 translate-y-5;
+    }
+
+    .anim-typing {
+        animation: typing 1s infinite ease-in-out;
+    }
+
+    @keyframes typing {
+        0%,
+        100% {
+            transform: translateY(0);
+            opacity: 0.3;
+        }
+        50% {
+            transform: translateY(-3px);
+            opacity: 1;
+        }
     }
 }
 

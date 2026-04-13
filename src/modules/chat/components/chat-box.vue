@@ -35,10 +35,7 @@
                     <div class="flex items-center">
                         <h3 class="m-0">{{ t.title }}</h3>
                     </div>
-                    <button
-                        @click="toggleChat"
-                        class="p-2 hover:bg-bg-muted rounded-lg transition-colors text-text-secondary"
-                    >
+                    <button @click="toggleChat" class="btn-icon w-8 h-8 rounded-lg !border-0">
                         <X class="w-4 h-4" />
                     </button>
                 </div>
@@ -51,7 +48,7 @@
                             v-for="i in 3"
                             :key="i"
                             :class="[
-                                'flex flex-col gap-2 max-w-[80%] mb-4',
+                                'chat-box-message-wrapper mb-4',
                                 i % 2 === 0 ? 'self-end items-end' : 'self-start items-start',
                             ]"
                         >
@@ -66,17 +63,12 @@
                     </template>
 
                     <!-- Empty State -->
-                    <div
-                        v-else-if="messages.length === 0 && !isLoading"
-                        class="flex flex-col items-center justify-center h-full text-center px-6 py-10"
-                    >
-                        <div
-                            class="w-16 h-16 bg-accent-primary/10 rounded-full flex items-center justify-center mb-5"
-                        >
+                    <div v-else-if="messages.length === 0 && !isLoading" class="chat-box-empty">
+                        <div class="chat-box-empty-icon-wrapper">
                             <Sparkles class="w-8 h-8 text-accent-primary animate-pulse" />
                         </div>
-                        <h3 class="text-xl font-bold mb-3 text-text-primary">{{ t.emptyState.title }}</h3>
-                        <p class="text-sm text-text-secondary leading-relaxed max-w-[240px]">
+                        <h3 class="chat-box-empty-title">{{ t.emptyState.title }}</h3>
+                        <p class="chat-box-empty-desc">
                             {{ t.emptyState.description }}
                         </p>
                     </div>
@@ -87,7 +79,7 @@
                             v-for="msg in messages"
                             :key="msg.id"
                             :class="[
-                                'flex flex-col gap-1.5 max-w-[85%]',
+                                'chat-box-message-wrapper',
                                 msg.type === 'outgoing' ? 'self-end' : 'self-start',
                             ]"
                         >
@@ -103,7 +95,7 @@
                             </div>
                             <span
                                 :class="[
-                                    'text-[0.65rem] text-text-secondary font-medium',
+                                    'chat-box-timestamp',
                                     msg.type === 'outgoing' ? 'self-end' : 'self-start',
                                 ]"
                             >
@@ -113,17 +105,10 @@
                     </template>
 
                     <!-- Typing Indicator -->
-                    <div
-                        v-if="isLoading && messages.length > 0"
-                        class="flex gap-1.5 p-3 px-4 rounded-xl rounded-bl-none bg-bg-muted border border-border-subtle self-start items-center"
-                    >
-                        <span class="typing-dot w-1.5 h-1.5 bg-text-secondary/40 rounded-full" />
-                        <span
-                            class="typing-dot w-1.5 h-1.5 bg-text-secondary/40 rounded-full [animation-delay:0.2s]"
-                        />
-                        <span
-                            class="typing-dot w-1.5 h-1.5 bg-text-secondary/40 rounded-full [animation-delay:0.4s]"
-                        />
+                    <div v-if="isLoading && messages.length > 0" class="chat-box-typing-indicator">
+                        <span class="chat-box-typing-dot" />
+                        <span class="chat-box-typing-dot [animation-delay:0.2s]" />
+                        <span class="chat-box-typing-dot [animation-delay:0.4s]" />
                     </div>
                 </div>
 
@@ -138,7 +123,7 @@
                     />
                     <button
                         @click="send"
-                        class="text-accent-primary hover:scale-110 active:scale-95 transition-transform disabled:opacity-50 disabled:cursor-not-allowed"
+                        class="chat-box-send-btn"
                         :disabled="!newMessage.trim() || isLoading"
                     >
                         <Send class="w-5 h-5" />
@@ -175,8 +160,8 @@ const handleTouchStart = (e: TouchEvent) => {
 
 const handleTouchMove = (e: TouchEvent) => {
     if (!isDragging.value) return;
-    const deltaY = e.touches[0].clientY - startY.value;
-    dragY.value = deltaY;
+
+    dragY.value = e.touches[0].clientY - startY.value;
 };
 
 const handleTouchEnd = () => {
@@ -223,33 +208,3 @@ const formatTime = (timestamp?: number | string) => {
     }).format(new Date(timestamp));
 };
 </script>
-
-<style scoped>
-.chat-window-enter-active,
-.chat-window-leave-active {
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-    transform-origin: bottom right;
-}
-
-.chat-window-enter-from,
-.chat-window-leave-to {
-    opacity: 0;
-    transform: scale(0.9) translateY(20px);
-}
-
-@keyframes typing {
-    0%,
-    100% {
-        transform: translateY(0);
-        opacity: 0.3;
-    }
-    50% {
-        transform: translateY(-3px);
-        opacity: 1;
-    }
-}
-
-.typing-dot {
-    animation: typing 1s infinite ease-in-out;
-}
-</style>
