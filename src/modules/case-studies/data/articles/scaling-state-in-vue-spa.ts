@@ -13,7 +13,7 @@ export const SCALING_STATE_IN_VUE_SPA_BY_LOCALE: Record<'en' | 'id', CaseStudyAr
         title: 'Front-end State Management at Scale (Vue → Vuex)',
         heading: 'State Management at Scale',
         subtitle:
-            'Optimizing development throughput in a complex SPA by surgically migrating to a domain-driven state model—eliminating side-effect fragility without interrupting the business feature roadmap.',
+            'Transitioning from fragile component coupling to a centralized state model, restoring development velocity and system predictability within a complex legacy SPA.',
         highlight:
             'Twin v1 — Scaling front-end architecture by replacing high-friction prop-drilling with a centralized Vuex state model.',
         description:

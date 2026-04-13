@@ -16,7 +16,7 @@ export const TWIN_WMS_STOCK_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArticle
         highlight:
             'Twin v1 & Twin v2 WMS — Solving ghost stock and race conditions by transitioning to an append-only transaction architecture.',
         subtitle:
-            'How we replaced a flawed dynamic stock calculator with a strict transactional ledger to stabilize warehouse operations and reconcile logical data with physical reality.',
+            'Transitioning from volatile dynamic stock calculations to a strict append-only transactional ledger, eliminating race conditions and reconciling digital inventory with physical warehouse.',
         sections: [
             {
                 id: 'context',

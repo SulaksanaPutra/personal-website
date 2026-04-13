@@ -16,7 +16,7 @@ export const INTEGRATION_STRATEGY_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyA
         highlight:
             'Twin v1 & SaaS WMS/FMS — Designing an orchestrator to solve distributed data inconsistencies',
         subtitle:
-            'How I audited a tangled API integration and designed a centralized middleware orchestrator to resolve cross-system data loss before a strategic project halt.',
+            'Designing a centralized Hub-and-Spoke orchestrator to replace fragile point-to-point integrations, resolving distributed data inconsistencies while navigating the operational trade-offs of a multi-service architecture.',
         sections: [
             {
                 id: 'context-and-scale',

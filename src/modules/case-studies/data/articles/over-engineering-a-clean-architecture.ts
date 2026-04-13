@@ -16,7 +16,7 @@ export const OVER_ENGINEERING_A_CLEAN_ARCHITECTURE: Record<'en' | 'id', CaseStud
         highlight:
             'Designed a strict layered architecture in Go to prevent chaos—then learned to simplify it when structure became friction.',
         subtitle:
-            'Building WMS and DMS as standalone SaaS products taught me that clean architecture must match product scale and team maturity.',
+            'Pivoting from rigid architectural purity to a pragmatic structural model, eliminating "boilerplate tax" and restoring development velocity to match the actual needs of a scaling SaaS.',
         sections: [
             {
                 id: 'context',

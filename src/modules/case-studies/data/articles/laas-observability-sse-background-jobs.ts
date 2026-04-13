@@ -16,7 +16,7 @@ export const LAAS_OBSERVABILITY_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArt
         highlight:
             'LaaS App — Implementing Server-Sent Events (SSE) and segregated logging to resolve the observability gap in a background-heavy "Hit-and-Forget" architecture.',
         subtitle:
-            'How we gave the system a voice by replacing silent background failures with real-time user notifications and worker health monitoring.',
+            'Eliminating the "black box" disconnect in a "Hit-and-Forget" architecture by implementing lightweight real-time feedback loops and domain-segregated observability.',
         sections: [
             {
                 id: 'context',

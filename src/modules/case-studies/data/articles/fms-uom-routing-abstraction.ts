@@ -16,7 +16,7 @@ export const TWIN_FMS_ROUTING_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArtic
         highlight:
             'Twin FMS — Navigating the conflict between standardized volumetric routing and entrenched "box-based" business habits.',
         subtitle:
-            'How we implemented a virtual UOM abstraction and metadata-driven prioritization to automate delivery scheduling without breaking the existing business model.',
+            'Resolving the conflict between volumetric routing and entrenched business habits by implementing a virtual UOM abstraction and decoupled priority logic to enable automated scheduling without breaking operational workflows.',
         sections: [
             {
                 id: 'context',

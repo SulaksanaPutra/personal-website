@@ -16,7 +16,7 @@ export const LAAS_BRIDGE_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArticle | 
         highlight:
             'LaaS App — Transforming complex internal WMS/FMS engines into a user-friendly service platform via a "Command and Control" Laravel architecture.',
         subtitle:
-            'How we built a standalone masking layer to pivot from selling software to selling services, and the reality of launching just before a corporate collapse.',
+            'Abstracting complex internal logistics engines into a user-centric service platform, decoupling client-facing workflows from legacy debt during a high-stakes business model pivot.',
         sections: [
             {
                 id: 'context',

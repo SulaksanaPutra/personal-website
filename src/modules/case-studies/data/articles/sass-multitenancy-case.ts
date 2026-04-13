@@ -15,7 +15,7 @@ export const SAAS_MULTITENANCY_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArti
         heading: 'Multi-Tenant Architecture Redesign',
         highlight: 'Twin WMS & FMS — Fixing a critical concurrency flaw to secure tenant data',
         subtitle:
-            'How I redesigned a flawed database connection strategy in a production SaaS application to eliminate race conditions, secure tenant data, and improve overall backend performance.',
+            'Eliminating critical data contamination in a high-traffic Go environment by replacing fragile global state logic with explicit dependency injection and persistent connection pools.',
         sections: [
             {
                 id: 'context',

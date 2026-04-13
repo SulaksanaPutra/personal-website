@@ -17,7 +17,7 @@ export const OPTIMIZING_QUERY_PERFORMANCE_BY_LOCALE: Record<'en' | 'id', CaseStu
             highlight:
                 'Stabilizing a monolithic Laravel ERP by untangling lazy loading and N+1 queries—a pragmatic exercise in treating symptoms without breaking production.',
             subtitle:
-                "How we bought time for a strained ERP system by addressing lazy loading and read/write contention, accepting the harsh reality that a full architectural rewrite wasn't an option.",
+                'Implementing tactical read optimizations and database replication to restore system reliability, protecting core transactional flows from the performance bottlenecks of legacy architectural debt.',
             sections: [
                 {
                     id: 'context',

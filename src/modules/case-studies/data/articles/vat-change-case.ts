@@ -16,7 +16,7 @@ export const VAT_CHANGE_CASE_BY_LOCALE: Record<'en' | 'id', CaseStudyArticle | n
         highlight:
             'Twin v1 — Managing a strict regulatory shift within a brittle legacy architecture',
         subtitle:
-            'How I navigated a critical tax update in a legacy ERP riddled with hardcoded logic, protecting historical financial data without halting production.',
+            'Implementing a versioned tax strategy to meet mandatory regulatory shifts, protecting historical financial data from the risks of dynamic calculation in a legacy architecture.',
         sections: [
             {
                 id: 'context',
