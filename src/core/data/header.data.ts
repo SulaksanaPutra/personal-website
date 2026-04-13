@@ -1,8 +1,6 @@
 import { Header } from '@/core/types/header.types.ts';
 import { useI18n } from '@/core/composables/use-i18n.ts';
 import { computed } from 'vue';
-import { SYSTEMS_BY_LOCALE } from '@/modules/systems/data/systems.data.ts';
-import { CASE_STUDIES_BY_LOCALE } from '@/modules/case-studies/data/case-studies.data.ts';
 
 const HEADER_BY_LOCALE: Record<'en' | 'id', Header> = {
     en: {
