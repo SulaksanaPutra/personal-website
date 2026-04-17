@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import { createClient, RealtimeChannel } from '@supabase/supabase-js';
 import { useRouter } from 'vue-router';
 import { chatService, getSessionId, type Message } from '../services/chat-service';
@@ -44,9 +44,7 @@ export function useChat() {
         const currentUid = getSessionId();
 
         // Target the same channel defined in your Edge Function
-        chatChannel = supabase.channel(`chat-room-${currentUid}`, {
-            config: { private: true },
-        });
+        chatChannel = supabase.channel(`chat-room-${currentUid}`);
 
         // 1. Listen for standard incoming messages
         chatChannel.on('broadcast', { event: 'new-msg' }, (payload) => {
@@ -102,6 +100,7 @@ export function useChat() {
         });
     };
 
+    // @ts-ignore
     const disconnectRealtime = () => {
         if (chatChannel) {
             supabase.removeChannel(chatChannel).then();
@@ -144,9 +143,9 @@ export function useChat() {
         connectRealtime();
     });
 
-    onUnmounted(() => {
-        disconnectRealtime();
-    });
+    // We intentionally removed onUnmounted(() => disconnectRealtime())
+    // because useChat is used in multiple components (Header, ChatBox).
+    // Unmounting one would kill the connection for the entire app.
 
     return {
         messages,
