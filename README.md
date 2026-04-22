@@ -1,4 +1,4 @@
-# Sulaksana Putra — Personal Website
+# Bayu Aksana — Personal Website
 
 A modern, high-performance personal portfolio and technical blog built with **Vue 3**, **TypeScript**, and **Vite**. This project serves as a digital garden, showcasing professional case studies, technical writings, and specialized skills.
 
@@ -10,7 +10,7 @@ A modern, high-performance personal portfolio and technical blog built with **Vu
 ---
 
 ## 🚀 Live Demo
-**[View the live site here](https://sulaksanaputra.github.io/personal-website/)**
+**[View the live site here](https://sulaksanaputra.github.io/)**
 
 ---
 
