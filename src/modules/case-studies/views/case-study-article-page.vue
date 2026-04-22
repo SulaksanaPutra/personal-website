@@ -416,6 +416,7 @@ import TextBlock from '@/core/components/text-block.vue';
 import CodeHighlighter from '@/core/components/code-highlighter.vue';
 
 import { useSeo } from '@/core/composables/use-seo';
+import { SITE_URL } from '@/core/utils/schema';
 import { getArticleSchema } from '@/core/utils/schema';
 import { isEditorActive, language } from '@/store';
 
@@ -572,9 +573,13 @@ useSeo(
     computed(() => {
         if (!article.value) return null;
 
-        const ogImage = typeof article.value.thumbnail === 'string'
-            ? article.value.thumbnail
-            : article.value.thumbnail?.light || '';
+        const ogImage =
+            typeof article.value.thumbnail === 'string'
+                ? article.value.thumbnail
+                : article.value.thumbnail?.light || '';
+
+        const normalizedPath = route.path.replace(/\/$/, '');
+        const currentUrl = `${SITE_URL}${normalizedPath}/`;
 
         return {
             title: article.value.title,
@@ -582,6 +587,8 @@ useSeo(
             keywords: article.value.keywords,
             ogType: 'article',
             ogImage: ogImage,
+            ogUrl: currentUrl,
+            canonical: currentUrl,
         };
     }),
 );

@@ -58,6 +58,7 @@ import {
     useCaseStudiesData,
 } from '@/modules/case-studies/data/case-studies.data.ts';
 import { useSeo } from '@/core/composables/use-seo';
+import { SITE_URL } from '@/core/utils/schema';
 import LanguageFallback from '@/core/components/language-fallback.vue';
 
 const route = useRoute();
@@ -71,9 +72,15 @@ const caseStudies = useCaseStudiesData(systemId);
 const availability = useCaseStudiesAvailability(systemId);
 
 useSeo(
-    computed(() => ({
-        title: 'Case Studies',
-        description: 'Selected projects and deep dives into engineering challenges.',
-    })),
+    computed(() => {
+        const normalizedPath = route.path.replace(/\/$/, '');
+        const currentUrl = `${SITE_URL}${normalizedPath}/`;
+        return {
+            title: 'Case Studies',
+            description: 'Selected projects and deep dives into engineering challenges.',
+            ogUrl: currentUrl,
+            canonical: currentUrl,
+        };
+    }),
 );
 </script>

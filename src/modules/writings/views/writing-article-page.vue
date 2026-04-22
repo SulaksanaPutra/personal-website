@@ -208,6 +208,7 @@ import ThemeImage from '@/core/components/theme-image.vue';
 import LanguageFallback from '@/core/components/language-fallback.vue';
 import JsonLd from '@/core/components/json-ld.vue';
 import { useSeo } from '@/core/composables/use-seo';
+import { SITE_URL } from '@/core/utils/schema';
 import { getArticleSchema } from '@/core/utils/schema';
 import { language } from '@/store';
 import { headerComponentRef } from '@/store.ts';
@@ -237,12 +238,17 @@ useSeo(
             ? article.value.thumbnail 
             : article.value.thumbnail?.light || '';
 
+        const normalizedPath = route.path.replace(/\/$/, '');
+        const currentUrl = `${SITE_URL}${normalizedPath}/`;
+
         return {
             title: article.value.title,
             description: article.value.highlight,
             keywords: article.value.keywords,
             ogType: 'article',
             ogImage: ogImage,
+            ogUrl: currentUrl,
+            canonical: currentUrl,
         };
     }),
 );

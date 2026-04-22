@@ -56,11 +56,14 @@
 <script setup lang="ts">
 import { computed, nextTick, onMounted, onUnmounted, provide, watch } from 'vue';
 import { activeSection } from '@/store';
+import { useRoute } from 'vue-router';
 import { useSystemsAvailability, useSystemsData } from '@/modules/systems/data/systems.data.ts';
 import { useSeo } from '@/core/composables/use-seo';
+import { SITE_URL } from '@/core/utils/schema';
 import LanguageFallback from '@/core/components/language-fallback.vue';
 import GlossaryText from '@/core/components/glossary-text.vue';
 
+const route = useRoute();
 const systems = useSystemsData();
 const availability = useSystemsAvailability();
 
@@ -68,10 +71,16 @@ const glossaryRegistry = new Set<string>();
 provide('glossaryRegistry', glossaryRegistry);
 
 useSeo(
-    computed(() => ({
-        title: 'System Architecture',
-        description: 'Deep dive into the architecture and systems I have built.',
-    })),
+    computed(() => {
+        const normalizedPath = route.path.replace(/\/$/, '');
+        const currentUrl = `${SITE_URL}${normalizedPath}/`;
+        return {
+            title: 'System Architecture',
+            description: 'Deep dive into the architecture and systems I have built.',
+            ogUrl: currentUrl,
+            canonical: currentUrl,
+        };
+    }),
 );
 
 let sectionObserver: IntersectionObserver | null = null;

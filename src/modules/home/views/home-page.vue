@@ -24,6 +24,7 @@ import {
 } from 'vue';
 import { useRoute } from 'vue-router';
 import { useSeo } from '@/core/composables/use-seo';
+import { SITE_URL } from '@/core/utils/schema';
 
 const components: Record<string, Component> = {
     about: markRaw(
@@ -47,12 +48,16 @@ useSeo(
     computed(() => {
         const name = (route.name as string) || '';
         const sectionName = name.charAt(0).toUpperCase() + name.slice(1);
+        const normalizedPath = route.path.replace(/\/$/, '');
+        const currentUrl = `${SITE_URL}${normalizedPath}/`;
 
         return {
             title: sectionName || 'Senior Backend Engineer',
             description:
                 'Portfolio and technical insights of Bayu Aksana, a Senior Backend Engineer specializing in scalable systems and architecture.',
             ogType: 'website',
+            ogUrl: currentUrl,
+            canonical: currentUrl,
         };
     }),
 );

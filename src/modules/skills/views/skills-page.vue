@@ -47,11 +47,14 @@
 
 <script setup lang="ts">
 import { computed, provide, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import { useSkillsAvailability, useSkillsData } from '@/modules/skills/data/skills.data.ts';
 import { useSeo } from '@/core/composables/use-seo';
+import { SITE_URL } from '@/core/utils/schema';
 import LanguageFallback from '@/core/components/language-fallback.vue';
 import GlossaryText from '@/core/components/glossary-text.vue';
 
+const route = useRoute();
 const page = useSkillsData();
 const availability = useSkillsAvailability();
 
@@ -63,9 +66,16 @@ watch(page, () => {
 });
 
 useSeo(
-    computed(() => ({
-        title: 'Skills & Expertise',
-        description: 'Technical stack, core competencies, and professional execution frameworks.',
-    })),
+    computed(() => {
+        const normalizedPath = route.path.replace(/\/$/, '');
+        const currentUrl = `${SITE_URL}${normalizedPath}/`;
+        return {
+            title: 'Skills & Expertise',
+            description:
+                'Technical stack, core competencies, and professional execution frameworks.',
+            ogUrl: currentUrl,
+            canonical: currentUrl,
+        };
+    }),
 );
 </script>

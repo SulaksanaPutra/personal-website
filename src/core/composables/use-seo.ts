@@ -8,7 +8,9 @@ interface SeoOptions {
     ogDescription?: string;
     ogType?: 'website' | 'article';
     ogImage?: string;
+    ogUrl?: string;
     twitterCard?: 'summary' | 'summary_large_image';
+    canonical?: string;
 }
 
 export function useSeo(options: Ref<SeoOptions | null | undefined>) {
@@ -32,6 +34,16 @@ export function useSeo(options: Ref<SeoOptions | null | undefined>) {
         el.setAttribute('content', content);
     };
 
+    const updateLink = (rel: string, href: string) => {
+        let el = document.querySelector(`link[rel="${rel}"]`);
+        if (!el) {
+            el = document.createElement('link');
+            el.setAttribute('rel', rel);
+            document.head.appendChild(el);
+        }
+        el.setAttribute('href', href);
+    };
+
     watch(
         options,
         (newOptions) => {
@@ -50,6 +62,11 @@ export function useSeo(options: Ref<SeoOptions | null | undefined>) {
                 updateMeta('keywords', newOptions.keywords);
             }
 
+            // Update Canonical
+            if (newOptions.canonical) {
+                updateLink('canonical', newOptions.canonical);
+            }
+
             // Update OpenGraph
             updateProperty('og:title', newOptions.ogTitle || newOptions.title);
             updateProperty(
@@ -57,6 +74,7 @@ export function useSeo(options: Ref<SeoOptions | null | undefined>) {
                 newOptions.ogDescription || newOptions.description || '',
             );
             updateProperty('og:type', newOptions.ogType || 'website');
+            updateProperty('og:url', newOptions.ogUrl || window.location.href);
             if (newOptions.ogImage) {
                 updateProperty('og:image', newOptions.ogImage);
             }
