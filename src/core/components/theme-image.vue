@@ -3,13 +3,13 @@
         <div v-if="!isLoaded && showSkeleton" class="skeleton-block absolute inset-0 !m-0" />
         <img
             :src="currentSrc"
+            :alt="alt"
             v-bind="$attrs"
             loading="lazy"
             decoding="async"
             @load="onLoad"
             class="transition-opacity duration-700 ease-in-out"
             :class="isLoaded ? 'opacity-100' : 'opacity-0'"
-            alt="thumbnail"
         />
     </div>
 </template>
@@ -20,6 +20,7 @@ import { isDark } from '@/store';
 
 interface ThemeImageProps {
     src: string | { light: string; dark: string };
+    alt: string;
     showSkeleton?: boolean;
 }
 

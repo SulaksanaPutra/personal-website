@@ -209,7 +209,7 @@ import LanguageFallback from '@/core/components/language-fallback.vue';
 import JsonLd from '@/core/components/json-ld.vue';
 import { useSeo } from '@/core/composables/use-seo';
 import { SITE_URL } from '@/core/utils/schema';
-import { getArticleSchema } from '@/core/utils/schema';
+import { getArticleSchema, getProductSchema, getFAQSchema } from '@/core/utils/schema';
 import { language } from '@/store';
 import { headerComponentRef } from '@/store.ts';
 
@@ -260,7 +260,7 @@ const structuredData = computed(() => {
         ? article.value.thumbnail 
         : article.value.thumbnail?.light || '';
 
-    return getArticleSchema({
+    const articleSchema = getArticleSchema({
         id: articleId,
         title: article.value.title,
         description: article.value.highlight,
@@ -268,6 +268,23 @@ const structuredData = computed(() => {
         image: ogImage,
         keywords: article.value.keywords
     });
+
+    const productSchema = getProductSchema({
+        name: article.value.title,
+        description: article.value.highlight,
+        image: ogImage
+    });
+
+    const graph: any[] = [articleSchema, productSchema];
+
+    if (article.value.qnas && article.value.qnas.length > 0) {
+        graph.push(getFAQSchema(article.value.qnas));
+    }
+
+    return {
+        '@context': 'https://schema.org',
+        '@graph': graph
+    };
 });
 
 const readingTime = computed(() => {

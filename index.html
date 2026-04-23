@@ -4,8 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <link rel="icon" href="/favicon.ico" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <meta name="theme-color" content="#6f4e37" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="canonical" href="https://bayuaksana.com/" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://bayuaksana.com; connect-src 'self' https://www.google-analytics.com https://*.supabase.co https://*.google-analytics.com; font-src 'self' data:; frame-ancestors 'none';">
 
   <!-- Primary Meta Tags -->
   <title>Bayu Aksana — Senior Backend Engineer & Systems Architect</title>
@@ -49,6 +52,15 @@
 <body>
   <div id="app"></div>
   <script type="module" src="/src/main.ts"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(err => {
+          console.error('Service Worker registration failed: ', err);
+        });
+      });
+    }
+  </script>
 </body>
 
 </html>

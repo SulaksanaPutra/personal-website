@@ -24,6 +24,7 @@
         </div>
         <Footer :class="{ 'footer-drawer-offset': isDrawerOpen }" />
         <ChatBox />
+        <CookieConsent />
     </div>
 </template>
 
@@ -31,20 +32,29 @@
 import Header from '@/core/layout/header.vue';
 import Footer from '@/core/layout/footer.vue';
 import ChatBox from '@/modules/chat/components/chat-box.vue';
-import { computed } from 'vue';
+import CookieConsent from '@/core/components/cookie-consent.vue';
+import { computed, onMounted } from 'vue';
 import JsonLd from '@/core/components/json-ld.vue';
-import { getPersonSchema, getWebSiteSchema } from '@/core/utils/schema';
+import { getPersonSchema, getWebSiteSchema, getOrganizationSchema } from '@/core/utils/schema';
 import { useTheme } from '@/core/composables/use-theme';
 import { useScrollProgress } from '@/core/composables/use-scroll-progress';
 import { useDrawerManagement } from '@/core/composables/use-drawer-management';
 import { useAppLayout } from '@/core/composables/use-app-layout';
+
+// --- Redirection ---
+onMounted(() => {
+    if (window.location.hostname === 'www.bayuaksana.com') {
+        window.location.replace('https://bayuaksana.com' + window.location.pathname + window.location.search);
+    }
+});
 
 // --- Global Schema ---
 const globalSchema = computed(() => ({
     '@context': 'https://schema.org',
     '@graph': [
         getPersonSchema(),
-        getWebSiteSchema()
+        getWebSiteSchema(),
+        getOrganizationSchema()
     ]
 }));
 

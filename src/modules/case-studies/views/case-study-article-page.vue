@@ -417,7 +417,7 @@ import CodeHighlighter from '@/core/components/code-highlighter.vue';
 
 import { useSeo } from '@/core/composables/use-seo';
 import { SITE_URL } from '@/core/utils/schema';
-import { getArticleSchema } from '@/core/utils/schema';
+import { getArticleSchema, getProductSchema, getFAQSchema } from '@/core/utils/schema';
 import { isEditorActive, language } from '@/store';
 
 const route = useRoute();
@@ -600,7 +600,7 @@ const structuredData = computed(() => {
         ? article.value.thumbnail 
         : article.value.thumbnail?.light || '';
 
-    return getArticleSchema({
+    const articleSchema = getArticleSchema({
         id: articleId,
         title: article.value.title,
         description: article.value.highlight || article.value.subtitle || '',
@@ -608,6 +608,23 @@ const structuredData = computed(() => {
         keywords: article.value.keywords,
         urlPath: `/case-studies/${route.params.systemId}/${articleId}`
     });
+
+    const productSchema = getProductSchema({
+        name: article.value.title,
+        description: article.value.highlight || article.value.subtitle || '',
+        image: ogImage
+    });
+
+    const graph: any[] = [articleSchema, productSchema];
+
+    if (article.value.qnas && article.value.qnas.length > 0) {
+        graph.push(getFAQSchema(article.value.qnas));
+    }
+
+    return {
+        '@context': 'https://schema.org',
+        '@graph': graph
+    };
 });
 
 const readingTime = computed(() => {

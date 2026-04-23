@@ -18,7 +18,10 @@ export function getPersonSchema() {
             'https://github.com/SulaksanaPutra',
             'https://www.linkedin.com/in/bayu-aksana-dev',
             'https://www.instagram.com/bayuaksana.dev',
-            // Add other social links here
+            // --- Future Entity Grounding ---
+            // Once you have a Google Knowledge Panel or Wikidata entry, add the links here:
+            // 'https://www.wikidata.org/wiki/YOUR_ID',
+            // 'https://kg.google.com/k/g/YOUR_KG_ID'
         ],
         knowsAbout: [
             'Software Architecture',
@@ -27,7 +30,53 @@ export function getPersonSchema() {
             'TypeScript',
             'System Design',
             'Performance Optimization'
+        ],
+        // identifier: 'KNOW_KEY_HERE' // Add your Knowledge Graph ID here once claimed
+    };
+}
+
+export function getOrganizationSchema() {
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        '@id': `${SITE_URL}/#organization`,
+        name: `${AUTHOR_NAME} Studio`,
+        url: SITE_URL,
+        logo: `${SITE_URL}/favicon.ico`,
+        contactPoint: {
+            '@type': 'ContactPoint',
+            'email': 'hello@bayuaksana.com',
+            'contactType': 'technical support'
+        },
+        sameAs: [
+            'https://github.com/SulaksanaPutra',
+            'https://www.linkedin.com/in/bayu-aksana-dev'
         ]
+    };
+}
+
+export function getProductSchema(product: {
+    name: string;
+    description: string;
+    image?: string;
+    brand?: string;
+}) {
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'Product',
+        'name': product.name,
+        'description': product.description,
+        'image': product.image,
+        'brand': {
+            '@type': 'Brand',
+            'name': product.brand || AUTHOR_NAME
+        },
+        'offers': {
+            '@type': 'Offer',
+            'availability': 'https://schema.org/InStock',
+            'price': '0',
+            'priceCurrency': 'USD'
+        }
     };
 }
 
@@ -68,6 +117,21 @@ export function getArticleSchema(article: {
             '@type': 'WebPage',
             '@id': articleUrl
         }
+    };
+}
+
+export function getFAQSchema(qnas: { question: string; answer: string }[]) {
+    return {
+        '@context': 'https://schema.org',
+        '@type': 'FAQPage',
+        'mainEntity': qnas.map(qna => ({
+            '@type': 'Question',
+            'name': qna.question,
+            'acceptedAnswer': {
+                '@type': 'Answer',
+                'text': qna.answer
+            }
+        }))
     };
 }
 

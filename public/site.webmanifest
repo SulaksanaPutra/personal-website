@@ -1,0 +1,16 @@
+{
+  "name": "Bayu Aksana — Senior Backend Engineer",
+  "short_name": "Bayu Aksana",
+  "description": "Personal portfolio and technical blog of Bayu Aksana.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fcfbf9",
+  "theme_color": "#6f4e37",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ]
+}

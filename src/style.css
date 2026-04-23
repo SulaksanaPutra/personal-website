@@ -567,6 +567,29 @@
     .glossary-backdrop {
         @apply fixed inset-0 bg-black/20 backdrop-blur-sm z-[9999] transition-opacity duration-300;
     }
+
+    /* Cookie Consent */
+    .cookie-consent-wrapper {
+        @apply fixed bottom-6 left-6 right-6 z-[9999] flex justify-center pointer-events-none;
+    }
+
+    .cookie-consent-content {
+        @apply border border-border-subtle p-5 md:px-6 md:py-5 rounded-[24px] max-w-[900px] w-full pointer-events-auto;
+        background: color-mix(in srgb, var(--bg-main) 80%, transparent);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 768px) {
+        .cookie-consent-wrapper {
+            @apply bottom-0 left-0 right-0 p-4;
+        }
+
+        .cookie-consent-content {
+            @apply p-6 rounded-[28px];
+        }
+    }
 }
 
 @layer utilities {

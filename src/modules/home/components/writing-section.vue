@@ -1,5 +1,5 @@
 <template>
-    <section v-if="writingData" class="prose-content content-narrow">
+    <section v-if="writingData" class="prose-content content-narrow md:text-left">
         <header>
             <h2 class="heading-section">
                 {{ writingData.subtitle }}

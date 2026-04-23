@@ -1,0 +1,16 @@
+# AI Indexing Information
+# This file provides metadata for AI crawlers and agents.
+
+User-agent: *
+Allow: /
+
+# Entity Information
+Name: Bayu Aksana
+Type: Person
+Role: Software Architect & Fullstack Engineer
+Website: https://bayuaksana.com
+GitHub: https://github.com/SulaksanaPutra
+LinkedIn: https://www.linkedin.com/in/bayu-aksana-dev
+
+# Knowledge Graph Reference
+# Add your KG ID here once generated/claimed (e.g., /g/11v_xxxx)

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xmlns:video="http://www.google.com/schemas/sitemap-video/1.1">
+  <url>
+    <loc>https://bayuaksana.com/</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>1.0</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/systems</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/case-studies</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/writing</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/skills</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/contact</loc>
+    <lastmod>2026-04-23</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/writing/explicit-connection-pooling-go</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bayuaksana.com/assets/images/articles/writings/explicit-connection-pooling-go.jpg</image:loc>
+      <image:title>explicit connection pooling go</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/writing/naive-state-reset-architectural-debt</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bayuaksana.com/assets/images/articles/writings/naive-state-reset-architectural-debt.jpg</image:loc>
+      <image:title>naive state reset architectural debt</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/writing/pragmatic-real-time-sse</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bayuaksana.com/assets/images/articles/writings/pragmatic-real-time-sse.jpg</image:loc>
+      <image:title>pragmatic real time sse</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/writing/pragmatic-validation-service-layer</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bayuaksana.com/assets/images/articles/writings/pragmatic-validation-service-layer.jpg</image:loc>
+      <image:title>pragmatic validation service layer</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/writing/summary-table-high-stakes-systems</loc>
+    <lastmod>2026-04-10</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://bayuaksana.com/assets/images/articles/writings/summary-table-high-stakes-systems.jpg</image:loc>
+      <image:title>summary table high stakes systems</image:title>
+    </image:image>
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/case-studies/system-twin-v2-wms/architectural-debt-wms-inventory</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/case-studies/system-twin-v2-wms/architectural-strategy-integration-hub</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/case-studies/system-twin-v2-fms/fms-uom-routing-abstraction</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/case-studies/system-laas/laas-bridge-complexity-masking</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/case-studies/system-laas/laas-observability-sse-background-jobs</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/case-studies/system-twin-v1/optimizing-query-performance-in-a-monolithic-erp</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/case-studies/system-twin-v2-wms/over-engineering-a-clean-architecture</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/case-studies/system-twin-v2-fms/over-engineering-a-clean-architecture</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/case-studies/system-twin-v2-wms/resolving-cross-tenant-data-contamination-go-saas</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/case-studies/system-twin-v2-fms/resolving-cross-tenant-data-contamination-go-saas</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/case-studies/system-twin-v1/front-end-state-management-at-scale</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+
+  </url>
+  <url>
+    <loc>https://bayuaksana.com/case-studies/system-twin-v1/handling-a-vat-increase-in-a-legacy-real-time-system</loc>
+    <lastmod>2026-04-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+
+  </url>
+</urlset>
